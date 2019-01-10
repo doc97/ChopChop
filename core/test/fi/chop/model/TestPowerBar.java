@@ -10,7 +10,7 @@ public class TestPowerBar extends TestCase {
 
     @Override
     public void setUp() {
-        bar = new PowerBar(1);
+        bar = new PowerBar();
     }
 
     public void testDefaultValues() {
@@ -47,5 +47,13 @@ public class TestPowerBar extends TestCase {
         assertEquals(0.1, bar.getValue(), EPSILON);
         bar.update(0.1f);
         assertEquals(0.2, bar.getValue(), EPSILON);
+    }
+
+    public void testSetDurationSec() {
+        bar.setDurationSec(2);
+        bar.update(1);
+        assertEquals(0.5f, bar.getValue(), EPSILON);
+        bar.update(0.5f);
+        assertEquals(0.75f, bar.getValue(), EPSILON);
     }
 }

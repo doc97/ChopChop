@@ -11,8 +11,8 @@ public class PowerBar {
     private float value;
     private float multiplier;
 
-    public PowerBar(float durationSec) {
-        this.durationSec = durationSec;
+    public PowerBar() {
+        durationSec = 1;
         multiplier = 1;
         random = new Random();
     }
@@ -22,7 +22,7 @@ public class PowerBar {
     }
 
     public void update(float delta) {
-        value = MathUtil.lerp(0, 1, value + multiplier * delta);
+        value = MathUtil.lerp(0, 1, value + multiplier * delta / durationSec);
         if (Math.floor(value) % 2 == 1) {
             multiplier *= -1;
             if (value > 0)
@@ -35,5 +35,15 @@ public class PowerBar {
 
     public float getValue() {
         return value;
+    }
+
+    public void setDurationSec(float seconds) {
+        if (seconds <= 0)
+            throw new IllegalArgumentException("Duration must be positive!");
+        durationSec = seconds;
+    }
+
+    public float getDurationSec() {
+        return durationSec;
     }
 }
