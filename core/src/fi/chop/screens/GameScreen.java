@@ -1,21 +1,20 @@
 package fi.chop.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fi.chop.Chop;
 
 public class GameScreen extends ChopScreen {
 
     private Texture logo;
 
-    public GameScreen(SpriteBatch batch, OrthographicCamera camera) {
-        super(batch, camera);
+    public GameScreen(Chop game) {
+        super(game);
     }
 
     @Override
     public void show() {
-        logo = new Texture(Gdx.files.internal("badlogic.jpg"));
+        logo = getAssets().get("badlogic.jpg", Texture.class);
     }
 
     @Override

@@ -2,18 +2,22 @@ package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fi.chop.Chop;
 
 public abstract class ChopScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
+    private AssetManager manager;
 
-    public ChopScreen(SpriteBatch batch, OrthographicCamera camera) {
-        this.batch = batch;
-        this.camera = camera;
+    public ChopScreen(Chop game) {
+        this.manager = game.getAssetManager();
+        this.batch = game.getSpriteBatch();
+        this.camera = game.getCamera();
     }
 
     protected abstract void update(float delta);
@@ -32,5 +36,9 @@ public abstract class ChopScreen extends ScreenAdapter {
 
     protected OrthographicCamera getCamera() {
         return camera;
+    }
+
+    protected AssetManager getAssets() {
+        return manager;
     }
 }

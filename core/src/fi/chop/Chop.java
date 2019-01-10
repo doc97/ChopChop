@@ -2,7 +2,9 @@ package fi.chop;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -13,6 +15,7 @@ public class Chop extends Game {
 	private OrthographicCamera camera;
 	private Viewport viewport;
 	private SpriteBatch batch;
+	private AssetManager assets;
 
 	@Override
 	public void create() {
@@ -23,8 +26,17 @@ public class Chop extends Game {
 	    viewport = new FitViewport(1920, 1080, camera);
 	    viewport.apply(true);
 
+	    assets = new AssetManager();
 		batch = new SpriteBatch();
-	    setScreen(new GameScreen(batch, camera));
+
+		/* Load texture synchronously
+		 * Will be moved to a separate loading screen
+		 * for asynchronous loading
+		 */
+		assets.load("badlogic.jpg", Texture.class);
+		assets.finishLoading();
+
+	    setScreen(new GameScreen(this));
 	}
 
 	@Override
@@ -36,5 +48,18 @@ public class Chop extends Game {
 	@Override
 	public void dispose() {
 		batch.dispose();
+		assets.dispose();
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	public SpriteBatch getSpriteBatch() {
+		return batch;
+	}
+
+	public AssetManager getAssetManager() {
+		return assets;
 	}
 }
