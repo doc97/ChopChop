@@ -1,5 +1,6 @@
-package fi.chop.model;
+package fi.chop.model.object;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class GameObject {
@@ -8,6 +9,13 @@ public abstract class GameObject {
     private float y;
     private double rotDeg;
 
+    private AssetManager assets;
+
+    public GameObject(AssetManager assets) {
+        this.assets = assets;
+    }
+
+    public abstract void load();
     public abstract void update(float delta);
     public abstract void render(SpriteBatch batch);
 
@@ -48,5 +56,9 @@ public abstract class GameObject {
 
     public double getRotationDeg() {
         return rotDeg;
+    }
+
+    public AssetManager getAssets() {
+        return assets;
     }
 }

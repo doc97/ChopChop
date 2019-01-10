@@ -1,14 +1,14 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.input.GameScreenInput;
+import fi.chop.model.object.PowerBarObject;
 
 public class GameScreen extends ChopScreen {
 
-    private Texture logo;
+    private PowerBarObject powerBar;
 
     public GameScreen(Chop game) {
         super(game);
@@ -16,27 +16,22 @@ public class GameScreen extends ChopScreen {
 
     @Override
     public void show() {
-        logo = getAssets().get("badlogic.jpg", Texture.class);
         Gdx.input.setInputProcessor(new GameScreenInput(this, getInputMap()));
+        powerBar = new PowerBarObject(getAssets());
+        powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        powerBar.load();
     }
 
     @Override
     protected void update(float delta) {
-
+        powerBar.update(delta);
     }
 
     @Override
     protected void render(SpriteBatch batch) {
         beginRender();
         batch.begin();
-        float centerX = getCamera().viewportWidth / 2f - logo.getWidth() / 2f;
-        float centerY = getCamera().viewportHeight / 2f - logo.getHeight() / 2f;
-        batch.draw(logo, centerX, centerY);
+        powerBar.render(batch);
         batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        logo.dispose();
     }
 }

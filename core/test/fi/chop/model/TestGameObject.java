@@ -1,6 +1,7 @@
 package fi.chop.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fi.chop.model.object.GameObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,10 @@ public class TestGameObject {
 
     @Before
     public void setUp() {
-        object = new GameObject() {
+        object = new GameObject(null) {
+            @Override
+            public void load() {}
+
             @Override
             public void update(float delta) { }
 
