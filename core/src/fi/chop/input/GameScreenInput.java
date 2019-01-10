@@ -1,20 +1,18 @@
 package fi.chop.input;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import fi.chop.model.InputMap;
+import fi.chop.screens.ChopScreen;
 
-public class GameScreenInput extends InputAdapter {
+public class GameScreenInput extends ChopScreenInput {
 
-    private InputMap inputMap;
-
-    public GameScreenInput(InputMap inputMap) {
-        this.inputMap = inputMap;
+    public GameScreenInput(ChopScreen screen, InputMap inputMap) {
+        super(screen, inputMap);
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        InputMap.Action action = inputMap.getAction(keycode);
+    public boolean keyDown(int keyCode) {
+        InputMap.Action action = getInputMap().getAction(keyCode);
         switch (action) {
             case INTERACT:
                 Gdx.app.log("GameScreenInput", "INTERACT");

@@ -17,7 +17,7 @@ public class GameScreen extends ChopScreen {
     @Override
     public void show() {
         logo = getAssets().get("badlogic.jpg", Texture.class);
-        Gdx.input.setInputProcessor(new GameScreenInput(getInputMap()));
+        Gdx.input.setInputProcessor(new GameScreenInput(this, getInputMap()));
     }
 
     @Override
