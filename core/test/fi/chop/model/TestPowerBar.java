@@ -59,8 +59,21 @@ public class TestPowerBar {
     }
 
     @Test
+    public void testUpdateUnderOverflow() {
+        bar.update(0.9f);
+        bar.update(0.2f);
+        assertEquals(0.9f, bar.getValue(), EPSILON);
+        bar.update(0.8f);
+        bar.update(0.2f);
+        assertEquals(0.1f, bar.getValue(), EPSILON);
+        bar.update(0.1f);
+        assertEquals(0.2f, bar.getValue(), EPSILON);
+    }
+
+    @Test
     public void testSetDurationSec() {
         bar.setDurationSec(2);
+        assertEquals(2f, bar.getDurationSec(), EPSILON);
         bar.update(1);
         assertEquals(0.5f, bar.getValue(), EPSILON);
         bar.update(0.5f);

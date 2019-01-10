@@ -23,12 +23,13 @@ public class PowerBar {
 
     public void update(float delta) {
         value = MathUtil.lerp(0, 1, value + multiplier * delta / durationSec);
-        if (Math.floor(value) % 2 == 1) {
+        double floored = Math.floor(value);
+        if (floored % 2 == 1) {
             multiplier *= -1;
-            if (value > 0)
-                value = 1 - (value % 1.0f);
-            else
-                value = -value;
+            value = 1 - (value % 1.0f);
+        } else if (floored % 2 == - 1) {
+            multiplier *= -1;
+            value = -value;
         }
         value %= 1.0f;
     }
