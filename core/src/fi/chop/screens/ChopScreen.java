@@ -11,12 +11,14 @@ import fi.chop.model.InputMap;
 
 public abstract class ChopScreen extends ScreenAdapter {
 
+    private Chop game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private AssetManager manager;
     private InputMap input;
 
     public ChopScreen(Chop game) {
+        this.game = game;
         this.manager = game.getAssetManager();
         this.batch = game.getSpriteBatch();
         this.camera = game.getCamera();
@@ -35,6 +37,16 @@ public abstract class ChopScreen extends ScreenAdapter {
     public void render(float delta) {
         update(delta);
         render(batch);
+    }
+
+    public void setScreen(Screens screen) {
+        switch (screen) {
+            case GAME:
+                game.setScreen(new GameScreen(game));
+                break;
+            case MAIN_MENU:
+                game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     protected OrthographicCamera getCamera() {

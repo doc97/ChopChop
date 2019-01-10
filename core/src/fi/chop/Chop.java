@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.chop.model.InputMap;
-import fi.chop.screens.GameScreen;
+import fi.chop.screens.MainMenuScreen;
 
 public class Chop extends Game {
 
@@ -39,7 +39,7 @@ public class Chop extends Game {
 		assets.load("badlogic.jpg", Texture.class);
 		assets.finishLoading();
 
-	    setScreen(new GameScreen(this));
+	    setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
