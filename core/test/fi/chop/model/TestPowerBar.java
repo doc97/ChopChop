@@ -66,4 +66,14 @@ public class TestPowerBar {
         bar.update(0.5f);
         assertEquals(0.75f, bar.getValue(), EPSILON);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetDurationSecZero() {
+        bar.setDurationSec(0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetDurationSecNegative() {
+        bar.setDurationSec(-1);
+    }
 }
