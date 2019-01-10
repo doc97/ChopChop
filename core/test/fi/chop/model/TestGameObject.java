@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class TestGameObject extends TestCase {
 
-    private static final float EPSILON = 0.001f;
+    private static final float EPSILON = 0.000001f;
     private GameObject object;
 
     public void setUp() {
