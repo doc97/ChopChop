@@ -1,5 +1,6 @@
 package fi.chop.model;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import junit.framework.TestCase;
 
 public class TestGameObject extends TestCase {
@@ -8,7 +9,13 @@ public class TestGameObject extends TestCase {
     private GameObject object;
 
     public void setUp() {
-        object = new GameObject();
+        object = new GameObject() {
+            @Override
+            public void update(float delta) { }
+
+            @Override
+            public void render(SpriteBatch batch) { }
+        };
     }
 
     public void testDefaultValues() {

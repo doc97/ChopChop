@@ -1,10 +1,15 @@
 package fi.chop.model;
 
-public class GameObject {
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public abstract class GameObject {
 
     private float x;
     private float y;
     private double rotDeg;
+
+    public abstract void update(float delta);
+    public abstract void render(SpriteBatch batch);
 
     public void setPosition(float x, float y) {
         this.x = x;
