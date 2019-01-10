@@ -4,12 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.chop.model.InputMap;
-import fi.chop.screens.MainMenuScreen;
+import fi.chop.screens.LoadingScreen;
 
 public class Chop extends Game {
 
@@ -32,14 +31,7 @@ public class Chop extends Game {
 		batch = new SpriteBatch();
 		input = new InputMap();
 
-		/* Load texture synchronously
-		 * Will be moved to a separate loading screen
-		 * for asynchronous loading
-		 */
-		assets.load("badlogic.jpg", Texture.class);
-		assets.finishLoading();
-
-	    setScreen(new MainMenuScreen(this));
+	    setScreen(new LoadingScreen(this));
 	}
 
 	@Override
