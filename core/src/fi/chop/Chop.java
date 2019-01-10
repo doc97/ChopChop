@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import fi.chop.model.InputMap;
 import fi.chop.screens.GameScreen;
 
 public class Chop extends Game {
@@ -16,6 +17,7 @@ public class Chop extends Game {
 	private Viewport viewport;
 	private SpriteBatch batch;
 	private AssetManager assets;
+	private InputMap input;
 
 	@Override
 	public void create() {
@@ -28,6 +30,7 @@ public class Chop extends Game {
 
 	    assets = new AssetManager();
 		batch = new SpriteBatch();
+		input = new InputMap();
 
 		/* Load texture synchronously
 		 * Will be moved to a separate loading screen
@@ -61,5 +64,9 @@ public class Chop extends Game {
 
 	public AssetManager getAssetManager() {
 		return assets;
+	}
+
+	public InputMap getInputMap() {
+		return input;
 	}
 }

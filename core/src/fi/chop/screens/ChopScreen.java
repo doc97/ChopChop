@@ -7,17 +7,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.model.InputMap;
 
 public abstract class ChopScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private AssetManager manager;
+    private InputMap input;
 
     public ChopScreen(Chop game) {
         this.manager = game.getAssetManager();
         this.batch = game.getSpriteBatch();
         this.camera = game.getCamera();
+        this.input = game.getInputMap();
     }
 
     protected abstract void update(float delta);
@@ -40,5 +43,9 @@ public abstract class ChopScreen extends ScreenAdapter {
 
     protected AssetManager getAssets() {
         return manager;
+    }
+
+    protected InputMap getInputMap() {
+        return input;
     }
 }
