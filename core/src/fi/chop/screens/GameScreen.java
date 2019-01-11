@@ -7,6 +7,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GameScreenInput;
+import fi.chop.model.object.GuillotineObject;
 import fi.chop.model.object.PowerBarObject;
 import fi.chop.model.object.PowerMeterObject;
 
@@ -14,6 +15,7 @@ public class GameScreen extends ChopScreen implements EventListener {
 
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
+    private GuillotineObject guillotine;
 
     public GameScreen(Chop game) {
         super(game);
@@ -25,12 +27,15 @@ public class GameScreen extends ChopScreen implements EventListener {
         Gdx.input.setInputProcessor(new GameScreenInput(this, getInputMap()));
 
         powerBar = new PowerBarObject(getAssets());
-        powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2 - 200);
+        powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
         powerMeter = new PowerMeterObject(getAssets());
         powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
+        guillotine = new GuillotineObject(getAssets());
+        guillotine.setPosition(getCamera().viewportWidth / 4, 100);
 
         powerBar.load();
         powerMeter.load();
+        guillotine.load();
     }
 
     @Override
@@ -42,6 +47,7 @@ public class GameScreen extends ChopScreen implements EventListener {
     protected void update(float delta) {
         powerBar.update(delta);
         powerMeter.update(delta);
+        guillotine.update(delta);
     }
 
     @Override
@@ -50,6 +56,7 @@ public class GameScreen extends ChopScreen implements EventListener {
         batch.begin();
         powerBar.render(batch);
         powerMeter.render(batch);
+        guillotine.render(batch);
         batch.end();
     }
 
@@ -58,6 +65,7 @@ public class GameScreen extends ChopScreen implements EventListener {
         switch (event) {
             case ACTION_INTERACT:
                 powerMeter.addPower(powerBar.getValue());
+                guillotine.raiseBlade(powerBar.getValue());
                 break;
             case ACTION_BACK:
                 Gdx.app.exit();
