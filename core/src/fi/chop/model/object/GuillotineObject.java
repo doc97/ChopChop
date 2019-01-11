@@ -4,16 +4,21 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.model.fsm.machines.GuillotineStateMachine;
+import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 
 public class GuillotineObject extends GameObject {
 
-    private static final int MAX_RAISE_PX = 200;
+    public static final int MAX_RAISE_PX = 200;
 
+    private final GuillotineStateMachine state;
     private TextureRegion blade;
     private float bladeYOffset;
+    private float toRaise;
 
     public GuillotineObject(AssetManager assets) {
         super(assets);
+        state = new GuillotineStateMachine(this);
     }
 
     @Override
@@ -24,7 +29,7 @@ public class GuillotineObject extends GameObject {
 
     @Override
     public void update(float delta) {
-
+        state.update(delta);
     }
 
     @Override
@@ -34,6 +39,19 @@ public class GuillotineObject extends GameObject {
 
     public void raiseBlade(float amount) {
         amount = Math.min(Math.max(amount, 0), 1);
-        bladeYOffset += amount * MAX_RAISE_PX;
+        toRaise += amount * MAX_RAISE_PX;
+        state.setCurrent(GuillotineStates.BLADE_RAISE);
+    }
+
+    public void addBladeYOffset(float amount) {
+        bladeYOffset += amount;
+    }
+
+    public void setToRaise(float amount) {
+        toRaise = amount;
+    }
+
+    public float getToRaise() {
+        return toRaise;
     }
 }

@@ -96,6 +96,7 @@ public class PowerMeterObject extends GameObject {
     public void setToAdd(float toAdd) {
         this.toAdd = toAdd;
     }
+
     public float getToAdd() {
         return toAdd;
     }
