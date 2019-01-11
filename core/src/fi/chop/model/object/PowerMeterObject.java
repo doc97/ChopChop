@@ -5,22 +5,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.model.PowerMeter;
+import fi.chop.model.fsm.machines.PowerMeterStateMachine;
+import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 
 public class PowerMeterObject extends GameObject {
 
-    private static final int ROUND_COUNT = 3;
+    public static final int ROUND_COUNT = 3;
 
     private TextureRegion background;
     private TextureRegion fill;
     private PowerMeter meter;
-    private PowerMeterStates state;
+    private PowerMeterStateMachine state;
     private int round;
     private float toAdd;
 
     public PowerMeterObject(AssetManager assets) {
         super(assets);
         meter = new PowerMeter();
-        state = PowerMeterStates.IDLE;
+        state = new PowerMeterStateMachine(this);
     }
 
     @Override
@@ -32,25 +34,7 @@ public class PowerMeterObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        if (state == PowerMeterStates.POWER_DOWN) {
-            float meterDelta = -Math.max(2 * meter.getFillPercentage() * delta, 0.01f);
-            meter.add(meterDelta);
-            if (meter.getFillPercentage() == 0) {
-                state = PowerMeterStates.IDLE;
-                round = 0;
-            }
-        } else if (state == PowerMeterStates.POWER_UP) {
-            float meterDelta = Math.min(delta, toAdd);
-            meter.add(meterDelta);
-            toAdd -= meterDelta;
-
-            if (toAdd <= 0) {
-                if (round == ROUND_COUNT)
-                    state = PowerMeterStates.POWER_DOWN;
-                else
-                    state = PowerMeterStates.IDLE;
-            }
-        }
+        state.update(delta);
     }
 
     @Override
@@ -93,11 +77,34 @@ public class PowerMeterObject extends GameObject {
     }
 
     public void addPower(float power) {
-        if (state != PowerMeterStates.IDLE)
+        if (state.getCurrent() != PowerMeterStates.IDLE)
             return;
 
         toAdd = power / ROUND_COUNT;
         round++;
-        state = PowerMeterStates.POWER_UP;
+        state.setCurrent(PowerMeterStates.POWER_UP);
+    }
+
+    public void addMeterPower(float power) {
+        meter.add(power);
+    }
+
+    public float getMeterFillPercentage() {
+        return meter.getFillPercentage();
+    }
+
+    public void setToAdd(float toAdd) {
+        this.toAdd = toAdd;
+    }
+    public float getToAdd() {
+        return toAdd;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public int getRound() {
+        return round;
     }
 }

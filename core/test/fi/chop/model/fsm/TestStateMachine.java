@@ -1,5 +1,7 @@
 package fi.chop.model.fsm;
 
+import fi.chop.model.fsm.machines.StateMachine;
+import fi.chop.model.fsm.states.State;
 import org.junit.Before;
 import org.junit.Test;
 

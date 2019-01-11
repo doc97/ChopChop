@@ -1,4 +1,6 @@
-package fi.chop.model.fsm;
+package fi.chop.model.fsm.machines;
+
+import fi.chop.model.fsm.states.State;
 
 import java.util.HashMap;
 import java.util.Map;
