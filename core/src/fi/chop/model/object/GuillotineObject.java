@@ -10,11 +10,13 @@ import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 public class GuillotineObject extends GameObject {
 
     public static final int MAX_RAISE_PX = 200;
+    private static final int MAX_RAISE_COUNT = 3;
 
     private final GuillotineStateMachine state;
     private TextureRegion blade;
     private float bladeYOffset;
     private float toRaise;
+    private int raiseCount;
 
     public GuillotineObject(AssetManager assets) {
         super(assets);
@@ -44,11 +46,16 @@ public class GuillotineObject extends GameObject {
     public void raiseBlade(float amount) {
         amount = Math.min(Math.max(amount, 0), 1);
         toRaise = amount * MAX_RAISE_PX;
+        raiseCount++;
         state.setCurrent(GuillotineStates.BLADE_RAISE);
     }
 
     public void addBladeYOffset(float amount) {
-        bladeYOffset += amount;
+        bladeYOffset = Math.max(bladeYOffset + amount, 0);
+    }
+
+    public float getBladeYOffset() {
+        return bladeYOffset;
     }
 
     public void setToRaise(float amount) {
@@ -57,5 +64,13 @@ public class GuillotineObject extends GameObject {
 
     public float getToRaise() {
         return toRaise;
+    }
+
+    public void resetRaiseCount() {
+        raiseCount = 0;
+    }
+
+    public boolean isReady() {
+        return raiseCount >= MAX_RAISE_COUNT;
     }
 }

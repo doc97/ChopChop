@@ -10,5 +10,8 @@ public class GuillotineIdleState extends GuillotineState {
     }
 
     @Override
-    public void update(float delta) { }
+    public void update(float delta) {
+        if (getObject().isReady())
+            getStateMachine().setCurrent(GuillotineStates.BLADE_FALL);
+    }
 }
