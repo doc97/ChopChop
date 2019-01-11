@@ -14,17 +14,12 @@ public class PowerMeterPowerUpState extends PowerMeterState {
         PowerMeterObject obj = getObject();
         float toAdd = obj.getToAdd();
         float meterDelta = Math.min(delta, toAdd);
-        int round = obj.getRound();
 
         obj.addMeterPower(meterDelta);
         toAdd -= meterDelta;
         obj.setToAdd(toAdd);
 
-        if (toAdd <= 0) {
-            if (round == PowerMeterObject.ROUND_COUNT)
-                getStateMachine().setCurrent(PowerMeterStates.POWER_DOWN);
-            else
-                getStateMachine().setCurrent(PowerMeterStates.IDLE);
-        }
+        if (toAdd <= 0)
+            getStateMachine().setCurrent(PowerMeterStates.IDLE);
     }
 }

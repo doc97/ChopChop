@@ -11,6 +11,7 @@ public class PowerMeterIdleState extends PowerMeterState {
 
     @Override
     public void update(float delta) {
-
+        if (getObject().getRound() == PowerMeterObject.ROUND_COUNT)
+            getStateMachine().setCurrent(PowerMeterStates.POWER_DOWN);
     }
 }
