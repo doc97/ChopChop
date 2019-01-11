@@ -17,7 +17,6 @@ public class GameScreenInput extends ChopScreenInput {
         InputMap.Action action = getInputMap().getAction(keyCode);
         switch (action) {
             case INTERACT:
-                Gdx.app.log("GameScreenInput", "INTERACT");
                 Chop.events.notify(Events.ACTION_INTERACT);
                 return true;
             case BACK:

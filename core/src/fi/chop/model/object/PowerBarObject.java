@@ -38,17 +38,21 @@ public class PowerBarObject extends GameObject {
     }
 
     private void drawBackground(SpriteBatch batch) {
-        float drawWidth = background.getRegionWidth();
-        float drawHeight = background.getRegionHeight();
-        float drawX = getX();
-        float drawY = getY();
-        batch.draw(background, drawX, drawY, drawWidth, drawHeight);
+        batch.draw(background, getX(), getY());
     }
 
     private void drawMarker(SpriteBatch batch) {
         float drawWidth = marker.getRegionWidth();
         float drawHeight = marker.getRegionHeight();
-        float drawY = getY() + bar.getValue() * (background.getRegionHeight() - drawHeight);
+        float topBarY = getY() + background.getRegionHeight();
+        float markerOffset = bar.getValue() * background.getRegionHeight();
+
+        // -drawHeight because origin is at lower left
+        float drawY = topBarY - drawHeight - markerOffset;
         batch.draw(marker, getX(), drawY, drawWidth, drawHeight);
+    }
+
+    public float getValue() {
+        return bar.getValue();
     }
 }

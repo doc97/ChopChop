@@ -8,10 +8,12 @@ import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GameScreenInput;
 import fi.chop.model.object.PowerBarObject;
+import fi.chop.model.object.PowerMeterObject;
 
 public class GameScreen extends ChopScreen implements EventListener {
 
     private PowerBarObject powerBar;
+    private PowerMeterObject powerMeter;
 
     public GameScreen(Chop game) {
         super(game);
@@ -24,7 +26,11 @@ public class GameScreen extends ChopScreen implements EventListener {
 
         powerBar = new PowerBarObject(getAssets());
         powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2 - 200);
+        powerMeter = new PowerMeterObject(getAssets());
+        powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
+
         powerBar.load();
+        powerMeter.load();
     }
 
     @Override
@@ -42,6 +48,7 @@ public class GameScreen extends ChopScreen implements EventListener {
         beginRender();
         batch.begin();
         powerBar.render(batch);
+        powerMeter.render(batch);
         batch.end();
     }
 
@@ -49,7 +56,7 @@ public class GameScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         switch (event) {
             case ACTION_INTERACT:
-                Gdx.app.log("GameScreen", "Interaction captured");
+                powerMeter.addPower(powerBar.getValue());
                 break;
             case ACTION_BACK:
                 Gdx.app.exit();
