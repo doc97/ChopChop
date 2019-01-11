@@ -11,7 +11,7 @@ public abstract class GameObject {
 
     private final AssetManager assets;
 
-    public GameObject(AssetManager assets) {
+    protected GameObject(AssetManager assets) {
         this.assets = assets;
     }
 
@@ -58,7 +58,7 @@ public abstract class GameObject {
         return rotDeg;
     }
 
-    public AssetManager getAssets() {
+    protected AssetManager getAssets() {
         return assets;
     }
 }
