@@ -76,10 +76,11 @@ public class PowerMeterObject extends GameObject {
                 );
     }
 
-    public void addPower(float power) {
-        if (state.getCurrent() != PowerMeterStates.IDLE)
-            return;
+    public PowerMeterStates getState() {
+        return state.getCurrent();
+    }
 
+    public void addPower(float power) {
         toAdd = power / ROUND_COUNT;
         round++;
         state.setCurrent(PowerMeterStates.POWER_UP);

@@ -37,9 +37,13 @@ public class GuillotineObject extends GameObject {
         batch.draw(blade, getX(), getY() + bladeYOffset);
     }
 
+    public GuillotineStates getState() {
+        return state.getCurrent();
+    }
+
     public void raiseBlade(float amount) {
         amount = Math.min(Math.max(amount, 0), 1);
-        toRaise += amount * MAX_RAISE_PX;
+        toRaise = amount * MAX_RAISE_PX;
         state.setCurrent(GuillotineStates.BLADE_RAISE);
     }
 

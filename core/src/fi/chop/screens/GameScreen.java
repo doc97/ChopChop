@@ -7,6 +7,8 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GameScreenInput;
+import fi.chop.model.fsm.states.guillotine.GuillotineStates;
+import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.GuillotineObject;
 import fi.chop.model.object.PowerBarObject;
 import fi.chop.model.object.PowerMeterObject;
@@ -64,8 +66,12 @@ public class GameScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         switch (event) {
             case ACTION_INTERACT:
-                powerMeter.addPower(powerBar.getValue());
-                guillotine.raiseBlade(powerBar.getValue());
+                boolean isMeterIdle = powerMeter.getState() == PowerMeterStates.IDLE;
+                boolean isGuillotineIdle = guillotine.getState() == GuillotineStates.IDLE;
+                if (isMeterIdle && isGuillotineIdle) {
+                    powerMeter.addPower(powerBar.getValue());
+                    guillotine.raiseBlade(powerBar.getValue());
+                }
                 break;
             case ACTION_BACK:
                 Gdx.app.exit();
