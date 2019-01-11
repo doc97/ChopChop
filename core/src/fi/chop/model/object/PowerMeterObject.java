@@ -12,10 +12,10 @@ public class PowerMeterObject extends GameObject {
 
     public static final int ROUND_COUNT = 3;
 
+    private final PowerMeter meter;
+    private final PowerMeterStateMachine state;
     private TextureRegion background;
     private TextureRegion fill;
-    private PowerMeter meter;
-    private PowerMeterStateMachine state;
     private int round;
     private float toAdd;
 

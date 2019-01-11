@@ -12,8 +12,8 @@ public class InputMap {
         NONE, BACK, INTERACT
     }
 
-    private Map<Action, Integer> map;
-    private Map<Integer, Action> reverseMap;
+    private final Map<Action, Integer> map;
+    private final Map<Integer, Action> reverseMap;
 
     public InputMap() {
         map = new EnumMap<>(Action.class);

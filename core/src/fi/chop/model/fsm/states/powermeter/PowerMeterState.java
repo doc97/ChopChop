@@ -6,8 +6,8 @@ import fi.chop.model.object.PowerMeterObject;
 
 public abstract class PowerMeterState implements State {
 
-    private PowerMeterStateMachine machine;
-    private PowerMeterObject object;
+    private final PowerMeterStateMachine machine;
+    private final PowerMeterObject object;
 
     public PowerMeterState(PowerMeterStateMachine machine, PowerMeterObject object) {
         this.machine = machine;

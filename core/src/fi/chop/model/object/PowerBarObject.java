@@ -8,9 +8,9 @@ import fi.chop.model.PowerBar;
 
 public class PowerBarObject extends GameObject {
 
+    private final PowerBar bar;
     private TextureRegion background;
     private TextureRegion marker;
-    private PowerBar bar;
 
     public PowerBarObject(AssetManager assets) {
         super(assets);

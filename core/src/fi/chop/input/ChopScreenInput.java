@@ -6,8 +6,8 @@ import fi.chop.screens.ChopScreen;
 
 public class ChopScreenInput extends InputAdapter {
 
-    private InputMap inputMap;
-    private ChopScreen screen;
+    private final InputMap inputMap;
+    private final ChopScreen screen;
 
     public ChopScreenInput(ChopScreen screen, InputMap inputMap) {
         this.screen = screen;

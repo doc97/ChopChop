@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class EventSystem {
 
-    private Map<Events, ArrayList<EventListener>> listeners;
+    private final Map<Events, ArrayList<EventListener>> listeners;
 
     public EventSystem() {
         listeners = new EnumMap<>(Events.class);

@@ -11,11 +11,11 @@ import fi.chop.model.InputMap;
 
 public abstract class ChopScreen extends ScreenAdapter {
 
-    private Chop game;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private AssetManager manager;
-    private InputMap input;
+    private final Chop game;
+    private final OrthographicCamera camera;
+    private final SpriteBatch batch;
+    private final AssetManager manager;
+    private final InputMap input;
 
     public ChopScreen(Chop game) {
         this.game = game;

@@ -1,6 +1,5 @@
 package fi.chop.input;
 
-import com.badlogic.gdx.Gdx;
 import fi.chop.Chop;
 import fi.chop.event.Events;
 import fi.chop.model.InputMap;

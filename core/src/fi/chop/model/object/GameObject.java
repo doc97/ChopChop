@@ -9,7 +9,7 @@ public abstract class GameObject {
     private float y;
     private double rotDeg;
 
-    private AssetManager assets;
+    private final AssetManager assets;
 
     public GameObject(AssetManager assets) {
         this.assets = assets;

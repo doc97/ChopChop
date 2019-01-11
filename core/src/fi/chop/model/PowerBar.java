@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class PowerBar {
 
-    private Random random;
+    private final Random random;
     private float durationSec;
     private float value;
     private float multiplier;
