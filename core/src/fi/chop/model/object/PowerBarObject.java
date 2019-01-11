@@ -8,8 +8,6 @@ import fi.chop.model.PowerBar;
 
 public class PowerBarObject extends GameObject {
 
-    private static final int HEIGHT_PX = 200;
-
     private TextureRegion background;
     private TextureRegion marker;
     private PowerBar bar;
@@ -24,8 +22,8 @@ public class PowerBarObject extends GameObject {
     @Override
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        background = atlas.findRegion("badlogic");
-        marker = atlas.findRegion("badlogic");
+        background = atlas.findRegion("powerbar-background");
+        marker = atlas.findRegion("powerbar-marker");
     }
 
     @Override
@@ -40,17 +38,17 @@ public class PowerBarObject extends GameObject {
     }
 
     private void drawBackground(SpriteBatch batch) {
-        float drawWidth = marker.getRegionWidth() * 0.8f;
-        float drawHeight = HEIGHT_PX + 20;
-        float drawX = getX() + marker.getRegionWidth() * 0.1f;
-        float drawY = getY() - 10;
+        float drawWidth = background.getRegionWidth();
+        float drawHeight = background.getRegionHeight();
+        float drawX = getX();
+        float drawY = getY();
         batch.draw(background, drawX, drawY, drawWidth, drawHeight);
     }
 
     private void drawMarker(SpriteBatch batch) {
         float drawWidth = marker.getRegionWidth();
-        float drawHeight = 20;
-        float drawY = getY() + bar.getValue() * HEIGHT_PX - drawHeight / 2f;
+        float drawHeight = marker.getRegionHeight();
+        float drawY = getY() + bar.getValue() * (background.getRegionHeight() - drawHeight);
         batch.draw(marker, getX(), drawY, drawWidth, drawHeight);
     }
 }

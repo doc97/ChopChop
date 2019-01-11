@@ -23,7 +23,7 @@ public class GameScreen extends ChopScreen implements EventListener {
         Gdx.input.setInputProcessor(new GameScreenInput(this, getInputMap()));
 
         powerBar = new PowerBarObject(getAssets());
-        powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2 - 200);
         powerBar.load();
     }
 
