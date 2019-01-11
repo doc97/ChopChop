@@ -1,7 +1,7 @@
 package fi.chop.screens;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import fi.chop.Chop;
 
 public class LoadingScreen extends ChopScreen {
@@ -12,7 +12,7 @@ public class LoadingScreen extends ChopScreen {
 
     @Override
     public void show() {
-        getAssets().load("badlogic.jpg", Texture.class);
+        getAssets().load("textures/packed/Chop.atlas", TextureAtlas.class);
     }
 
     @Override
