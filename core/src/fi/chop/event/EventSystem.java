@@ -13,10 +13,14 @@ public class EventSystem {
     }
 
     public void notify(Events event) {
+        notify(event, null);
+    }
+
+    public void notify(Events event, EventData data) {
         if (!listeners.containsKey(event))
             return;
         for (EventListener listener : listeners.get(event))
-            listener.handle(event);
+            listener.handle(event, data);
     }
 
     public void clear() {

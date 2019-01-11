@@ -3,6 +3,7 @@ package fi.chop.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GameScreenInput;
@@ -45,7 +46,7 @@ public class GameScreen extends ChopScreen implements EventListener {
     }
 
     @Override
-    public void handle(Events event) {
+    public void handle(Events event, EventData data) {
         switch (event) {
             case ACTION_INTERACT:
                 Gdx.app.log("GameScreen", "Interaction captured");

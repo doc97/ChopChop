@@ -8,11 +8,17 @@ import static org.junit.Assert.*;
 public class TestEventSystem {
 
     private class TestListener implements  EventListener {
+        private EventData data;
         private int count;
 
         @Override
-        public void handle(Events event) {
+        public void handle(Events event, EventData data) {
+            this.data = data;
             count++;
+        }
+
+        private EventData getData() {
+            return data;
         }
 
         private int getCount() {
@@ -94,5 +100,17 @@ public class TestEventSystem {
         system.notify(Events.ACTION_BACK);
         system.notify(Events.ACTION_INTERACT);
         assertEquals(1, listener.getCount());
+    }
+
+    @Test
+    public void testNotifyWithData() {
+        EventData<Integer> expected = new EventData<>(2);
+        TestListener listener = new TestListener();
+        system.addListener(Events.ACTION_BACK, listener);
+        system.notify(Events.ACTION_BACK, expected);
+        EventData data = listener.getData();
+        assertSame(data.get().getClass(), Integer.class);
+        int dataVal = (Integer) data.get();
+        assertEquals(2, dataVal);
     }
 }
