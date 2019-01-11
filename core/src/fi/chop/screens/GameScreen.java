@@ -41,6 +41,7 @@ public class GameScreen extends ChopScreen implements EventListener {
     @Override
     protected void update(float delta) {
         powerBar.update(delta);
+        powerMeter.update(delta);
     }
 
     @Override

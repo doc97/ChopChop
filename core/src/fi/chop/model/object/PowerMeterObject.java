@@ -13,11 +13,14 @@ public class PowerMeterObject extends GameObject {
     private TextureRegion background;
     private TextureRegion fill;
     private PowerMeter meter;
+    private PowerMeterStates state;
     private int round;
+    private float toAdd;
 
     public PowerMeterObject(AssetManager assets) {
         super(assets);
         meter = new PowerMeter();
+        state = PowerMeterStates.IDLE;
     }
 
     @Override
@@ -29,7 +32,25 @@ public class PowerMeterObject extends GameObject {
 
     @Override
     public void update(float delta) {
+        if (state == PowerMeterStates.POWER_DOWN) {
+            float meterDelta = -Math.max(2 * meter.getFillPercentage() * delta, 0.01f);
+            meter.add(meterDelta);
+            if (meter.getFillPercentage() == 0) {
+                state = PowerMeterStates.IDLE;
+                round = 0;
+            }
+        } else if (state == PowerMeterStates.POWER_UP) {
+            float meterDelta = Math.min(delta, toAdd);
+            meter.add(meterDelta);
+            toAdd -= meterDelta;
 
+            if (toAdd <= 0) {
+                if (round == ROUND_COUNT)
+                    state = PowerMeterStates.POWER_DOWN;
+                else
+                    state = PowerMeterStates.IDLE;
+            }
+        }
     }
 
     @Override
@@ -72,12 +93,11 @@ public class PowerMeterObject extends GameObject {
     }
 
     public void addPower(float power) {
-        if (round < ROUND_COUNT) {
-            meter.add(power / ROUND_COUNT);
-            round++;
-        } else {
-            meter.set(0);
-            round = 0;
-        }
+        if (state != PowerMeterStates.IDLE)
+            return;
+
+        toAdd = power / ROUND_COUNT;
+        round++;
+        state = PowerMeterStates.POWER_UP;
     }
 }
