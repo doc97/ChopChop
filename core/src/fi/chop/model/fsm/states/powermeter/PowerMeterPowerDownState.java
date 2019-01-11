@@ -11,11 +11,10 @@ public class PowerMeterPowerDownState extends PowerMeterState {
 
     @Override
     public void update(float delta) {
-        PowerMeterObject obj = getObject();
-        float meterDelta = -Math.max(2 * obj.getMeterFillPercentage() * delta, 0.01f);
-        obj.addMeterPower(meterDelta);
+        float meterDelta = -Math.max(2 * getObject().getMeterFillPercentage() * delta, 0.01f);
+        getObject().addMeterPower(meterDelta);
 
-        if (obj.getMeterFillPercentage() == 0)
+        if (getObject().getMeterFillPercentage() == 0)
             getStateMachine().setCurrent(PowerMeterStates.IDLE);
     }
 }

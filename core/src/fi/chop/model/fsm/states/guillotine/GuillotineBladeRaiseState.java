@@ -11,13 +11,12 @@ public class GuillotineBladeRaiseState extends GuillotineState {
 
     @Override
     public void update(float delta) {
-        GuillotineObject obj = getObject();
-        float toRaise = obj.getToRaise();
+        float toRaise = getObject().getToRaise();
         float meterDelta = Math.min(delta * 2 * GuillotineObject.MAX_RAISE_PX, toRaise);
 
-        obj.addBladeYOffset(meterDelta);
+        getObject().addBladeYOffset(meterDelta);
         toRaise -= meterDelta;
-        obj.setToRaise(toRaise);
+        getObject().setToRaise(toRaise);
 
         if (toRaise <= 0)
             getStateMachine().setCurrent(GuillotineStates.IDLE);

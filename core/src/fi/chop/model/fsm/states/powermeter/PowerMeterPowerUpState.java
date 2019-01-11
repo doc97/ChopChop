@@ -11,13 +11,12 @@ public class PowerMeterPowerUpState extends PowerMeterState {
 
     @Override
     public void update(float delta) {
-        PowerMeterObject obj = getObject();
-        float toAdd = obj.getToAdd();
+        float toAdd = getObject().getToAdd();
         float meterDelta = Math.min(delta, toAdd);
 
-        obj.addMeterPower(meterDelta);
+        getObject().addMeterPower(meterDelta);
         toAdd -= meterDelta;
-        obj.setToAdd(toAdd);
+        getObject().setToAdd(toAdd);
 
         if (toAdd <= 0)
             getStateMachine().setCurrent(PowerMeterStates.IDLE);

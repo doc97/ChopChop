@@ -17,13 +17,12 @@ public class GuillotineBladeFallState extends GuillotineState {
     public void update(float delta) {
         time += delta;
         velocity += JERK * time * time;
-        GuillotineObject obj = getObject();
-        obj.addBladeYOffset(-velocity);
+        getObject().addBladeYOffset(-velocity);
 
-        if (obj.getBladeYOffset() == 0) {
+        if (getObject().getBladeYOffset() == 0) {
             time = 0;
             velocity = 0;
-            obj.resetRaiseCount();
+            getObject().resetRaiseCount();
             getStateMachine().setCurrent(GuillotineStates.IDLE);
         }
     }
