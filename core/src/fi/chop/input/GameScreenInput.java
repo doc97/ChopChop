@@ -1,6 +1,8 @@
 package fi.chop.input;
 
 import com.badlogic.gdx.Gdx;
+import fi.chop.Chop;
+import fi.chop.event.Events;
 import fi.chop.model.InputMap;
 import fi.chop.screens.ChopScreen;
 
@@ -16,9 +18,10 @@ public class GameScreenInput extends ChopScreenInput {
         switch (action) {
             case INTERACT:
                 Gdx.app.log("GameScreenInput", "INTERACT");
+                Chop.events.notify(Events.ACTION_INTERACT);
                 return true;
             case BACK:
-                Gdx.app.exit();
+                Chop.events.notify(Events.ACTION_BACK);
                 return true;
             default:
                 return false;

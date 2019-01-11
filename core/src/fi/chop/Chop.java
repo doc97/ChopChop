@@ -7,10 +7,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import fi.chop.event.EventSystem;
 import fi.chop.model.InputMap;
 import fi.chop.screens.LoadingScreen;
 
 public class Chop extends Game {
+
+	public static EventSystem events;
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -22,6 +25,8 @@ public class Chop extends Game {
 	public void create() {
 	    // Set background color to black
 	    Gdx.gl.glClearColor(0, 0, 0, 1);
+
+	    events = new EventSystem();
 
 	    camera = new OrthographicCamera();
 	    viewport = new FitViewport(1920, 1080, camera);
