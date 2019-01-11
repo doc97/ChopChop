@@ -15,9 +15,7 @@ public class PowerMeterPowerDownState extends PowerMeterState {
         float meterDelta = -Math.max(2 * obj.getMeterFillPercentage() * delta, 0.01f);
         obj.addMeterPower(meterDelta);
 
-        if (obj.getMeterFillPercentage() == 0) {
+        if (obj.getMeterFillPercentage() == 0)
             getStateMachine().setCurrent(PowerMeterStates.IDLE);
-            obj.setRound(0);
-        }
     }
 }

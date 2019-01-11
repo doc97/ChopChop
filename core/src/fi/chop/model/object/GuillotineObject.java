@@ -10,7 +10,7 @@ import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 public class GuillotineObject extends GameObject {
 
     public static final int MAX_RAISE_PX = 200;
-    private static final int MAX_RAISE_COUNT = 3;
+    public static final int MAX_RAISE_COUNT = 3;
 
     private final GuillotineStateMachine state;
     private TextureRegion blade;

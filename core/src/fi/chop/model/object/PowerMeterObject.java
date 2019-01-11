@@ -4,20 +4,21 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.event.EventData;
+import fi.chop.event.EventListener;
+import fi.chop.event.Events;
 import fi.chop.model.PowerMeter;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 
-public class PowerMeterObject extends GameObject {
-
-    public static final int ROUND_COUNT = 3;
+public class PowerMeterObject extends GameObject implements EventListener {
 
     private final PowerMeter meter;
     private final PowerMeterStateMachine state;
     private TextureRegion background;
     private TextureRegion fill;
-    private int round;
     private float toAdd;
+    private boolean ready;
 
     public PowerMeterObject(AssetManager assets) {
         super(assets);
@@ -76,13 +77,18 @@ public class PowerMeterObject extends GameObject {
                 );
     }
 
+    @Override
+    public void handle(Events event, EventData data) {
+        if (event == Events.EVT_GUILLOTINE_READY)
+            ready = true;
+    }
+
     public PowerMeterStates getState() {
         return state.getCurrent();
     }
 
     public void addPower(float power) {
-        toAdd = power / ROUND_COUNT;
-        round++;
+        toAdd = power / GuillotineObject.MAX_RAISE_COUNT;
         state.setCurrent(PowerMeterStates.POWER_UP);
     }
 
@@ -102,11 +108,11 @@ public class PowerMeterObject extends GameObject {
         return toAdd;
     }
 
-    public void setRound(int round) {
-        this.round = round;
+    public void resetReady() {
+        ready = false;
     }
 
-    public int getRound() {
-        return round;
+    public boolean isReady() {
+        return ready;
     }
 }

@@ -25,7 +25,6 @@ public class GameScreen extends ChopScreen implements EventListener {
 
     @Override
     public void show() {
-        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT);
         Gdx.input.setInputProcessor(new GameScreenInput(this, getInputMap()));
 
         powerBar = new PowerBarObject(getAssets());
@@ -34,6 +33,9 @@ public class GameScreen extends ChopScreen implements EventListener {
         powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
         guillotine = new GuillotineObject(getAssets());
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
+
+        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT);
+        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_READY);
 
         powerBar.load();
         powerMeter.load();
