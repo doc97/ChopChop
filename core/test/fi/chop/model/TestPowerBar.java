@@ -34,8 +34,8 @@ public class TestPowerBar {
 
     @Test
     public void testUpdate() {
-        float expected1 = MathUtil.lerp(0, 1, 0.1f);
-        float expected2 = MathUtil.lerp(0, 1, 0.2f);
+        float expected1 = MathUtil.smoothStartN(0.1f, 3);
+        float expected2 = MathUtil.smoothStartN(0.2f, 3);
         bar.update(0.1f);
         assertEquals(expected1, bar.getValue(), EPSILON);
         bar.update(0.1f);
@@ -44,40 +44,49 @@ public class TestPowerBar {
 
     @Test
     public void testUpdateOverflow() {
+        float expected1 = MathUtil.smoothStartN(0.9f, 3);
+        float expected2 = MathUtil.smoothStartN(0.8f, 3);
         bar.update(1.1f);
-        assertEquals(0.9f, bar.getValue(), EPSILON);
+        assertEquals(expected1, bar.getValue(), EPSILON);
         bar.update(0.1f);
-        assertEquals(0.8f, bar.getValue(), EPSILON);
+        assertEquals(expected2, bar.getValue(), EPSILON);
     }
 
     @Test
     public void testUpdateUnderflow() {
+        float expected1 = MathUtil.smoothStartN(0.1f, 3);
+        float expected2 = MathUtil.smoothStartN(0.2f, 3);
         bar.update(2.1f);
-        assertEquals(0.1, bar.getValue(), EPSILON);
+        assertEquals(expected1, bar.getValue(), EPSILON);
         bar.update(0.1f);
-        assertEquals(0.2, bar.getValue(), EPSILON);
+        assertEquals(expected2, bar.getValue(), EPSILON);
     }
 
     @Test
     public void testUpdateUnderOverflow() {
+        float expected1 = MathUtil.smoothStartN(0.9f, 3);
+        float expected2 = MathUtil.smoothStartN(0.1f, 3);
+        float expected3 = MathUtil.smoothStartN(0.2f, 3);
         bar.update(0.9f);
         bar.update(0.2f);
-        assertEquals(0.9f, bar.getValue(), EPSILON);
+        assertEquals(expected1, bar.getValue(), EPSILON);
         bar.update(0.8f);
         bar.update(0.2f);
-        assertEquals(0.1f, bar.getValue(), EPSILON);
+        assertEquals(expected2, bar.getValue(), EPSILON);
         bar.update(0.1f);
-        assertEquals(0.2f, bar.getValue(), EPSILON);
+        assertEquals(expected3, bar.getValue(), EPSILON);
     }
 
     @Test
     public void testSetDurationSec() {
+        float expected1 = MathUtil.smoothStartN(0.5f, 3);
+        float expected2 = MathUtil.smoothStartN(0.75f, 3);
         bar.setDurationSec(2);
         assertEquals(2f, bar.getDurationSec(), EPSILON);
         bar.update(1);
-        assertEquals(0.5f, bar.getValue(), EPSILON);
+        assertEquals(expected1, bar.getValue(), EPSILON);
         bar.update(0.5f);
-        assertEquals(0.75f, bar.getValue(), EPSILON);
+        assertEquals(expected2, bar.getValue(), EPSILON);
     }
 
     @Test(expected = IllegalArgumentException.class)

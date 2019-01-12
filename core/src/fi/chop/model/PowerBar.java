@@ -8,6 +8,7 @@ public class PowerBar {
 
     private final Random random;
     private float durationSec;
+    private float time;
     private float value;
     private float multiplier;
 
@@ -22,16 +23,21 @@ public class PowerBar {
     }
 
     public void update(float delta) {
-        value = MathUtil.lerp(0, 1, value + multiplier * delta / durationSec);
-        double floored = Math.floor(value);
-        if (floored % 2 == 1) {
-            multiplier *= -1;
-            value = 1 - (value % 1.0f);
-        } else if (floored % 2 == - 1) {
-            multiplier *= -1;
-            value = -value;
+        time += multiplier * delta;
+        float timePercent = time / durationSec;
+
+        if (Math.floor(timePercent) % 2 == 1) {
+            multiplier = -1;
+            time = durationSec - (time % durationSec);
+            timePercent = 1 - (timePercent % 1.0f);
+        } else if (Math.floor(timePercent) % 2 == -1) {
+            multiplier = 1;
+            time = -time;
+            timePercent = -timePercent;
         }
-        value %= 1.0f;
+        timePercent %= 1.0f;
+
+        value = MathUtil.smoothStartN(timePercent, 3);
     }
 
     public float getValue() {
