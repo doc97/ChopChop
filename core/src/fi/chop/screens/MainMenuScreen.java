@@ -3,18 +3,16 @@ package fi.chop.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
-import fi.chop.util.DrawUtil;
-import fi.chop.util.MathUtil;
 import fi.chop.effect.ColorFade;
 import fi.chop.input.MainMenuScreenInput;
+import fi.chop.util.DrawUtil;
+import fi.chop.util.MathUtil;
 
 public class MainMenuScreen extends ChopScreen {
 
     private BitmapFont font;
-    private GlyphLayout layout;
     private String text;
     private ColorFade fade;
 
@@ -28,9 +26,8 @@ public class MainMenuScreen extends ChopScreen {
 
         text = "Press [Space] to start";
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
-        layout = new GlyphLayout(font, text);
 
-        fade = new ColorFade(Color.WHITE, Color.BLACK, 2,
+        fade = new ColorFade(Color.WHITE, Color.BLACK, 1.5f,
                 (t) -> MathUtil.smoothStartN(t, 2));
     }
 
