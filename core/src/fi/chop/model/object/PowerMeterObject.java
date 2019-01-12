@@ -34,6 +34,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
         background = atlas.findRegion("powermeter-background");
         fill = atlas.findRegion("powermeter-fill");
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
+        setSize(background.getRegionWidth(), background.getRegionHeight());
     }
 
     @Override

@@ -24,6 +24,7 @@ public class PowerBarObject extends GameObject {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         background = atlas.findRegion("powerbar-background");
         marker = atlas.findRegion("powerbar-marker");
+        setSize(background.getRegionWidth(), background.getRegionHeight());
     }
 
     @Override

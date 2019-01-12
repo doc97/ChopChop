@@ -29,6 +29,7 @@ public class GuillotineObject extends GameObject {
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         blade = atlas.findRegion("blade");
+        setSize(blade.getRegionWidth(), blade.getRegionHeight());
     }
 
     @Override
