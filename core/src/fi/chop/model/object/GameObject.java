@@ -9,6 +9,10 @@ public abstract class GameObject {
     private float y;
     private float width;
     private float height;
+    private float scaleX = 1;
+    private float scaleY = 1;
+    private float originX;
+    private float originY;
     private double rotDeg;
 
     private final AssetManager assets;
@@ -24,6 +28,11 @@ public abstract class GameObject {
     public void translate(float dx, float dy) {
         x += dx;
         y += dy;
+    }
+
+    public void scale(float sx, float sy) {
+        scaleX *= sx;
+        scaleY *= sy;
     }
 
     public void rotateDeg(double delta) {
@@ -74,6 +83,48 @@ public abstract class GameObject {
 
     public float getHeight() {
         return height;
+    }
+
+    public void setScale(float scaleX, float scaleY) {
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+    }
+
+    public void setScaleX(float scaleX) {
+        this.scaleX = scaleX;
+    }
+
+    public float getScaleX() {
+        return scaleX;
+    }
+
+    public void setScaleY(float scaleY) {
+        this.scaleY = scaleY;
+    }
+
+    public float getScaleY() {
+        return scaleY;
+    }
+
+    public void setOriginPx(float originXPx, float originYPx) {
+        if (width == 0 || height == 0)
+            throw new IllegalStateException("Cannot set pixel origin when width or height is 0");
+        setOrigin(originXPx / width, originYPx / height);
+    }
+
+    public void setOrigin(float originX, float originY) {
+        if (originX < 0 || originY < 0 || originX > 1 || originY > 1)
+            throw new IllegalArgumentException("origin x/y values must be between 0 and 1");
+        this.originX = originX;
+        this.originY = originY;
+    }
+
+    public float getOriginX() {
+        return originX;
+    }
+
+    public float getOriginY() {
+        return originY;
     }
 
     public void setRotationRad(double radians) {
