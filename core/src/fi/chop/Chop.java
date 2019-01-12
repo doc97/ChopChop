@@ -3,8 +3,14 @@ package fi.chop;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.chop.event.EventSystem;
@@ -23,6 +29,7 @@ public class Chop extends Game {
 
 	@Override
 	public void create() {
+
 	    // Set background color to black
 	    Gdx.gl.glClearColor(0, 0, 0, 1);
 
@@ -35,6 +42,11 @@ public class Chop extends Game {
 	    assets = new AssetManager();
 		batch = new SpriteBatch();
 		input = new InputMap();
+
+		// Set TTF and bitmap font loader
+		FileHandleResolver resolver = new InternalFileHandleResolver();
+		assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+		assets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
 	    setScreen(new LoadingScreen(this));
 	}

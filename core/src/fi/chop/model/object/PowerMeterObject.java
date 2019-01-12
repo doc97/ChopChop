@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,6 +18,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
     private final PowerMeterStateMachine state;
     private TextureRegion background;
     private TextureRegion fill;
+    private BitmapFont font;
     private float toAdd;
     private boolean ready;
 
@@ -31,6 +33,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         background = atlas.findRegion("powermeter-background");
         fill = atlas.findRegion("powermeter-fill");
+        font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
 
     @Override
@@ -42,6 +45,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
     public void render(SpriteBatch batch) {
         drawBackground(batch);
         drawFill(batch);
+        drawPercent(batch);
     }
 
     private void drawBackground(SpriteBatch batch) {
@@ -75,6 +79,13 @@ public class PowerMeterObject extends GameObject implements EventListener {
                 srcWidth, srcHeight,
                 false, false
                 );
+    }
+
+    private void drawPercent(SpriteBatch batch) {
+        float drawX = getX() + background.getRegionWidth() + 10;
+        float drawY = getY() + font.getLineHeight();
+        String percentStr = String.format("%.1f", meter.getFillPercentage() * 100);
+        font.draw(batch, percentStr + "%", drawX, drawY);
     }
 
     @Override

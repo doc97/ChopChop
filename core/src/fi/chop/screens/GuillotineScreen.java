@@ -1,6 +1,7 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.event.EventData;
@@ -18,6 +19,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
+    private BitmapFont font;
+    private float bestFill;
 
     public GuillotineScreen(Chop game) {
         super(game);
@@ -34,12 +37,14 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         guillotine = new GuillotineObject(getAssets());
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
 
-        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT);
+        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT, Events.EVT_GUILLOTINE_READY);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_READY);
 
         powerBar.load();
         powerMeter.load();
         guillotine.load();
+
+        font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
 
     @Override
@@ -61,7 +66,16 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerBar.render(batch);
         powerMeter.render(batch);
         guillotine.render(batch);
+
+        drawGUI(batch);
         batch.end();
+    }
+
+    private void drawGUI(SpriteBatch batch) {
+        float drawX = 50;
+        float drawY = getCamera().viewportHeight - 50;
+        String percentStr = String.format("%.1f", bestFill * 100);
+        font.draw(batch, "Best: " + percentStr + "%", drawX, drawY);
     }
 
     @Override
@@ -77,6 +91,13 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
                 break;
             case ACTION_BACK:
                 Gdx.app.exit();
+                break;
+            case EVT_GUILLOTINE_READY:
+                float fill = powerMeter.getMeterFillPercentage();
+                if (fill > bestFill)
+                    bestFill = fill;
+                break;
+            default:
                 break;
         }
     }
