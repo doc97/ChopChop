@@ -9,8 +9,8 @@ import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 
 public class GuillotineObject extends GameObject {
 
-    public static final int IDLE_Y_OFFSET = 150;
-    public static final int MAX_RAISE_PX = 150;
+    public static final int IDLE_Y_OFFSET_PX = 150;
+    public static final int MAX_RAISE_AMOUNT_PX = 150;
     public static final int MAX_RAISE_COUNT = 3;
 
     private final GuillotineStateMachine state;
@@ -22,7 +22,7 @@ public class GuillotineObject extends GameObject {
     public GuillotineObject(AssetManager assets) {
         super(assets);
         state = new GuillotineStateMachine(this);
-        bladeYOffset = IDLE_Y_OFFSET;
+        bladeYOffset = IDLE_Y_OFFSET_PX;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class GuillotineObject extends GameObject {
 
     public void raiseBlade(float amount) {
         amount = Math.min(Math.max(amount, 0), 1);
-        toRaise = amount * MAX_RAISE_PX;
+        toRaise = amount * MAX_RAISE_AMOUNT_PX;
         raiseCount++;
         state.setCurrent(GuillotineStates.BLADE_RAISE);
     }

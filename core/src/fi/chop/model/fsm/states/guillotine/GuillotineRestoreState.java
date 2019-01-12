@@ -13,10 +13,10 @@ public class GuillotineRestoreState extends GuillotineState {
 
     @Override
     public void update(float delta) {
-        float leftToRestore = GuillotineObject.IDLE_Y_OFFSET - getObject().getBladeYOffset();
+        float leftToRestore = GuillotineObject.IDLE_Y_OFFSET_PX - getObject().getBladeYOffset();
         float offsetDelta = Math.min(RESTORE_SPEED_PX_PER_SEC * delta, leftToRestore);
         getObject().addBladeYOffset(offsetDelta);
-        if (getObject().getBladeYOffset() == GuillotineObject.IDLE_Y_OFFSET) {
+        if (getObject().getBladeYOffset() == GuillotineObject.IDLE_Y_OFFSET_PX) {
             getObject().resetRaiseCount();
             getStateMachine().setCurrent(GuillotineStates.IDLE);
         }
