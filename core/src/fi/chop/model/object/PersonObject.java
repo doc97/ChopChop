@@ -24,7 +24,7 @@ public class PersonObject extends GameObject implements EventListener {
     @Override
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        head = atlas.findRegion("head");
+        head = atlas.findRegion("head-alive");
         setSize(head.getRegionWidth(), head.getRegionHeight());
     }
 
@@ -65,6 +65,8 @@ public class PersonObject extends GameObject implements EventListener {
             velocityY = 0;
             rotVelocity = 90;
             hasHeadAttached = false;
+            TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
+            head = atlas.findRegion("head-dead");
         }
     }
 }
