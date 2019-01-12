@@ -32,6 +32,8 @@ public class TestGameObject {
         assertEquals(0, object.getY(), EPSILON);
         assertEquals(0, object.getRotationRad(), EPSILON);
         assertEquals(0, object.getRotationDeg(), EPSILON);
+        assertEquals(0, object.getWidth(), EPSILON);
+        assertEquals(0, object.getHeight(), EPSILON);
     }
 
     @Test
@@ -58,6 +60,16 @@ public class TestGameObject {
         assertEquals(-1, object.getY(), EPSILON);
         object.setY(1);
         assertEquals(1, object.getY(), EPSILON);
+    }
+
+    @Test
+    public void testTranslate() {
+        object.translate(-10, 5);
+        assertEquals(-10, object.getX(), EPSILON);
+        assertEquals(5, object.getY(), EPSILON);
+        object.translate(3, -2);
+        assertEquals(-7, object.getX(), EPSILON);
+        assertEquals(3, object.getY(), EPSILON);
     }
 
     @Test
@@ -100,5 +112,51 @@ public class TestGameObject {
         object.setRotationRad(3 * Math.PI);
         assertEquals(180, object.getRotationDeg(), EPSILON);
         assertEquals(Math.PI, object.getRotationRad(), EPSILON);
+    }
+
+    @Test
+    public void testRotateDeg() {
+        object.rotateDeg(45);
+        assertEquals(45, object.getRotationDeg(), EPSILON);
+        object.rotateDeg(34);
+        assertEquals(79, object.getRotationDeg(), EPSILON);
+        object.rotateDeg(-80);
+        assertEquals(359, object.getRotationDeg(), EPSILON);
+    }
+
+    @Test
+    public void testRotateRad() {
+        object.rotateRad(Math.PI);
+        assertEquals(Math.PI, object.getRotationRad(), EPSILON);
+        object.rotateRad(Math.PI / 2);
+        assertEquals(Math.PI * 3 / 2, object.getRotationRad(), EPSILON);
+        object.rotateRad(-2 * Math.PI);
+        assertEquals(Math.PI * 3 / 2, object.getRotationRad(), EPSILON);
+    }
+
+    @Test
+    public void testSetWidth() {
+        object.setWidth(10);
+        assertEquals(10, object.getWidth(),EPSILON);
+        object.setWidth(20);
+        assertEquals(20, object.getWidth(),EPSILON);
+    }
+
+    @Test
+    public void testSetHeight() {
+        object.setHeight(10);
+        assertEquals(10, object.getHeight(), EPSILON);
+        object.setHeight(20);
+        assertEquals(20, object.getHeight(), EPSILON);
+    }
+
+    @Test
+    public void testSetSize() {
+        object.setSize(10, 20);
+        assertEquals(10, object.getWidth(), EPSILON);
+        assertEquals(20, object.getHeight(), EPSILON);
+        object.setSize(30, 40);
+        assertEquals(30, object.getWidth(), EPSILON);
+        assertEquals(40, object.getHeight(), EPSILON);
     }
 }

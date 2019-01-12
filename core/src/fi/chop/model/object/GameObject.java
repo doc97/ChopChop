@@ -7,6 +7,8 @@ public abstract class GameObject {
 
     private float x;
     private float y;
+    private float width;
+    private float height;
     private double rotDeg;
 
     private final AssetManager assets;
@@ -18,6 +20,19 @@ public abstract class GameObject {
     public abstract void load();
     public abstract void update(float delta);
     public abstract void render(SpriteBatch batch);
+
+    public void translate(float dx, float dy) {
+        x += dx;
+        y += dy;
+    }
+
+    public void rotateDeg(double delta) {
+        setRotationDeg(rotDeg + delta);
+    }
+
+    public void rotateRad(double delta) {
+        setRotationRad(getRotationRad() + delta);
+    }
 
     public void setPosition(float x, float y) {
         this.x = x;
@@ -38,6 +53,27 @@ public abstract class GameObject {
 
     public float getY() {
         return y;
+    }
+
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     public void setRotationRad(double radians) {
