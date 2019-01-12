@@ -7,7 +7,7 @@ import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.GameScreenInput;
+import fi.chop.input.GuillotineScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
@@ -32,7 +32,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new GameScreenInput(this, getInputMap()));
+        Gdx.input.setInputProcessor(new GuillotineScreenInput(this, getInputMap()));
 
         powerBar = new PowerBarObject(getAssets());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);

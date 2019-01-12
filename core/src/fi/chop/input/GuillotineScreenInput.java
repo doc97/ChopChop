@@ -5,9 +5,9 @@ import fi.chop.event.Events;
 import fi.chop.model.InputMap;
 import fi.chop.screens.ChopScreen;
 
-public class GameScreenInput extends ChopScreenInput {
+public class GuillotineScreenInput extends ChopScreenInput {
 
-    public GameScreenInput(ChopScreen screen, InputMap inputMap) {
+    public GuillotineScreenInput(ChopScreen screen, InputMap inputMap) {
         super(screen, inputMap);
     }
 
