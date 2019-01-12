@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
+import fi.chop.model.DrawParameters;
 import fi.chop.model.PowerMeter;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
@@ -54,24 +55,13 @@ public class PowerMeterObject extends GameObject implements EventListener {
     }
 
     private void drawFill(SpriteBatch batch) {
-        int srcX = fill.getRegionX();
-        int srcY = fill.getRegionY();
-        int srcWidth = fill.getRegionWidth();
-        int srcHeight = fill.getRegionHeight();
-
-        float drawWidth = fill.getRegionWidth();
-        float drawHeight = fill.getRegionHeight() * meter.getFillPercentage();
-        batch.draw(
-                fill.getTexture(),
-                getX(), getY(),
-                getOriginX(), getOriginY(),
-                getScaleX(), getScaleY(),
-                drawWidth, drawHeight,
-                (float) getRotationDeg(),
-                srcX, srcY,
-                srcWidth, srcHeight,
-                false, false
-                );
+        DrawParameters params = new DrawParameters(fill);
+        params.srcX = fill.getRegionX();
+        params.srcY = fill.getRegionY();
+        params.srcWidth = fill.getRegionWidth();
+        params.srcHeight = fill.getRegionHeight();
+        params.height = fill.getRegionHeight() * meter.getFillPercentage();
+        draw(batch, fill.getTexture(), params);
     }
 
     private void drawPercent(SpriteBatch batch) {

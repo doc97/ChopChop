@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
+import fi.chop.model.DrawParameters;
 
 public class PersonObject extends GameObject implements EventListener {
 
@@ -46,16 +47,7 @@ public class PersonObject extends GameObject implements EventListener {
 
     @Override
     public void render(SpriteBatch batch) {
-        drawHead(batch);
-    }
-
-    private void drawHead(SpriteBatch batch) {
-        float drawX = getX() - getOriginX() * getWidth();
-        float drawY = getY() - getOriginY() * getHeight();
-        float originX = getOriginX() * getWidth();
-        float originY = getOriginY() * getHeight();
-        batch.draw(head, drawX, drawY, originX, originY, getWidth(), getHeight(),
-                getScaleX(), getScaleY(), (float) getRotationDeg());
+        draw(batch, head, new DrawParameters(head));
     }
 
     @Override

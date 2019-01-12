@@ -1,7 +1,10 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.model.DrawParameters;
 
 public abstract class GameObject {
 
@@ -24,6 +27,33 @@ public abstract class GameObject {
     public abstract void load();
     public abstract void update(float delta);
     public abstract void render(SpriteBatch batch);
+
+    protected void draw(SpriteBatch batch, TextureRegion region, DrawParameters params) {
+        batch.draw(region,
+                x - (originX + params.originX) * params.width + params.x,
+                y - (originY + params.originY) * params.height + params.y,
+                (originX + params.originX) * params.width,
+                (originY + params.originY) * params.height,
+                params.width, params.height,
+                scaleX * params.scaleX, scaleY * params.scaleY,
+                (float) (rotDeg + params.rotationDeg)
+                );
+    }
+
+    protected void draw(SpriteBatch batch, Texture texture, DrawParameters params) {
+        batch.draw(texture,
+                x - (originX + params.originX) * params.width + params.x,
+                y - (originY + params.originY) * params.height + params.y,
+                (originX + params.originX) * params.width,
+                (originY + params.originY) * params.height,
+                params.width, params.height,
+                scaleX * params.scaleX, scaleY * params.scaleY,
+                (float) (rotDeg + params.rotationDeg),
+                params.srcX, params.srcY,
+                params.srcWidth, params.srcHeight,
+                params.flipX, params.flipY
+                );
+    }
 
     public void translate(float dx, float dy) {
         x += dx;
