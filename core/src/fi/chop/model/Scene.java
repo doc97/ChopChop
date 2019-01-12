@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Scene {
 
@@ -40,20 +41,35 @@ public class Scene {
             obj.render(batch);
     }
 
-    public <T extends GameObject> T findOne(Class<T> clazz) {
-        for (GameObject obj : objects) {
-            if (clazz.isInstance(obj))
-                return clazz.cast(obj);
+    public GameObject findOne(Predicate<GameObject> predicate) {
+        for (GameObject object : objects) {
+            if (predicate.test(object))
+                return object;
         }
         return null;
     }
 
-    public <T extends GameObject> List<T> findAll(Class<T> clazz) {
-        List<T> ret = new ArrayList<>();
-        for (GameObject obj : objects) {
-            if (clazz.isInstance(obj))
-                ret.add(clazz.cast(obj));
+    public <T extends GameObject> T findOne(Class<T> clazz) {
+        GameObject obj = findOne(clazz::isInstance);
+        if (obj == null)
+            return null;
+        return clazz.cast(obj);
+    }
+
+    public List<GameObject> findAll(Predicate<GameObject> predicate) {
+        List<GameObject> ret = new ArrayList<>();
+        for (GameObject object : objects) {
+            if (predicate.test(object))
+                ret.add(object);
         }
+        return ret;
+    }
+
+    public <T extends GameObject> List<T> findAll(Class<T> clazz) {
+        List<GameObject> result = findAll(clazz::isInstance);
+        List<T> ret = new ArrayList<>();
+        for (GameObject obj : result)
+            ret.add(clazz.cast(obj));
         return ret;
     }
 
