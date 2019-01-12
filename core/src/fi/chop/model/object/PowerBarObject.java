@@ -45,8 +45,8 @@ public class PowerBarObject extends GameObject {
     private void drawMarker(SpriteBatch batch) {
         float drawWidth = marker.getRegionWidth();
         float drawHeight = marker.getRegionHeight();
-        float topBarY = getY() + background.getRegionHeight();
-        float markerOffset = bar.getValue() * background.getRegionHeight();
+        float topBarY = getY() + getHeight();
+        float markerOffset = bar.getValue() * getHeight();
 
         // -drawHeight because origin is at lower left
         float drawY = topBarY - drawHeight - markerOffset;

@@ -18,6 +18,7 @@ public class PersonObject extends GameObject implements EventListener {
 
     public PersonObject(AssetManager assets) {
         super(assets);
+        setOrigin(0.5f, 0.5f);
         hasHeadAttached = true;
     }
 
@@ -49,13 +50,12 @@ public class PersonObject extends GameObject implements EventListener {
     }
 
     private void drawHead(SpriteBatch batch) {
-        float drawX = getX() - head.getRegionWidth() / 2f;
-        float drawY = getY() - head.getRegionHeight() / 2f;
-        float originX = getWidth() / 2;
-        float originY = getHeight() / 2;
-        float scaleX = 1;
-        float scaleY = 1;
-        batch.draw(head, drawX, drawY, originX, originY, getWidth(), getHeight(), scaleX, scaleY, (float) getRotationDeg());
+        float drawX = getX() - getOriginX() * getWidth();
+        float drawY = getY() - getOriginY() * getHeight();
+        float originX = getOriginX() * getWidth();
+        float originY = getOriginY() * getHeight();
+        batch.draw(head, drawX, drawY, originX, originY, getWidth(), getHeight(),
+                getScaleX(), getScaleY(), (float) getRotationDeg());
     }
 
     @Override

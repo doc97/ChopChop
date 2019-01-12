@@ -54,12 +54,6 @@ public class PowerMeterObject extends GameObject implements EventListener {
     }
 
     private void drawFill(SpriteBatch batch) {
-        float originX = 0;
-        float originY = 0;
-        float scaleX = 1;
-        float scaleY = 1;
-        float rotationDeg = (float) getRotationDeg();
-
         int srcX = fill.getRegionX();
         int srcY = fill.getRegionY();
         int srcWidth = fill.getRegionWidth();
@@ -67,15 +61,13 @@ public class PowerMeterObject extends GameObject implements EventListener {
 
         float drawWidth = fill.getRegionWidth();
         float drawHeight = fill.getRegionHeight() * meter.getFillPercentage();
-        float drawX = getX();
-        float drawY = getY();
         batch.draw(
                 fill.getTexture(),
-                drawX, drawY,
-                originX, originY,
-                scaleX, scaleY,
+                getX(), getY(),
+                getOriginX(), getOriginY(),
+                getScaleX(), getScaleY(),
                 drawWidth, drawHeight,
-                rotationDeg,
+                (float) getRotationDeg(),
                 srcX, srcY,
                 srcWidth, srcHeight,
                 false, false
@@ -83,7 +75,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
     }
 
     private void drawPercent(SpriteBatch batch) {
-        float drawX = getX() + background.getRegionWidth() + 10;
+        float drawX = getX() + getWidth() + 10;
         float drawY = getY() + font.getLineHeight();
         String percentStr = String.format("%.1f", meter.getFillPercentage() * 100);
         font.draw(batch, percentStr + "%", drawX, drawY);
