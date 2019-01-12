@@ -19,6 +19,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
     private final PowerMeterStateMachine state;
     private TextureRegion background;
     private TextureRegion fill;
+    private DrawParameters fillParams;
     private BitmapFont font;
     private float toAdd;
     private boolean ready;
@@ -36,6 +37,12 @@ public class PowerMeterObject extends GameObject implements EventListener {
         fill = atlas.findRegion("powermeter-fill");
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
         setSize(background.getRegionWidth(), background.getRegionHeight());
+
+        fillParams = new DrawParameters(fill);
+        fillParams.srcX = fill.getRegionX();
+        fillParams.srcY = fill.getRegionY();
+        fillParams.srcWidth = fill.getRegionWidth();
+        fillParams.srcHeight = fill.getRegionHeight();
     }
 
     @Override
@@ -55,13 +62,8 @@ public class PowerMeterObject extends GameObject implements EventListener {
     }
 
     private void drawFill(SpriteBatch batch) {
-        DrawParameters params = new DrawParameters(fill);
-        params.srcX = fill.getRegionX();
-        params.srcY = fill.getRegionY();
-        params.srcWidth = fill.getRegionWidth();
-        params.srcHeight = fill.getRegionHeight();
-        params.height = fill.getRegionHeight() * meter.getFillPercentage();
-        draw(batch, fill.getTexture(), params);
+        fillParams.height = fill.getRegionHeight() * meter.getFillPercentage();
+        draw(batch, fill.getTexture(), fillParams);
     }
 
     private void drawPercent(SpriteBatch batch) {

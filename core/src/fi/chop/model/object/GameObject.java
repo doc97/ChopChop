@@ -37,7 +37,7 @@ public abstract class GameObject {
                 params.width, params.height,
                 scaleX * params.scaleX, scaleY * params.scaleY,
                 (float) (rotDeg + params.rotationDeg)
-                );
+        );
     }
 
     protected void draw(SpriteBatch batch, Texture texture, DrawParameters params) {
@@ -52,7 +52,7 @@ public abstract class GameObject {
                 params.srcX, params.srcY,
                 params.srcWidth, params.srcHeight,
                 params.flipX, params.flipY
-                );
+        );
     }
 
     public void translate(float dx, float dy) {

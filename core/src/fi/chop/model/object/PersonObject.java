@@ -12,6 +12,7 @@ import fi.chop.model.DrawParameters;
 public class PersonObject extends GameObject implements EventListener {
 
     private TextureRegion head;
+    private DrawParameters headParams;
     private float velocityX;
     private float velocityY;
     private float rotVelocity;
@@ -28,6 +29,7 @@ public class PersonObject extends GameObject implements EventListener {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         head = atlas.findRegion("head-alive");
         setSize(head.getRegionWidth(), head.getRegionHeight());
+        headParams = new DrawParameters(head);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class PersonObject extends GameObject implements EventListener {
 
     @Override
     public void render(SpriteBatch batch) {
-        draw(batch, head, new DrawParameters(head));
+        draw(batch, head, headParams);
     }
 
     @Override
