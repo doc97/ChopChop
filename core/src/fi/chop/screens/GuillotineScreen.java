@@ -10,15 +10,14 @@ import fi.chop.event.Events;
 import fi.chop.input.GameScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
-import fi.chop.model.object.GuillotineObject;
-import fi.chop.model.object.PowerBarObject;
-import fi.chop.model.object.PowerMeterObject;
+import fi.chop.model.object.*;
 
 public class GuillotineScreen extends ChopScreen implements EventListener {
 
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
+    private GameObject person;
     private BitmapFont font;
     private float bestFill;
 
@@ -36,6 +35,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
         guillotine = new GuillotineObject(getAssets());
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
+        person = new PersonObject(getAssets());
+        person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
 
         Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT, Events.EVT_GUILLOTINE_READY);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_READY);
@@ -43,6 +44,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerBar.load();
         powerMeter.load();
         guillotine.load();
+        person.load();
 
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
@@ -57,6 +59,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerBar.update(delta);
         powerMeter.update(delta);
         guillotine.update(delta);
+        person.update(delta);
     }
 
     @Override
@@ -66,6 +69,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerBar.render(batch);
         powerMeter.render(batch);
         guillotine.render(batch);
+        person.render(batch);
 
         drawGUI(batch);
         batch.end();
