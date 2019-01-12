@@ -1,6 +1,7 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
@@ -11,6 +12,7 @@ import fi.chop.input.GuillotineScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
+import fi.chop.util.DrawUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,6 +25,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private GuillotineObject guillotine;
     private List<PersonObject> persons;
     private BitmapFont font;
+    private float leftOfDaySec;
+    private int day;
 
     public GuillotineScreen(Chop game) {
         super(game);
@@ -50,6 +54,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerMeter.load();
         guillotine.load();
 
+        newDay();
         newPerson();
 
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
@@ -71,6 +76,10 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
             if (person.getX() < person.getWidth())
                 it.remove();
         }
+
+        leftOfDaySec -= delta;
+        if (leftOfDaySec <= 0)
+            newDay();
     }
 
     @Override
@@ -91,10 +100,11 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         float bestX = 50;
         float bestY = getCamera().viewportHeight - 50;
         float killX = 50;
-        float killY = getCamera().viewportHeight - 50 - font.getLineHeight();
+        float killY = getCamera().viewportHeight - 50 - 1.5f * font.getLineHeight();
 
         drawHighestPower(batch, bestX, bestY);
         drawKillStats(batch, killX, killY);
+        drawDayStats(batch);
     }
 
     private void drawHighestPower(SpriteBatch batch, float x, float y) {
@@ -103,7 +113,16 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     }
 
     private void drawKillStats(SpriteBatch batch, float x, float y) {
-        font.draw(batch, "Kills: " + getStats().getDailyKills(), x, y);
+        font.draw(batch, "Daily kills: " + getStats().getDailyKills(), x, y);
+    }
+
+    private void drawDayStats(SpriteBatch batch) {
+        float centerX = getCamera().viewportWidth / 2;
+        float y0 = getCamera().viewportHeight - 10;
+        float y1 = y0 - 2 * font.getLineHeight();
+        String timeText = "Time left: " + String.format("%.0f", Math.max(leftOfDaySec, 0));
+        DrawUtil.drawCenteredText(batch, font, "DAY " + day, Color.WHITE, centerX, y0);
+        DrawUtil.drawCenteredText(batch, font, timeText, Color.WHITE, centerX, y1);
     }
 
     private void newPerson() {
@@ -112,6 +131,12 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         person.load();
         Chop.events.addListener(Events.EVT_HEAD_CHOP, person);
         persons.add(person);
+    }
+
+    private void newDay() {
+        getStats().resetDailyKills();
+        leftOfDaySec = 60;
+        day++;
     }
 
     @Override
