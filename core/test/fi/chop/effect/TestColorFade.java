@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import fi.chop.MathUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TestColorFade {
 
@@ -71,5 +71,61 @@ public class TestColorFade {
         Color expected = new Color(1 - value, 0, value, 1);
         blackToWhite.update(0.75f);
         assertEquals(expected, blackToWhite.getColor());
+    }
+
+    @Test
+    public void testGetColor() {
+        ColorFade blackToWhite = new ColorFade(Color.BLACK, Color.WHITE, 1);
+        blackToWhite.update(0.5f);
+        Color c = blackToWhite.getColor();
+        c.r = 0;
+        assertEquals(Color.GRAY, blackToWhite.getColor());
+    }
+
+    @Test
+    public void testHasFinishedEven() {
+        ColorFade blackToWhite = new ColorFade(Color.BLACK, Color.WHITE, 1);
+        blackToWhite.update(0.9f);
+        assertFalse(blackToWhite.hasFinished());
+        blackToWhite.update(0.1f);
+        assertTrue(blackToWhite.hasFinished());
+    }
+
+    @Test
+    public void testHasFinishedUneven() {
+        ColorFade blackToWhite = new ColorFade(Color.BLACK, Color.WHITE, 1);
+        blackToWhite.update(0.9f);
+        assertFalse(blackToWhite.hasFinished());
+        blackToWhite.update(0.2f);
+        assertTrue(blackToWhite.hasFinished());
+    }
+
+    @Test
+    public void testHasFinishedTwoSeconds() {
+        ColorFade blackToWhite = new ColorFade(Color.BLACK, Color.WHITE, 2);
+        blackToWhite.update(1);
+        assertFalse(blackToWhite.hasFinished());
+        blackToWhite.update(1);
+        assertTrue(blackToWhite.hasFinished());
+    }
+
+    @Test
+    public void testFlipBlackAndWhite() {
+        ColorFade fade = new ColorFade(Color.BLACK, Color.WHITE, 1);
+        fade.update(0.5f);
+        fade.flip();
+        assertEquals(Color.WHITE, fade.getColor());
+        fade.update(0.3f);
+        assertEquals(new Color(0.7f, 0.7f, 0.7f, 1), fade.getColor());
+    }
+
+    @Test
+    public void testFlipRedAndBlue() {
+        ColorFade fade = new ColorFade(Color.RED, Color.BLUE, 1);
+        fade.update(0.5f);
+        fade.flip();
+        assertEquals(Color.BLUE, fade.getColor());
+        fade.update(0.3f);
+        assertEquals(new Color(0.3f, 0, 0.7f, 1), fade.getColor());
     }
 }

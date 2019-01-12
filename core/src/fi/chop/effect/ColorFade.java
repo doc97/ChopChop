@@ -25,7 +25,10 @@ public class ColorFade {
     }
 
     public void update(float delta) {
-        time += Math.min(delta / duration, 1);
+        if (hasFinished())
+            return;
+
+        time = Math.min(time + delta / duration, 1);
         float percent = func.call(time);
         current.set(
                 MathUtil.lerp(start.r, end.r, percent),
@@ -35,7 +38,18 @@ public class ColorFade {
         );
     }
 
+    public void flip() {
+        current.set(end);
+        end.set(start);
+        start.set(current);
+        time = 0;
+    }
+
     public Color getColor() {
-        return current;
+        return new Color(current);
+    }
+
+    public boolean hasFinished() {
+        return time == 1;
     }
 }
