@@ -1,4 +1,4 @@
-package fi.chop;
+package fi.chop.util;
 
 public class MathUtil {
 

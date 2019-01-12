@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
-import fi.chop.MathUtil;
+import fi.chop.util.DrawUtil;
+import fi.chop.util.MathUtil;
 import fi.chop.effect.ColorFade;
 import fi.chop.input.MainMenuScreenInput;
 
@@ -45,9 +46,7 @@ public class MainMenuScreen extends ChopScreen {
         beginRender();
         batch.begin();
         font.setColor(fade.getColor());
-        float drawX = getCamera().viewportWidth / 2 - layout.width / 2;
-        float drawY = getCamera().viewportHeight / 2 - layout.height / 2;
-        font.draw(batch, text, drawX, drawY);
+        DrawUtil.drawCenteredText(batch, font, text, getCamera());
         batch.end();
     }
 }

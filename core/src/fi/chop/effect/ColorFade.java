@@ -1,7 +1,7 @@
 package fi.chop.effect;
 
 import com.badlogic.gdx.graphics.Color;
-import fi.chop.MathUtil;
+import fi.chop.util.MathUtil;
 
 public class ColorFade {
 

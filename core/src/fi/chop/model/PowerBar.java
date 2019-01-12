@@ -1,6 +1,6 @@
 package fi.chop.model;
 
-import fi.chop.MathUtil;
+import fi.chop.util.MathUtil;
 
 import java.util.Random;
 
