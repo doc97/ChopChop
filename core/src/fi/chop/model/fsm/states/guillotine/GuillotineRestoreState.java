@@ -1,5 +1,7 @@
 package fi.chop.model.fsm.states.guillotine;
 
+import fi.chop.Chop;
+import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
 import fi.chop.model.object.GuillotineObject;
 
@@ -18,6 +20,7 @@ public class GuillotineRestoreState extends GuillotineState {
         getObject().addBladeYOffset(offsetDelta);
         if (getObject().getBladeYOffset() == GuillotineObject.IDLE_Y_OFFSET_PX) {
             getObject().resetRaiseCount();
+            Chop.events.notify(Events.EVT_GUILLOTINE_RESTORED);
             getStateMachine().setCurrent(GuillotineStates.IDLE);
         }
     }

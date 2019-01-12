@@ -90,7 +90,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
 
     @Override
     public void handle(Events event, EventData data) {
-        if (event == Events.EVT_GUILLOTINE_READY)
+        if (event == Events.EVT_GUILLOTINE_RAISED)
             ready = true;
     }
 

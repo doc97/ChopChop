@@ -12,17 +12,22 @@ import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class GuillotineScreen extends ChopScreen implements EventListener {
 
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
-    private GameObject person;
+    private List<PersonObject> persons;
     private BitmapFont font;
     private float bestFill;
 
     public GuillotineScreen(Chop game) {
         super(game);
+        persons = new ArrayList<>();
     }
 
     @Override
@@ -35,16 +40,17 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
         guillotine = new GuillotineObject(getAssets());
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
-        person = new PersonObject(getAssets());
-        person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
 
-        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT, Events.EVT_GUILLOTINE_READY);
-        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_READY);
+        Chop.events.addListener(this,
+                Events.ACTION_BACK, Events.ACTION_INTERACT,
+                Events.EVT_GUILLOTINE_RAISED, Events.EVT_GUILLOTINE_RESTORED);
+        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
         powerBar.load();
         powerMeter.load();
         guillotine.load();
-        person.load();
+
+        newPerson();
 
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
@@ -59,7 +65,12 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerBar.update(delta);
         powerMeter.update(delta);
         guillotine.update(delta);
-        person.update(delta);
+        for (Iterator<PersonObject> it = persons.iterator(); it.hasNext();) {
+            PersonObject person = it.next();
+            person.update(delta);
+            if (person.getY() < -100)
+                it.remove();
+        }
     }
 
     @Override
@@ -69,7 +80,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerBar.render(batch);
         powerMeter.render(batch);
         guillotine.render(batch);
-        person.render(batch);
+        for (PersonObject p : persons)
+            p.render(batch);
 
         drawGUI(batch);
         batch.end();
@@ -80,6 +92,14 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         float drawY = getCamera().viewportHeight - 50;
         String percentStr = String.format("%.1f", bestFill * 100);
         font.draw(batch, "Best: " + percentStr + "%", drawX, drawY);
+    }
+
+    private void newPerson() {
+        PersonObject person = new PersonObject(getAssets());
+        person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
+        person.load();
+        Chop.events.addListener(Events.EVT_HEAD_CHOP, person);
+        persons.add(person);
     }
 
     @Override
@@ -96,10 +116,13 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
             case ACTION_BACK:
                 Gdx.app.exit();
                 break;
-            case EVT_GUILLOTINE_READY:
+            case EVT_GUILLOTINE_RAISED:
                 float fill = powerMeter.getMeterFillPercentage();
                 if (fill > bestFill)
                     bestFill = fill;
+                break;
+            case EVT_GUILLOTINE_RESTORED:
+                newPerson();
                 break;
             default:
                 break;

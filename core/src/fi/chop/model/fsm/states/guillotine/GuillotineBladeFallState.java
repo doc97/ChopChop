@@ -1,5 +1,7 @@
 package fi.chop.model.fsm.states.guillotine;
 
+import fi.chop.Chop;
+import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
 import fi.chop.model.object.GuillotineObject;
 
@@ -22,6 +24,7 @@ public class GuillotineBladeFallState extends GuillotineState {
         if (getObject().getBladeYOffset() == 0) {
             time = 0;
             velocity = 0;
+            Chop.events.notify(Events.EVT_HEAD_CHOP);
             getStateMachine().setCurrent(GuillotineStates.RESTORE);
         }
     }
