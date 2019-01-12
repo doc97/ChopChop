@@ -23,7 +23,6 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private GuillotineObject guillotine;
     private List<PersonObject> persons;
     private BitmapFont font;
-    private float bestFill;
 
     public GuillotineScreen(Chop game) {
         super(game);
@@ -94,12 +93,12 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         float killX = 50;
         float killY = getCamera().viewportHeight - 50 - font.getLineHeight();
 
-        drawBestPercent(batch, bestX, bestY);
+        drawHighestPower(batch, bestX, bestY);
         drawKillStats(batch, killX, killY);
     }
 
-    private void drawBestPercent(SpriteBatch batch, float x, float y) {
-        String percentStr = String.format("%.1f", bestFill * 100);
+    private void drawHighestPower(SpriteBatch batch, float x, float y) {
+        String percentStr = String.format("%.1f", getStats().getHighestPower() * 100);
         font.draw(batch, "Best: " + percentStr + "%", x, y);
     }
 
@@ -130,9 +129,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
                 Gdx.app.exit();
                 break;
             case EVT_GUILLOTINE_RAISED:
-                float fill = powerMeter.getMeterFillPercentage();
-                if (fill > bestFill)
-                    bestFill = fill;
+                float power = powerMeter.getMeterFillPercentage();
+                getStats().registerPower(power);
                 break;
             case EVT_GUILLOTINE_RESTORED:
                 newPerson();
