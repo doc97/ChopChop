@@ -68,7 +68,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         for (Iterator<PersonObject> it = persons.iterator(); it.hasNext();) {
             PersonObject person = it.next();
             person.update(delta);
-            if (person.getY() < -100)
+            if (person.getX() < person.getWidth())
                 it.remove();
         }
     }
