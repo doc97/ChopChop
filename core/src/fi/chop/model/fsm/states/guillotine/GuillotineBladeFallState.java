@@ -22,8 +22,7 @@ public class GuillotineBladeFallState extends GuillotineState {
         if (getObject().getBladeYOffset() == 0) {
             time = 0;
             velocity = 0;
-            getObject().resetRaiseCount();
-            getStateMachine().setCurrent(GuillotineStates.IDLE);
+            getStateMachine().setCurrent(GuillotineStates.RESTORE);
         }
     }
 }

@@ -9,5 +9,6 @@ public class GuillotineStateMachine extends StateMachine<GuillotineStates, Guill
         addState(GuillotineStates.IDLE, new GuillotineIdleState(this, object));
         addState(GuillotineStates.BLADE_FALL, new GuillotineBladeFallState(this, object));
         addState(GuillotineStates.BLADE_RAISE, new GuillotineBladeRaiseState(this, object));
+        addState(GuillotineStates.RESTORE, new GuillotineRestoreState(this, object));
     }
 }
