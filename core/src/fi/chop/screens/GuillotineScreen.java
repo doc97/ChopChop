@@ -13,13 +13,13 @@ import fi.chop.model.object.GuillotineObject;
 import fi.chop.model.object.PowerBarObject;
 import fi.chop.model.object.PowerMeterObject;
 
-public class GameScreen extends ChopScreen implements EventListener {
+public class GuillotineScreen extends ChopScreen implements EventListener {
 
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
 
-    public GameScreen(Chop game) {
+    public GuillotineScreen(Chop game) {
         super(game);
     }
 

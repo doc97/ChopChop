@@ -14,7 +14,7 @@ public class MainMenuScreenInput extends ChopScreenInput {
     public boolean keyDown(int keyCode) {
         InputMap.Action action = getInputMap().getAction(keyCode);
         if (action == InputMap.Action.INTERACT) {
-            getScreen().setScreen(Screens.GAME);
+            getScreen().setScreen(Screens.GUILLOTINE);
             return true;
         }
         return false;

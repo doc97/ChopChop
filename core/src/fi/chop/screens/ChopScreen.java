@@ -41,8 +41,8 @@ public abstract class ChopScreen extends ScreenAdapter {
 
     public void setScreen(Screens screen) {
         switch (screen) {
-            case GAME:
-                game.setScreen(new GameScreen(game));
+            case GUILLOTINE:
+                game.setScreen(new GuillotineScreen(game));
                 break;
             case MAIN_MENU:
                 game.setScreen(new MainMenuScreen(game));
