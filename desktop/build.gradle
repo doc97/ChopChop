@@ -7,6 +7,8 @@ sourceSets.main.java.outputDir = file("build/classes/java/main")
 project.ext.mainClassName = "fi.chop.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../core/assets");
 
+project.configurations.implementation.setCanBeResolved(true)
+
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
@@ -24,18 +26,16 @@ task debug(dependsOn: classes, type: JavaExec) {
     debug = true
 }
 
-task dist(type: Jar) {
+task dist(dependsOn: classes, type: Jar) {
     from files(sourceSets.main.java.outputDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from {configurations.implementation.collect {zipTree(it)}}
     from files(project.assetsDir);
  
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
 }
-
-dist.dependsOn classes
 
 eclipse {
     project {
