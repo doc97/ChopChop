@@ -84,6 +84,16 @@ public class TestEventSystem {
     }
 
     @Test
+    public void testRemoveListener() {
+        TestListener listener = new TestListener();
+        system.addListener(listener, Events.ACTION_BACK, Events.ACTION_INTERACT);
+        system.removeListener(listener);
+        system.notify(Events.ACTION_BACK);
+        system.notify(Events.ACTION_INTERACT);
+        assertEquals(0, listener.getCount());
+    }
+
+    @Test
     public void testClear() {
         TestListener listener = new TestListener();
         system.addListener(listener, Events.ACTION_BACK, Events.ACTION_INTERACT);

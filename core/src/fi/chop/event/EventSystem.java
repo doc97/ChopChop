@@ -2,6 +2,7 @@ package fi.chop.event;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class EventSystem {
@@ -45,5 +46,15 @@ public class EventSystem {
             listeners.put(event, new ArrayList<>());
         if (!listeners.get(event).contains(listener))
             listeners.get(event).add(listener);
+    }
+
+    public void removeListener(EventListener listener) {
+        Iterator<Map.Entry<Events, ArrayList<EventListener>>> it;
+        for (it = listeners.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<Events, ArrayList<EventListener>> entry = it.next();
+            entry.getValue().removeIf(elem -> elem.equals(listener));
+            if (entry.getValue().isEmpty())
+                it.remove();
+        }
     }
 }
