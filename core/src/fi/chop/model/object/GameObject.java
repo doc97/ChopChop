@@ -17,6 +17,7 @@ public abstract class GameObject {
     private float originX;
     private float originY;
     private double rotDeg;
+    private boolean dead;
 
     private final AssetManager assets;
 
@@ -173,6 +174,14 @@ public abstract class GameObject {
 
     public double getRotationDeg() {
         return rotDeg;
+    }
+
+    public void die() {
+        dead = true;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     protected AssetManager getAssets() {

@@ -45,6 +45,9 @@ public class PersonObject extends GameObject implements EventListener {
         }
         translate(velocityX * delta, velocityY * delta);
         rotateDeg(rotVelocity * delta);
+
+        if (getX() + getWidth() < 0)
+            die();
     }
 
     @Override

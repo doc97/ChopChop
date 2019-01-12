@@ -23,14 +23,16 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
-    private List<PersonObject> persons;
+    private List<GameObject> objects;
+    private List<GameObject> toAdd;
     private BitmapFont font;
     private float leftOfDaySec;
     private int day;
 
     public GuillotineScreen(Chop game) {
         super(game);
-        persons = new ArrayList<>();
+        objects = new ArrayList<>();
+        toAdd = new ArrayList<>();
     }
 
     @Override
@@ -54,6 +56,10 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerMeter.load();
         guillotine.load();
 
+        objects.add(powerBar);
+        objects.add(powerMeter);
+        objects.add(guillotine);
+
         newDay();
         newPerson();
 
@@ -67,15 +73,15 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
     @Override
     protected void update(float delta) {
-        powerBar.update(delta);
-        powerMeter.update(delta);
-        guillotine.update(delta);
-        for (Iterator<PersonObject> it = persons.iterator(); it.hasNext();) {
-            PersonObject person = it.next();
-            person.update(delta);
-            if (person.getX() < person.getWidth())
+        for (Iterator<GameObject> it = objects.iterator(); it.hasNext();) {
+            GameObject obj = it.next();
+            obj.update(delta);
+            if (obj.isDead())
                 it.remove();
         }
+
+        objects.addAll(toAdd);
+        toAdd.clear();
 
         leftOfDaySec -= delta;
         if (leftOfDaySec <= 0)
@@ -86,11 +92,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     protected void render(SpriteBatch batch) {
         beginRender();
         batch.begin();
-        powerBar.render(batch);
-        powerMeter.render(batch);
-        guillotine.render(batch);
-        for (PersonObject p : persons)
-            p.render(batch);
+        for (GameObject obj : objects)
+            obj.render(batch);
 
         drawGUI(batch);
         batch.end();
@@ -130,7 +133,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
         person.load();
         Chop.events.addListener(Events.EVT_HEAD_CHOP, person);
-        persons.add(person);
+        toAdd.add(person);
     }
 
     private void newDay() {

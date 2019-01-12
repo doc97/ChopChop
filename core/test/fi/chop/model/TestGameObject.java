@@ -5,7 +5,7 @@ import fi.chop.model.object.GameObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TestGameObject {
 
@@ -38,6 +38,7 @@ public class TestGameObject {
         assertEquals(1, object.getScaleY(), EPSILON);
         assertEquals(0, object.getOriginX(), EPSILON);
         assertEquals(0, object.getOriginY(), EPSILON);
+        assertFalse(object.isDead());
     }
 
     @Test
@@ -247,5 +248,11 @@ public class TestGameObject {
     @Test(expected = IllegalStateException.class)
     public void testSetOriginPxWithoutSize() {
         object.setOriginPx(10, 10);
+    }
+
+    @Test
+    public void testDie() {
+        object.die();
+        assertTrue(object.isDead());
     }
 }
