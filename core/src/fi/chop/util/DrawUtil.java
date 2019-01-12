@@ -12,9 +12,10 @@ public class DrawUtil {
         GlyphLayout layout = new GlyphLayout(font, text);
         float drawX = x - layout.width / 2;
         float drawY = y - layout.height / 2;
-        font.setColor(color);
-        font.draw(batch, layout, drawX, drawY);
-        font.setColor(Color.WHITE);
+        font.getCache().clear();
+        font.getCache().addText(layout, drawX, drawY);
+        font.getCache().tint(color);
+        font.getCache().draw(batch);
     }
 
     public static void drawCenteredText(Batch batch, BitmapFont font, CharSequence text, Color color, Camera camera) {
