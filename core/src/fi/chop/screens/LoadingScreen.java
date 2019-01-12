@@ -56,8 +56,7 @@ public class LoadingScreen extends ChopScreen {
         layout.setText(font, percent);
         beginRender();
         batch.begin();
-        font.setColor(fade.getColor());
-        DrawUtil.drawCenteredText(batch, font, percent, getCamera());
+        DrawUtil.drawCenteredText(batch, font, percent, fade.getColor(), getCamera());
         batch.end();
     }
 }

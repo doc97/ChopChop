@@ -42,8 +42,7 @@ public class MainMenuScreen extends ChopScreen {
     protected void render(SpriteBatch batch) {
         beginRender();
         batch.begin();
-        font.setColor(fade.getColor());
-        DrawUtil.drawCenteredText(batch, font, text, getCamera());
+        DrawUtil.drawCenteredText(batch, font, text, fade.getColor(), getCamera());
         batch.end();
     }
 }
