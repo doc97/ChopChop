@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.chop.event.EventSystem;
+import fi.chop.model.GameStats;
 import fi.chop.model.InputMap;
 import fi.chop.screens.LoadingScreen;
 
@@ -26,6 +27,7 @@ public class Chop extends Game {
 	private SpriteBatch batch;
 	private AssetManager assets;
 	private InputMap input;
+	private GameStats stats;
 
 	@Override
 	public void create() {
@@ -42,6 +44,7 @@ public class Chop extends Game {
 	    assets = new AssetManager();
 		batch = new SpriteBatch();
 		input = new InputMap();
+		stats = new GameStats();
 
 		// Set TTF and bitmap font loader
 		FileHandleResolver resolver = new InternalFileHandleResolver();
@@ -77,5 +80,9 @@ public class Chop extends Game {
 
 	public InputMap getInputMap() {
 		return input;
+	}
+
+	public GameStats getStats() {
+		return stats;
 	}
 }

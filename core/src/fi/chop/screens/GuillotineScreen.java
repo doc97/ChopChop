@@ -43,7 +43,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
         Chop.events.addListener(this,
                 Events.ACTION_BACK, Events.ACTION_INTERACT,
-                Events.EVT_GUILLOTINE_RAISED, Events.EVT_GUILLOTINE_RESTORED);
+                Events.EVT_GUILLOTINE_RAISED, Events.EVT_GUILLOTINE_RESTORED,
+                Events.EVT_HEAD_CHOP);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
         powerBar.load();
@@ -88,10 +89,22 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     }
 
     private void drawGUI(SpriteBatch batch) {
-        float drawX = 50;
-        float drawY = getCamera().viewportHeight - 50;
+        float bestX = 50;
+        float bestY = getCamera().viewportHeight - 50;
+        float killX = 50;
+        float killY = getCamera().viewportHeight - 50 - font.getLineHeight();
+
+        drawBestPercent(batch, bestX, bestY);
+        drawKillStats(batch, killX, killY);
+    }
+
+    private void drawBestPercent(SpriteBatch batch, float x, float y) {
         String percentStr = String.format("%.1f", bestFill * 100);
-        font.draw(batch, "Best: " + percentStr + "%", drawX, drawY);
+        font.draw(batch, "Best: " + percentStr + "%", x, y);
+    }
+
+    private void drawKillStats(SpriteBatch batch, float x, float y) {
+        font.draw(batch, "Kills: " + getStats().getDailyKills(), x, y);
     }
 
     private void newPerson() {
@@ -124,6 +137,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
             case EVT_GUILLOTINE_RESTORED:
                 newPerson();
                 break;
+            case EVT_HEAD_CHOP:
+                getStats().addDailyKill();
             default:
                 break;
         }
