@@ -1,5 +1,6 @@
 package fi.chop.model.fsm.states.guillotine;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
@@ -25,4 +26,7 @@ public class GuillotineIdleState extends ObjectState<GuillotineStateMachine, Gui
             getStateMachine().setCurrent(GuillotineStates.BLADE_FALL);
         }
     }
+
+    @Override
+    public void render(SpriteBatch batch) { }
 }

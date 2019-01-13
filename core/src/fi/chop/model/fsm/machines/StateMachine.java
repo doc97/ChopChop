@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class StateMachine<K, V extends State> {
 
-    private final Map<K, V> states;
-    private K current;
+    protected final Map<K, V> states;
+    protected K current;
 
     public StateMachine() {
         states = new HashMap<>();

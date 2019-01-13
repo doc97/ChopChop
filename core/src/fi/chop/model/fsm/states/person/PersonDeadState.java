@@ -1,5 +1,6 @@
 package fi.chop.model.fsm.states.person;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.model.fsm.machines.PersonStateMachine;
 import fi.chop.model.fsm.states.ObjectState;
 import fi.chop.model.object.PersonObject;
@@ -39,4 +40,7 @@ public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObjec
         if (obj.getX() + obj.getWidth() < 0)
             obj.die();
     }
+
+    @Override
+    public void render(SpriteBatch batch) { }
 }

@@ -1,5 +1,6 @@
 package fi.chop.model.fsm.states.powermeter;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.ObjectState;
 import fi.chop.model.object.PowerMeterObject;
@@ -23,4 +24,7 @@ public class PowerMeterIdleState extends ObjectState<PowerMeterStateMachine, Pow
             getStateMachine().setCurrent(PowerMeterStates.POWER_DOWN);
         }
     }
+
+    @Override
+    public void render(SpriteBatch batch) { }
 }
