@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 
 import static org.junit.Assert.*;
 
-public class TestScene {
+public class TestLayer {
 
     private class TestObject extends GameObject {
         private int updateCalls;
@@ -42,97 +42,97 @@ public class TestScene {
         }
     }
 
-    private Scene scene;
+    private Layer layer;
 
     @Before
     public void setUp() {
-        scene = new Scene();
+        layer = new Layer();
     }
 
     @Test
     public void testDefaultValues() {
-        assertTrue(scene.isEmpty());
+        assertTrue(layer.isEmpty());
     }
 
     @Test
     public void testAddWithoutUpdate() {
-        scene.add(new TestObject());
-        assertTrue(scene.isEmpty());
+        layer.add(new TestObject());
+        assertTrue(layer.isEmpty());
     }
 
     @Test
     public void testAddWithUpdate() {
-        scene.add(new TestObject());
-        scene.update(0);
-        assertFalse(scene.isEmpty());
-        assertEquals(1, scene.getObjectCount());
+        layer.add(new TestObject());
+        layer.update(0);
+        assertFalse(layer.isEmpty());
+        assertEquals(1, layer.getObjectCount());
     }
 
     @Test
     public void testAddWithTwoUpdates() {
-        scene.add(new TestObject());
-        scene.update(0);
-        scene.update(0);
-        assertEquals(1, scene.getObjectCount());
+        layer.add(new TestObject());
+        layer.update(0);
+        layer.update(0);
+        assertEquals(1, layer.getObjectCount());
     }
 
     @Test
     public void testAddTwoObjects() {
-        scene.add(new TestObject(), new TestObject());
-        scene.update(0);
-        assertEquals(2, scene.getObjectCount());
+        layer.add(new TestObject(), new TestObject());
+        layer.update(0);
+        assertEquals(2, layer.getObjectCount());
     }
 
     @Test
     public void testAddTwoSeparateObjects() {
-        scene.add(new TestObject());
-        scene.add(new TestObject());
-        scene.update(0);
-        assertEquals(2, scene.getObjectCount());
+        layer.add(new TestObject());
+        layer.add(new TestObject());
+        layer.update(0);
+        assertEquals(2, layer.getObjectCount());
     }
 
     @Test
     public void testUpdateSetsID() {
         TestObject obj = new TestObject();
-        scene.add(obj);
+        layer.add(obj);
         assertEquals(-1, obj.getID());
-        scene.update(0);
+        layer.update(0);
         assertEquals(0, obj.getID());
     }
 
     @Test
     public void testUpdateIncrementsID() {
         TestObject obj = new TestObject();
-        scene.add(new TestObject(), obj);
-        scene.update(0);
+        layer.add(new TestObject(), obj);
+        layer.update(0);
         assertEquals(1, obj.getID());
     }
 
     @Test
     public void testClear() {
-        scene.add(new TestObject(), new TestObject());
-        scene.update(0);
-        scene.clear();
-        assertTrue(scene.isEmpty());
-        assertEquals(0, scene.getObjectCount());
+        layer.add(new TestObject(), new TestObject());
+        layer.update(0);
+        layer.clear();
+        assertTrue(layer.isEmpty());
+        assertEquals(0, layer.getObjectCount());
     }
 
     @Test
     public void testAddAndClearBeforeUpdate() {
-        scene.add(new TestObject());
-        scene.clear();
-        scene.update(0);
-        assertTrue(scene.isEmpty());
+        layer.add(new TestObject());
+        layer.clear();
+        layer.update(0);
+        assertTrue(layer.isEmpty());
     }
 
     @Test
     public void testClearAndAdd() {
         TestObject obj = new TestObject();
-        scene.add(new TestObject(), new TestObject());
-        scene.update(0);
-        scene.clear();
-        scene.add(obj);
-        scene.update(0);
+        layer.add(new TestObject(), new TestObject());
+        layer.update(0);
+        layer.clear();
+        layer.add(obj);
+        layer.update(0);
         assertEquals(2, obj.getID());
     }
 
@@ -141,9 +141,9 @@ public class TestScene {
         TestObject obj1 = new TestObject();
         TestObject obj2 = new TestObject();
         obj2.setRotationDeg(45);
-        scene.add(obj1, obj2);
-        scene.update(0);
-        int count = scene.killAll(o -> o.getRotationDeg() == 45);
+        layer.add(obj1, obj2);
+        layer.update(0);
+        int count = layer.killAll(o -> o.getRotationDeg() == 45);
         assertEquals(1, count);
         assertFalse(obj1.isDead());
         assertTrue(obj2.isDead());
@@ -151,57 +151,57 @@ public class TestScene {
 
     @Test
     public void testKillAllTrue() {
-        scene.add(new TestObject(), new TestObject(), new TestObject());
-        scene.update(0);
-        int count = scene.killAll(o -> true);
+        layer.add(new TestObject(), new TestObject(), new TestObject());
+        layer.update(0);
+        int count = layer.killAll(o -> true);
         assertEquals(3, count);
-        assertEquals(3, scene.getObjectCount());
-        scene.update(0);
-        assertTrue(scene.isEmpty());
+        assertEquals(3, layer.getObjectCount());
+        layer.update(0);
+        assertTrue(layer.isEmpty());
     }
 
     @Test
     public void testUpdate() {
         TestObject obj = new TestObject();
-        scene.add(obj);
-        scene.update(0);
+        layer.add(obj);
+        layer.update(0);
         assertEquals(1, obj.updateCalls);
-        scene.update(0);
+        layer.update(0);
         assertEquals(2, obj.updateCalls);
     }
 
     @Test
     public void testRender() {
         TestObject obj = new TestObject();
-        scene.add(obj);
-        scene.update(0);
-        scene.render(null);
+        layer.add(obj);
+        layer.update(0);
+        layer.render(null);
         assertEquals(1, obj.renderCalls);
-        scene.render(null);
+        layer.render(null);
         assertEquals(2, obj.renderCalls);
     }
 
     @Test
     public void testUpdateRemoveDead() {
-        scene.add(new TestObject(true));
-        scene.update(0);
-        assertTrue(scene.isEmpty());
+        layer.add(new TestObject(true));
+        layer.update(0);
+        assertTrue(layer.isEmpty());
     }
 
     @Test
     public void testFindOne() {
         TestObject first = new TestObject();
-        scene.add(first);
-        scene.add(new TestObject());
-        scene.update(0);
+        layer.add(first);
+        layer.add(new TestObject());
+        layer.update(0);
 
-        TestObject obj = scene.findOne(TestObject.class);
+        TestObject obj = layer.findOne(TestObject.class);
         assertSame(first, obj);
     }
 
     @Test
     public void testFindOneEmptyScene() {
-        assertNull(scene.findOne(TestObject.class));
+        assertNull(layer.findOne(TestObject.class));
     }
 
     @Test
@@ -215,9 +215,9 @@ public class TestScene {
             public void render(SpriteBatch batch) { }
         };
         TestObject test = new TestObject();
-        scene.add(obj, test);
-        scene.update(0);
-        TestObject actual = scene.findOne(TestObject.class);
+        layer.add(obj, test);
+        layer.update(0);
+        TestObject actual = layer.findOne(TestObject.class);
         assertSame(test, actual);
     }
 
@@ -231,23 +231,23 @@ public class TestScene {
             @Override
             public void render(SpriteBatch batch) { }
         };
-        scene.add(obj, new TestObject());
-        scene.update(0);
-        GameObject actual = scene.findOne(GameObject.class);
+        layer.add(obj, new TestObject());
+        layer.update(0);
+        GameObject actual = layer.findOne(GameObject.class);
         assertSame(obj, actual);
     }
 
     @Test
     public void testFindAll() {
-        scene.add(new TestObject(), new TestObject());
-        scene.update(0);
-        List<TestObject> list = scene.findAll(TestObject.class);
+        layer.add(new TestObject(), new TestObject());
+        layer.update(0);
+        List<TestObject> list = layer.findAll(TestObject.class);
         assertEquals(2, list.size());
     }
 
     @Test
     public void testFindAllEmptyScene() {
-        assertEquals(0, scene.findAll(TestObject.class).size());
+        assertEquals(0, layer.findAll(TestObject.class).size());
     }
 
     @Test
@@ -261,9 +261,9 @@ public class TestScene {
             public void render(SpriteBatch batch) { }
         };
         TestObject test = new TestObject();
-        scene.add(obj, test);
-        scene.update(0);
-        assertEquals(1, scene.findAll(TestObject.class).size());
+        layer.add(obj, test);
+        layer.update(0);
+        assertEquals(1, layer.findAll(TestObject.class).size());
     }
 
     @Test
@@ -276,18 +276,18 @@ public class TestScene {
             @Override
             public void render(SpriteBatch batch) { }
         };
-        scene.add(obj, new TestObject());
-        scene.update(0);
-        assertEquals(2, scene.findAll(GameObject.class).size());
+        layer.add(obj, new TestObject());
+        layer.update(0);
+        assertEquals(2, layer.findAll(GameObject.class).size());
     }
 
     @Test
     public void testFindOneWithID() {
-        scene.add(new TestObject(), new TestObject());
-        scene.update(0);
-        GameObject obj0 = scene.findOne(o -> o.getID() == 0);
+        layer.add(new TestObject(), new TestObject());
+        layer.update(0);
+        GameObject obj0 = layer.findOne(o -> o.getID() == 0);
         assertEquals(0, obj0.getID());
-        GameObject obj1 = scene.findOne(o -> o.getID() == 1);
+        GameObject obj1 = layer.findOne(o -> o.getID() == 1);
         assertEquals(1, obj1.getID());
         assertNotSame(obj0, obj1);
     }
@@ -298,11 +298,11 @@ public class TestScene {
         obj1.setPosition(10, 5);
         TestObject obj2 = new TestObject();
         obj2.setPosition(10, 10);
-        scene.add(obj1, obj2);
-        scene.update(0);
-        GameObject obj = scene.findOne(o -> o.getX() == 10 && o.getY() == 10);
+        layer.add(obj1, obj2);
+        layer.update(0);
+        GameObject obj = layer.findOne(o -> o.getX() == 10 && o.getY() == 10);
         assertSame(obj2, obj);
-        assertNull(scene.findOne(o -> o.getX() == 10 && o.getY() == 10 && o.getID() == 0));
+        assertNull(layer.findOne(o -> o.getX() == 10 && o.getY() == 10 && o.getID() == 0));
     }
 
     @Test
@@ -311,11 +311,11 @@ public class TestScene {
         obj1.setPosition(10, 5);
         TestObject obj2 = new TestObject();
         obj2.setPosition(10, 10);
-        scene.add(obj1, obj2);
-        scene.update(0);
+        layer.add(obj1, obj2);
+        layer.update(0);
         Predicate<GameObject> xPred = o -> o.getX() == 10;
         Predicate<GameObject> yPred = o -> o.getY() == 10;
-        GameObject obj = scene.findOne(xPred.and(yPred));
+        GameObject obj = layer.findOne(xPred.and(yPred));
         assertSame(obj2, obj);
     }
 
@@ -335,9 +335,9 @@ public class TestScene {
         };
         obj3.setRotationDeg(45);
 
-        scene.add(new TestObject(), obj1, new TestObject(), new TestObject(), obj2, new TestObject(), obj3);
-        scene.update(0);
-        List<GameObject> result = scene.findAll(o -> o.getRotationDeg() == 45 && o instanceof TestObject);
+        layer.add(new TestObject(), obj1, new TestObject(), new TestObject(), obj2, new TestObject(), obj3);
+        layer.update(0);
+        List<GameObject> result = layer.findAll(o -> o.getRotationDeg() == 45 && o instanceof TestObject);
         assertEquals(2, result.size());
         assertSame(obj1, result.get(0));
         assertSame(obj2, result.get(1));

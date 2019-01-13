@@ -9,7 +9,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GuillotineScreenInput;
-import fi.chop.model.Scene;
+import fi.chop.model.Layer;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.GuillotineObject;
@@ -20,7 +20,7 @@ import fi.chop.util.DrawUtil;
 
 public class GuillotineScreen extends ChopScreen implements EventListener {
 
-    private Scene scene;
+    private Layer layer;
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
@@ -36,7 +36,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     public void show() {
         Gdx.input.setInputProcessor(new GuillotineScreenInput(this, getInputMap()));
 
-        scene = new Scene();
+        layer = new Layer();
 
         powerBar = new PowerBarObject(getAssets());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
@@ -55,7 +55,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         powerMeter.load();
         guillotine.load();
 
-        scene.add(powerBar, powerMeter, guillotine);
+        layer.add(powerBar, powerMeter, guillotine);
 
         newDay();
         newPerson();
@@ -70,7 +70,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
     @Override
     protected void update(float delta) {
-        scene.update(delta);
+        layer.update(delta);
 
         leftOfDaySec -= delta;
         if (leftOfDaySec <= 0)
@@ -81,7 +81,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     protected void render(SpriteBatch batch) {
         beginRender();
         batch.begin();
-        scene.render(batch);
+        layer.render(batch);
         drawGUI(batch);
         batch.end();
     }
@@ -120,7 +120,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
         person.load();
         Chop.events.addListener(Events.EVT_HEAD_CHOP, person);
-        scene.add(person);
+        layer.add(person);
     }
 
     private void newDay() {

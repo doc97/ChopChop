@@ -11,13 +11,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Scene {
+public class Layer {
 
     private List<GameObject> objects;
     private List<GameObject> toAdd;
     private int nextId;
 
-    public Scene() {
+    public Layer() {
         objects = new ArrayList<>();
         toAdd = new ArrayList<>();
     }
