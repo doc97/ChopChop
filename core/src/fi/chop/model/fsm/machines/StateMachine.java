@@ -28,7 +28,7 @@ public class StateMachine<K, V extends State> {
 
     public void setCurrent(K key) {
         if (!states.containsKey(key))
-            throw new IllegalArgumentException("StateMachines does not have a state bound to '" + key.toString() + "'");
+            throw new IllegalArgumentException("The StateMachine does not have a state bound to '" + key.toString() + "'");
         current = key;
     }
 

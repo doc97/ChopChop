@@ -8,20 +8,18 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.model.DrawParameters;
+import fi.chop.model.fsm.machines.PersonStateMachine;
+import fi.chop.model.fsm.states.person.PersonStates;
 
 public class PersonObject extends GameObject implements EventListener {
 
     private TextureRegion head;
     private DrawParameters headParams;
-    private float velocityX;
-    private float velocityY;
-    private float rotVelocity;
-    private boolean hasHeadAttached;
+    private PersonStateMachine state;
 
     public PersonObject(AssetManager assets) {
         super(assets);
         setOrigin(0.5f, 0.5f);
-        hasHeadAttached = true;
     }
 
     @Override
@@ -30,24 +28,12 @@ public class PersonObject extends GameObject implements EventListener {
         head = atlas.findRegion("head-alive");
         setSize(head.getRegionWidth(), head.getRegionHeight());
         headParams = new DrawParameters(head);
+        state = new PersonStateMachine(this);
     }
 
     @Override
     public void update(float delta) {
-        if (hasHeadAttached)
-            return;
-
-        if (getY() <= getHeight() / 2) {
-            velocityY = 0;
-            setY(getHeight() / 2);
-        } else {
-            velocityY -= 10;
-        }
-        translate(velocityX * delta, velocityY * delta);
-        rotateDeg(rotVelocity * delta);
-
-        if (getX() + getWidth() < 0)
-            die();
+        state.update(delta);
     }
 
     @Override
@@ -58,10 +44,7 @@ public class PersonObject extends GameObject implements EventListener {
     @Override
     public void handle(Events event, EventData data) {
         if (event == Events.EVT_HEAD_CHOP) {
-            velocityX = -150;
-            velocityY = 0;
-            rotVelocity = 90;
-            hasHeadAttached = false;
+            state.setCurrent(PersonStates.DEAD);
             TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
             head = atlas.findRegion("head-dead");
         }
