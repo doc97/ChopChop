@@ -15,6 +15,9 @@ public class GuillotineScreenInput extends ChopScreenInput {
     public boolean keyDown(int keyCode) {
         InputMap.Action action = getInputMap().getAction(keyCode);
         switch (action) {
+            case MERCY:
+                Chop.events.notify(Events.ACTION_MERCY);
+                return true;
             case INTERACT:
                 Chop.events.notify(Events.ACTION_INTERACT);
                 return true;

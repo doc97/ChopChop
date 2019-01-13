@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
@@ -14,6 +15,7 @@ import fi.chop.model.fsm.states.person.PersonStates;
 
 public class PersonObject extends GameObject implements EventListener {
 
+    private TextureRegion headSaved;
     private TextureRegion headAlive;
     private TextureRegion headDead;
     private DrawParameters headParams;
@@ -27,6 +29,7 @@ public class PersonObject extends GameObject implements EventListener {
     @Override
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
+        headSaved = atlas.findRegion("head-saved");
         headAlive = atlas.findRegion("head-alive");
         headDead = atlas.findRegion("head-dead");
         setSize(headAlive.getRegionWidth(), headAlive.getRegionHeight());
@@ -44,6 +47,10 @@ public class PersonObject extends GameObject implements EventListener {
         state.render(batch);
     }
 
+    public void drawSavedHead(SpriteBatch batch) {
+        draw(batch, headSaved, headParams);
+    }
+
     public void drawAliveHead(SpriteBatch batch) {
         draw(batch, headAlive, headParams);
     }
@@ -54,8 +61,15 @@ public class PersonObject extends GameObject implements EventListener {
 
     @Override
     public void handle(Events event, EventData data) {
-        if (event == Events.EVT_HEAD_CHOP) {
-            state.setCurrent(PersonStates.DEAD);
+        switch (event) {
+            case EVT_HEAD_CHOP:
+                if (state.getCurrent() == PersonStates.IDLE)
+                    state.setCurrent(PersonStates.DEAD);
+                break;
+            case EVT_PERSON_SAVED:
+                if (state.getCurrent() == PersonStates.IDLE)
+                    state.setCurrent(PersonStates.SAVED);
+                break;
         }
     }
 }

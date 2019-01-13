@@ -29,6 +29,9 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private float leftOfDaySec;
     private int day;
 
+    private static final float NEW_PERSON_DELAY_SEC = 2;
+    private float newPersonTimer;
+
     public GuillotineScreen(Chop game) {
         super(game);
     }
@@ -51,7 +54,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
 
         Chop.events.addListener(this,
-                Events.ACTION_BACK, Events.ACTION_INTERACT,
+                Events.ACTION_BACK, Events.ACTION_INTERACT, Events.ACTION_MERCY,
                 Events.EVT_GUILLOTINE_RAISED, Events.EVT_GUILLOTINE_RESTORED,
                 Events.EVT_HEAD_CHOP);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
@@ -65,6 +68,8 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
         newDay();
         newPerson();
+
+        newPersonTimer = -1;
 
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
@@ -81,6 +86,13 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         leftOfDaySec -= delta;
         if (leftOfDaySec <= 0)
             newDay();
+
+        if (newPersonTimer > 0) {
+            newPersonTimer -= delta;
+            if (newPersonTimer <= 0) {
+                newPerson();
+            }
+        }
     }
 
     @Override
@@ -125,7 +137,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         PersonObject person = new PersonObject(getAssets(), getCamera());
         person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
         person.load();
-        Chop.events.addListener(Events.EVT_HEAD_CHOP, person);
+        Chop.events.addListener(person, Events.EVT_HEAD_CHOP, Events.EVT_PERSON_SAVED);
         scene.addObjects("Heads", person);
     }
 
@@ -138,6 +150,10 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     @Override
     public void handle(Events event, EventData data) {
         switch (event) {
+            case ACTION_MERCY:
+                Chop.events.notify(Events.EVT_PERSON_SAVED);
+                newPersonTimer = NEW_PERSON_DELAY_SEC;
+                break;
             case ACTION_INTERACT:
                 boolean isMeterIdle = powerMeter.getState() == PowerMeterStates.IDLE;
                 boolean isGuillotineIdle = guillotine.getState() == GuillotineStates.IDLE;

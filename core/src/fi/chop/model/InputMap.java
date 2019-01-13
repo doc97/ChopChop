@@ -9,7 +9,7 @@ import java.util.Map;
 public class InputMap {
 
     public enum Action {
-        NONE, BACK, INTERACT
+        NONE, BACK, INTERACT, MERCY
     }
 
     private final Map<Action, Integer> map;
@@ -24,6 +24,7 @@ public class InputMap {
     public void defaults() {
         bind(Action.BACK, Input.Keys.ESCAPE);
         bind(Action.INTERACT, Input.Keys.SPACE);
+        bind(Action.MERCY, Input.Keys.SHIFT_RIGHT);
     }
 
     public void bind(Action action, int keyCode) {
