@@ -42,5 +42,7 @@ public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObjec
     }
 
     @Override
-    public void render(SpriteBatch batch) { }
+    public void render(SpriteBatch batch) {
+        getObject().drawDeadHead(batch);
+    }
 }

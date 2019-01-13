@@ -13,7 +13,8 @@ import fi.chop.model.fsm.states.person.PersonStates;
 
 public class PersonObject extends GameObject implements EventListener {
 
-    private TextureRegion head;
+    private TextureRegion headAlive;
+    private TextureRegion headDead;
     private DrawParameters headParams;
     private PersonStateMachine state;
 
@@ -25,9 +26,10 @@ public class PersonObject extends GameObject implements EventListener {
     @Override
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        head = atlas.findRegion("head-alive");
-        setSize(head.getRegionWidth(), head.getRegionHeight());
-        headParams = new DrawParameters(head);
+        headAlive = atlas.findRegion("head-alive");
+        headDead = atlas.findRegion("head-dead");
+        setSize(headAlive.getRegionWidth(), headAlive.getRegionHeight());
+        headParams = new DrawParameters(headAlive);
         state = new PersonStateMachine(this);
     }
 
@@ -38,15 +40,21 @@ public class PersonObject extends GameObject implements EventListener {
 
     @Override
     public void render(SpriteBatch batch) {
-        draw(batch, head, headParams);
+        state.render(batch);
+    }
+
+    public void drawAliveHead(SpriteBatch batch) {
+        draw(batch, headAlive, headParams);
+    }
+
+    public void drawDeadHead(SpriteBatch batch) {
+        draw(batch, headDead, headParams);
     }
 
     @Override
     public void handle(Events event, EventData data) {
         if (event == Events.EVT_HEAD_CHOP) {
             state.setCurrent(PersonStates.DEAD);
-            TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-            head = atlas.findRegion("head-dead");
         }
     }
 }
