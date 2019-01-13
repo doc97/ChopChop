@@ -91,6 +91,23 @@ public class TestScene {
     }
 
     @Test
+    public void testUpdateSetsID() {
+        TestObject obj = new TestObject();
+        scene.add(obj);
+        assertEquals(-1, obj.getID());
+        scene.update(0);
+        assertEquals(0, obj.getID());
+    }
+
+    @Test
+    public void testUpdateIncrementsID() {
+        TestObject obj = new TestObject();
+        scene.add(new TestObject(), obj);
+        scene.update(0);
+        assertEquals(1, obj.getID());
+    }
+
+    @Test
     public void testClear() {
         scene.add(new TestObject(), new TestObject());
         scene.update(0);
@@ -105,6 +122,17 @@ public class TestScene {
         scene.clear();
         scene.update(0);
         assertTrue(scene.isEmpty());
+    }
+
+    @Test
+    public void testClearAndAdd() {
+        TestObject obj = new TestObject();
+        scene.add(new TestObject(), new TestObject());
+        scene.update(0);
+        scene.clear();
+        scene.add(obj);
+        scene.update(0);
+        assertEquals(2, obj.getID());
     }
 
     @Test
@@ -226,5 +254,16 @@ public class TestScene {
         scene.add(obj, new TestObject());
         scene.update(0);
         assertEquals(2, scene.findAll(GameObject.class).size());
+    }
+
+    @Test
+    public void testFindOneWithID() {
+        scene.add(new TestObject(), new TestObject());
+        scene.update(0);
+        GameObject obj0 = scene.findOne(o -> o.getID() == 0);
+        assertEquals(0, obj0.getID());
+        GameObject obj1 = scene.findOne(o -> o.getID() == 1);
+        assertEquals(1, obj1.getID());
+        assertNotSame(obj0, obj1);
     }
 }

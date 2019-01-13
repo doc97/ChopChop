@@ -15,6 +15,7 @@ public class Scene {
 
     private List<GameObject> objects;
     private List<GameObject> toAdd;
+    private int nextId;
 
     public Scene() {
         objects = new ArrayList<>();
@@ -22,7 +23,10 @@ public class Scene {
     }
 
     public void update(float delta) {
-        objects.addAll(toAdd);
+        for (GameObject obj : toAdd) {
+            obj.setID(nextId++);
+            objects.add(obj);
+        }
         toAdd.clear();
 
         for (Iterator<GameObject> it = objects.iterator(); it.hasNext();) {
