@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,9 +22,11 @@ public abstract class GameObject {
     private boolean dead;
 
     private final AssetManager assets;
+    private final OrthographicCamera camera;
 
-    protected GameObject(AssetManager assets) {
+    protected GameObject(AssetManager assets, OrthographicCamera camera) {
         this.assets = assets;
+        this.camera = camera;
     }
 
     public abstract void load();
@@ -202,6 +205,16 @@ public abstract class GameObject {
 
     public boolean isDead() {
         return dead;
+    }
+
+    public boolean isOutsideCameraView() {
+        return camera != null &&
+                (
+                    x + (1 - originX) * width < camera.position.x - camera.viewportWidth / 2 ||
+                    x - originX * width > camera.position.x + camera.viewportWidth / 2 ||
+                    y + (1 - originY) * height < camera.position.y - camera.viewportHeight / 2 ||
+                    y - originY * height > camera.position.y + camera.viewportHeight / 2
+                );
     }
 
     protected AssetManager getAssets() {

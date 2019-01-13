@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,8 +20,8 @@ public class GuillotineObject extends GameObject {
     private float toRaise;
     private int raiseCount;
 
-    public GuillotineObject(AssetManager assets) {
-        super(assets);
+    public GuillotineObject(AssetManager assets, OrthographicCamera camera) {
+        super(assets, camera);
         state = new GuillotineStateMachine(this);
         bladeYOffset = IDLE_Y_OFFSET_PX;
     }

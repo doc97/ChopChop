@@ -43,11 +43,11 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         scene.addLayer("Heads", new Layer());
         scene.addLayer("UI", new Layer());
 
-        powerBar = new PowerBarObject(getAssets());
+        powerBar = new PowerBarObject(getAssets(), getCamera());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
-        powerMeter = new PowerMeterObject(getAssets());
+        powerMeter = new PowerMeterObject(getAssets(), getCamera());
         powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
-        guillotine = new GuillotineObject(getAssets());
+        guillotine = new GuillotineObject(getAssets(), getCamera());
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
 
         Chop.events.addListener(this,
@@ -122,7 +122,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     }
 
     private void newPerson() {
-        PersonObject person = new PersonObject(getAssets());
+        PersonObject person = new PersonObject(getAssets(), getCamera());
         person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
         person.load();
         Chop.events.addListener(Events.EVT_HEAD_CHOP, person);

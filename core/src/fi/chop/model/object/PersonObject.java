@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,8 +19,8 @@ public class PersonObject extends GameObject implements EventListener {
     private DrawParameters headParams;
     private PersonStateMachine state;
 
-    public PersonObject(AssetManager assets) {
-        super(assets);
+    public PersonObject(AssetManager assets, OrthographicCamera camera) {
+        super(assets, camera);
         setOrigin(0.5f, 0.5f);
     }
 

@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,8 +13,8 @@ public class PowerBarObject extends GameObject {
     private TextureRegion background;
     private TextureRegion marker;
 
-    public PowerBarObject(AssetManager assets) {
-        super(assets);
+    public PowerBarObject(AssetManager assets, OrthographicCamera camera) {
+        super(assets, camera);
         bar = new PowerBar();
         bar.setDurationSec(2);
         bar.randomize();

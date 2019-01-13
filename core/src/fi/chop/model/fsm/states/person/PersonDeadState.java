@@ -37,7 +37,7 @@ public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObjec
         obj.translate(velocityX * delta, velocityY * delta);
         obj.rotateDeg(rotVelocity * delta);
 
-        if (obj.getX() + obj.getWidth() < 0)
+        if (getObject().isOutsideCameraView())
             obj.die();
     }
 

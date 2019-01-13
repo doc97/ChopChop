@@ -14,7 +14,7 @@ public class TestGameObject {
 
     @Before
     public void setUp() {
-        object = new GameObject(null) {
+        object = new GameObject(null, null) {
             @Override
             public void load() {}
 

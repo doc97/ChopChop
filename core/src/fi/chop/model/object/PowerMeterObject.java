@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -24,8 +25,8 @@ public class PowerMeterObject extends GameObject implements EventListener {
     private float toAdd;
     private boolean ready;
 
-    public PowerMeterObject(AssetManager assets) {
-        super(assets);
+    public PowerMeterObject(AssetManager assets, OrthographicCamera camera) {
+        super(assets, camera);
         meter = new PowerMeter();
         state = new PowerMeterStateMachine(this);
     }
