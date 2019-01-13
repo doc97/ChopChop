@@ -1,9 +1,10 @@
 package fi.chop.model.fsm.machines;
 
+import fi.chop.model.fsm.states.ObjectState;
 import fi.chop.model.fsm.states.powermeter.*;
 import fi.chop.model.object.PowerMeterObject;
 
-public class PowerMeterStateMachine extends StateMachine<PowerMeterStates, PowerMeterState> {
+public class PowerMeterStateMachine extends StateMachine<PowerMeterStates, ObjectState<PowerMeterStateMachine, PowerMeterObject>> {
 
     public PowerMeterStateMachine(PowerMeterObject object) {
         addState(PowerMeterStates.IDLE, new PowerMeterIdleState(this, object));

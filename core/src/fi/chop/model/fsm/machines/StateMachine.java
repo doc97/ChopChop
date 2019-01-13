@@ -27,9 +27,13 @@ public class StateMachine<K, V extends State> {
     }
 
     public void setCurrent(K key) {
+        if (states.isEmpty())
+            throw new IllegalStateException("The Statemachine does not have any states");
         if (!states.containsKey(key))
             throw new IllegalArgumentException("The StateMachine does not have a state bound to '" + key.toString() + "'");
+        states.get(current).exit();
         current = key;
+        states.get(current).enter();
     }
 
     public K getCurrent() {

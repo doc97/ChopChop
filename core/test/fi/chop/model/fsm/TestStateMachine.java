@@ -12,10 +12,27 @@ public class TestStateMachine {
 
     private class TestState implements State {
         private int counter;
+        private boolean enterCalled;
+        private boolean exitCalled;
+
+        @Override
+        public void enter() {
+            enterCalled = true;
+        }
+
+        @Override
+        public void exit() {
+            exitCalled = true;
+        }
 
         @Override
         public void update(float delta) {
             counter++;
+        }
+
+        @Override
+        public StateMachine getStateMachine() {
+            return null;
         }
     }
 
@@ -81,5 +98,21 @@ public class TestStateMachine {
         machine.addState("a", state1);
         machine.addState("b", state2);
         machine.setCurrent("c");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testSetCurrentNoStates() {
+        machine.setCurrent("a");
+    }
+
+    @Test
+    public void testSetCurrentEnterExitCalled() {
+        TestState state1 = new TestState();
+        TestState state2 = new TestState();
+        machine.addState("a", state1);
+        machine.addState("b", state2);
+        machine.setCurrent("b");
+        assertTrue(state1.exitCalled);
+        assertTrue(state2.enterCalled);
     }
 }

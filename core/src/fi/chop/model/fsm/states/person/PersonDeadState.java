@@ -1,9 +1,10 @@
 package fi.chop.model.fsm.states.person;
 
 import fi.chop.model.fsm.machines.PersonStateMachine;
+import fi.chop.model.fsm.states.ObjectState;
 import fi.chop.model.object.PersonObject;
 
-public class PersonDeadState extends PersonState {
+public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObject> {
 
     private float velocityX;
     private float velocityY;
@@ -11,9 +12,17 @@ public class PersonDeadState extends PersonState {
 
     public PersonDeadState(PersonStateMachine machine, PersonObject object) {
         super(machine, object);
+    }
+
+    @Override
+    public void enter() {
         velocityX = -150;
+        velocityY = 0;
         rotVelocity = 90;
     }
+
+    @Override
+    public void exit() { }
 
     @Override
     public void update(float delta) {

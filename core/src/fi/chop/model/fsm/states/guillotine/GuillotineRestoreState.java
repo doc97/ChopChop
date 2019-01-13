@@ -3,15 +3,22 @@ package fi.chop.model.fsm.states.guillotine;
 import fi.chop.Chop;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
+import fi.chop.model.fsm.states.ObjectState;
 import fi.chop.model.object.GuillotineObject;
 
-public class GuillotineRestoreState extends GuillotineState {
+public class GuillotineRestoreState extends ObjectState<GuillotineStateMachine, GuillotineObject> {
 
     private static final int RESTORE_SPEED_PX_PER_SEC = 200;
 
     public GuillotineRestoreState(GuillotineStateMachine machine, GuillotineObject object) {
         super(machine, object);
     }
+
+    @Override
+    public void enter() { }
+
+    @Override
+    public void exit() { }
 
     @Override
     public void update(float delta) {
