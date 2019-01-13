@@ -8,6 +8,7 @@ import fi.chop.model.DrawParameters;
 
 public abstract class GameObject {
 
+    private int id = -1;
     private float x;
     private float y;
     private float width;
@@ -72,6 +73,25 @@ public abstract class GameObject {
 
     public void rotateRad(double delta) {
         setRotationRad(getRotationRad() + delta);
+    }
+
+    public void invalidateID() {
+        id = -1;
+    }
+
+    public void growID() {
+        if (id >= 0)
+            id++;
+    }
+
+    public void setID(int id) {
+        if (id < 0)
+            throw new IllegalArgumentException("id must be positive");
+        this.id = id;
+    }
+
+    public int getID() {
+        return id;
     }
 
     public void setPosition(float x, float y) {

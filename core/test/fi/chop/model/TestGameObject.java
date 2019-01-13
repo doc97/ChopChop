@@ -28,6 +28,7 @@ public class TestGameObject {
 
     @Test
     public void testDefaultValues() {
+        assertEquals(-1, object.getID(), EPSILON);
         assertEquals(0, object.getX(), EPSILON);
         assertEquals(0, object.getY(), EPSILON);
         assertEquals(0, object.getRotationRad(), EPSILON);
@@ -39,6 +40,42 @@ public class TestGameObject {
         assertEquals(0, object.getOriginX(), EPSILON);
         assertEquals(0, object.getOriginY(), EPSILON);
         assertFalse(object.isDead());
+    }
+
+    @Test
+    public void testSetID() {
+        object.setID(0);
+        assertEquals(0, object.getID());
+        object.setID(1);
+        assertEquals(1, object.getID());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetIDNegative() {
+        object.setID(-1);
+    }
+
+    @Test
+    public void testInvalidateID() {
+        object.setID(2);
+        object.invalidateID();
+        assertEquals(-1, object.getID());
+
+    }
+
+    @Test
+    public void testGrowValidID() {
+        object.setID(2);
+        object.growID();
+        assertEquals(3, object.getID());
+        object.growID();
+        assertEquals(4, object.getID());
+    }
+
+    @Test
+    public void testGrowInvalidID() {
+        object.growID();
+        assertEquals(-1, object.getID());
     }
 
     @Test
