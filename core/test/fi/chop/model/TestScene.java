@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.junit.Assert.*;
 
@@ -265,5 +266,56 @@ public class TestScene {
         GameObject obj1 = scene.findOne(o -> o.getID() == 1);
         assertEquals(1, obj1.getID());
         assertNotSame(obj0, obj1);
+    }
+
+    @Test
+    public void testFindOnePredicate() {
+        TestObject obj1 = new TestObject();
+        obj1.setPosition(10, 5);
+        TestObject obj2 = new TestObject();
+        obj2.setPosition(10, 10);
+        scene.add(obj1, obj2);
+        scene.update(0);
+        GameObject obj = scene.findOne(o -> o.getX() == 10 && o.getY() == 10);
+        assertSame(obj2, obj);
+        assertNull(scene.findOne(o -> o.getX() == 10 && o.getY() == 10 && o.getID() == 0));
+    }
+
+    @Test
+    public void testFindOnePredicateChaining() {
+        TestObject obj1 = new TestObject();
+        obj1.setPosition(10, 5);
+        TestObject obj2 = new TestObject();
+        obj2.setPosition(10, 10);
+        scene.add(obj1, obj2);
+        scene.update(0);
+        Predicate<GameObject> xPred = o -> o.getX() == 10;
+        Predicate<GameObject> yPred = o -> o.getY() == 10;
+        GameObject obj = scene.findOne(xPred.and(yPred));
+        assertSame(obj2, obj);
+    }
+
+    @Test
+    public void testFindAllPredicate() {
+        TestObject obj1 = new TestObject();
+        obj1.setRotationDeg(45);
+        TestObject obj2 = new TestObject();
+        obj2.setRotationDeg(45);
+        GameObject obj3 = new GameObject(null) {
+            @Override
+            public void load() { }
+            @Override
+            public void update(float delta) { }
+            @Override
+            public void render(SpriteBatch batch) { }
+        };
+        obj3.setRotationDeg(45);
+
+        scene.add(new TestObject(), obj1, new TestObject(), new TestObject(), obj2, new TestObject(), obj3);
+        scene.update(0);
+        List<GameObject> result = scene.findAll(o -> o.getRotationDeg() == 45 && o instanceof TestObject);
+        assertEquals(2, result.size());
+        assertSame(obj1, result.get(0));
+        assertSame(obj2, result.get(1));
     }
 }
