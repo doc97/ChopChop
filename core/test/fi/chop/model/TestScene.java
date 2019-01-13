@@ -137,6 +137,30 @@ public class TestScene {
     }
 
     @Test
+    public void testKillAll() {
+        TestObject obj1 = new TestObject();
+        TestObject obj2 = new TestObject();
+        obj2.setRotationDeg(45);
+        scene.add(obj1, obj2);
+        scene.update(0);
+        int count = scene.killAll(o -> o.getRotationDeg() == 45);
+        assertEquals(1, count);
+        assertFalse(obj1.isDead());
+        assertTrue(obj2.isDead());
+    }
+
+    @Test
+    public void testKillAllTrue() {
+        scene.add(new TestObject(), new TestObject(), new TestObject());
+        scene.update(0);
+        int count = scene.killAll(o -> true);
+        assertEquals(3, count);
+        assertEquals(3, scene.getObjectCount());
+        scene.update(0);
+        assertTrue(scene.isEmpty());
+    }
+
+    @Test
     public void testUpdate() {
         TestObject obj = new TestObject();
         scene.add(obj);

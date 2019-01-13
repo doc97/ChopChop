@@ -77,6 +77,17 @@ public class Scene {
         return ret;
     }
 
+    public int killAll(Predicate<GameObject> predicate) {
+        int count = 0;
+        for (GameObject object : objects) {
+            if (predicate.test(object)) {
+                count++;
+                object.die();
+            }
+        }
+        return count;
+    }
+
     public void clear() {
         objects.clear();
         toAdd.clear();
