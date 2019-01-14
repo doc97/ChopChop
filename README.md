@@ -18,9 +18,9 @@ $ ./gradlew desktop:run
 This will start the game.
 
 ## Team members
-- @Allufferi: Art
-- @Vain0o: Programmer
-- @doc97: Producer, Programmer
+- [@Allufferi](https://github.com/Allufferi): Art
+- [@Vain0o](https://github.com/Vain0o): Programmer
+- [@doc97](https://github.com/doc97): Producer, Programmer
 
 ## Links
 - [Roadmap](https://docs.google.com/spreadsheets/d/1x61WWn-eeavdUpjNaNcWs83Pb-1zSvUSXmC4EUJPSfs/edit?usp=sharing)
