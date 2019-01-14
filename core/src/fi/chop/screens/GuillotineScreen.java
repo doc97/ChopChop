@@ -21,6 +21,8 @@ import fi.chop.util.DrawUtil;
 
 public class GuillotineScreen extends ChopScreen implements EventListener {
 
+    private static final float NEW_PERSON_DELAY_SEC = 2;
+
     private Scene scene;
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
@@ -28,9 +30,6 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private BitmapFont font;
     private float leftOfDaySec;
     private int day;
-
-    private static final float NEW_PERSON_DELAY_SEC = 2;
-    private float newPersonTimer;
 
     public GuillotineScreen(Chop game) {
         super(game);
@@ -69,8 +68,6 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         newDay();
         newPerson();
 
-        newPersonTimer = -1;
-
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
 
@@ -86,13 +83,6 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         leftOfDaySec -= delta;
         if (leftOfDaySec <= 0)
             newDay();
-
-        if (newPersonTimer > 0) {
-            newPersonTimer -= delta;
-            if (newPersonTimer <= 0) {
-                newPerson();
-            }
-        }
     }
 
     @Override
@@ -152,7 +142,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         switch (event) {
             case ACTION_MERCY:
                 Chop.events.notify(Events.EVT_PERSON_SAVED);
-                newPersonTimer = NEW_PERSON_DELAY_SEC;
+                Chop.timer.addAction(NEW_PERSON_DELAY_SEC, this::newPerson);
                 break;
             case ACTION_INTERACT:
                 boolean isMeterIdle = powerMeter.getState() == PowerMeterStates.IDLE;

@@ -17,10 +17,12 @@ import fi.chop.event.EventSystem;
 import fi.chop.model.GameStats;
 import fi.chop.model.InputMap;
 import fi.chop.screens.LoadingScreen;
+import fi.chop.timer.GameTimer;
 
 public class Chop extends Game {
 
 	public static EventSystem events;
+	public static GameTimer timer;
 
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -36,6 +38,7 @@ public class Chop extends Game {
 	    Gdx.gl.glClearColor(0, 0, 0, 1);
 
 	    events = new EventSystem();
+	    timer = new GameTimer();
 
 	    camera = new OrthographicCamera();
 	    viewport = new FitViewport(1920, 1080, camera);
@@ -52,6 +55,12 @@ public class Chop extends Game {
 		assets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
 	    setScreen(new LoadingScreen(this));
+	}
+
+	@Override
+	public void render() {
+		super.render();
+		timer.update(Gdx.graphics.getRawDeltaTime());
 	}
 
 	@Override
