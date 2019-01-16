@@ -11,12 +11,10 @@ import fi.chop.event.Events;
 import fi.chop.input.GuillotineScreenInput;
 import fi.chop.model.Layer;
 import fi.chop.model.Scene;
+import fi.chop.model.Sentence;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
-import fi.chop.model.object.GuillotineObject;
-import fi.chop.model.object.PersonObject;
-import fi.chop.model.object.PowerBarObject;
-import fi.chop.model.object.PowerMeterObject;
+import fi.chop.model.object.*;
 import fi.chop.util.DrawUtil;
 
 public class GuillotineScreen extends ChopScreen implements EventListener {
@@ -67,6 +65,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
         newDay();
         newPerson();
+        newSentence();
 
         font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
     }
@@ -129,6 +128,13 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         person.load();
         Chop.events.addListener(person, Events.EVT_HEAD_CHOP, Events.EVT_PERSON_SAVED);
         scene.addObjects("Heads", person);
+    }
+
+    private void newSentence() {
+        Sentence sentence = new Sentence("farmer", 400);
+        ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), sentence);
+        scroll.load();
+        scene.addObjects("UI", scroll);
     }
 
     private void newDay() {
