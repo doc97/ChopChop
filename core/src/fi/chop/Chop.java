@@ -21,77 +21,77 @@ import fi.chop.timer.GameTimer;
 
 public class Chop extends Game {
 
-	public static EventSystem events;
-	public static GameTimer timer;
+    public static EventSystem events;
+    public static GameTimer timer;
 
-	private OrthographicCamera camera;
-	private Viewport viewport;
-	private SpriteBatch batch;
-	private AssetManager assets;
-	private InputMap input;
-	private GameStats stats;
+    private OrthographicCamera camera;
+    private Viewport viewport;
+    private SpriteBatch batch;
+    private AssetManager assets;
+    private InputMap input;
+    private GameStats stats;
 
-	@Override
-	public void create() {
+    @Override
+    public void create() {
 
-	    // Set background color to black
-	    Gdx.gl.glClearColor(0, 0, 0, 1);
+        // Set background color to black
+        Gdx.gl.glClearColor(0, 0, 0, 1);
 
-	    events = new EventSystem();
-	    timer = new GameTimer();
+        events = new EventSystem();
+        timer = new GameTimer();
 
-	    camera = new OrthographicCamera();
-	    viewport = new FitViewport(1920, 1080, camera);
-	    viewport.apply(true);
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(1920, 1080, camera);
+        viewport.apply(true);
 
-	    assets = new AssetManager();
-		batch = new SpriteBatch();
-		input = new InputMap();
-		stats = new GameStats();
+        assets = new AssetManager();
+        batch = new SpriteBatch();
+        input = new InputMap();
+        stats = new GameStats();
 
-		// Set TTF and bitmap font loader
-		FileHandleResolver resolver = new InternalFileHandleResolver();
-		assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-		assets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+        // Set TTF and bitmap font loader
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        assets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
-	    setScreen(new LoadingScreen(this));
-	}
+        setScreen(new LoadingScreen(this));
+    }
 
-	@Override
-	public void render() {
-		super.render();
-		timer.update(Gdx.graphics.getRawDeltaTime());
-	}
+    @Override
+    public void render() {
+        super.render();
+        timer.update(Gdx.graphics.getRawDeltaTime());
+    }
 
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-		viewport.update(width, height, true);
-	}
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        viewport.update(width, height, true);
+    }
 
-	@Override
-	public void dispose() {
-		batch.dispose();
-		assets.dispose();
-	}
+    @Override
+    public void dispose() {
+        batch.dispose();
+        assets.dispose();
+    }
 
-	public OrthographicCamera getCamera() {
-		return camera;
-	}
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 
-	public SpriteBatch getSpriteBatch() {
-		return batch;
-	}
+    public SpriteBatch getSpriteBatch() {
+        return batch;
+    }
 
-	public AssetManager getAssetManager() {
-		return assets;
-	}
+    public AssetManager getAssetManager() {
+        return assets;
+    }
 
-	public InputMap getInputMap() {
-		return input;
-	}
+    public InputMap getInputMap() {
+        return input;
+    }
 
-	public GameStats getStats() {
-		return stats;
-	}
+    public GameStats getStats() {
+        return stats;
+    }
 }
