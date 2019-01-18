@@ -126,3 +126,6 @@ Thumbs.db
 
 ## Project assets
 **/packed/
+
+## JUnit results
+core/out
