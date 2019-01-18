@@ -22,7 +22,7 @@ public class PowerMeterPowerUpState extends ObjectState<PowerMeterStateMachine, 
         float toAdd = getObject().getToAdd();
         float meterDelta = Math.min(delta, toAdd);
 
-        getObject().addMeterPower(meterDelta);
+        getObject().addMeterValue(meterDelta);
         toAdd -= meterDelta;
         getObject().setToAdd(toAdd);
 
