@@ -17,12 +17,38 @@ public class TestPlayer {
 
     @Test
     public void testDefaultValues() {
+        assertFalse(player.hasAnyPerks());
         assertEquals(0, player.getPopularity(), EPSILON);
         assertEquals(0, player.getReputation(), EPSILON);
         assertEquals(0, player.getReputationLevel());
         assertEquals(0, player.getMoney());
         assertTrue(player.hasEnoughMoney(0));
         assertFalse(player.hasEnoughMoney(1));
+    }
+
+    @Test
+    public void testAddOnePerk() {
+        player.addPerks(PopularityPerk.MEANINGFUL_WORK);
+        assertTrue(player.hasAnyPerks());
+        assertTrue(player.hasPerk(PopularityPerk.MEANINGFUL_WORK));
+    }
+
+    @Test
+    public void testAddTwoPerks() {
+        player.addPerks(PopularityPerk.TURNING_A_BLIND_EYE,
+                PopularityPerk.GIFT_OF_THE_PEOPLE);
+        assertTrue(player.hasAnyPerks());
+        assertTrue(player.hasPerk(PopularityPerk.TURNING_A_BLIND_EYE));
+        assertTrue(player.hasPerk(PopularityPerk.GIFT_OF_THE_PEOPLE));
+        assertFalse(player.hasPerk(PopularityPerk.MEANINGFUL_WORK));
+    }
+
+    @Test
+    public void testRemoveOnePerk() {
+        player.addPerks(PopularityPerk.MEANINGFUL_WORK);
+        player.removePerks(PopularityPerk.MEANINGFUL_WORK);
+        assertFalse(player.hasAnyPerks());
+        assertFalse(player.hasPerk(PopularityPerk.MEANINGFUL_WORK));
     }
 
     @Test

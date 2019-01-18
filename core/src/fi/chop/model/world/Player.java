@@ -1,14 +1,39 @@
 package fi.chop.model.world;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Set;
+
 public class Player {
 
     public static final int MIN_REPUTATION_LEVEL = 0;
     public static final int MAX_REPUTATION_LEVEL = 5;
 
+    private Set<PopularityPerk> perks;
     private float popularity;
     private float reputation;
     private int reputationLevel;
     private int money;
+
+    public Player() {
+        perks = EnumSet.noneOf(PopularityPerk.class);
+    }
+
+    public void addPerks(PopularityPerk... perks) {
+        this.perks.addAll(Arrays.asList(perks));
+    }
+
+    public void removePerks(PopularityPerk... perks) {
+        this.perks.removeAll(Arrays.asList(perks));
+    }
+
+    public boolean hasPerk(PopularityPerk perk) {
+        return perks.contains(perk);
+    }
+
+    public boolean hasAnyPerks() {
+        return !perks.isEmpty();
+    }
 
     public void addPopularity(float delta) {
         popularity = Math.min(Math.max(popularity + delta, 0), 1);
