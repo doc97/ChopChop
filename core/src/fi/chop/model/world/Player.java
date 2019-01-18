@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Player {
 
-    public static final int MIN_REPUTATION_LEVEL = 0;
+    public static final int MIN_REPUTATION_LEVEL = 1;
     public static final int MAX_REPUTATION_LEVEL = 5;
 
     private final EventSystem eventSystem;
@@ -23,6 +23,7 @@ public class Player {
     public Player(EventSystem eventSystem) {
         this.eventSystem = eventSystem;
         perks = EnumSet.noneOf(PopularityPerk.class);
+        reputationLevel = MIN_REPUTATION_LEVEL;
     }
 
     public void addPerks(PopularityPerk... perks) {
@@ -60,16 +61,12 @@ public class Player {
                 reputation = 1;
                 break;
             }
-            if (eventSystem != null)
-                eventSystem.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
         }
         while (reputation < 0) {
             decreaseReputationLevel();
             reputation += 1.0f;
             if (reputationLevel == MIN_REPUTATION_LEVEL)
                 reputation = 0;
-            if (eventSystem != null)
-                eventSystem.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
         }
         if (eventSystem != null)
             eventSystem.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(reputation));
@@ -82,11 +79,15 @@ public class Player {
     private void increaseReputationLevel() {
         if (++reputationLevel > MAX_REPUTATION_LEVEL)
             reputationLevel = MAX_REPUTATION_LEVEL;
+        if (eventSystem != null)
+            eventSystem.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
     }
 
     private void decreaseReputationLevel() {
         if (--reputationLevel < MIN_REPUTATION_LEVEL)
             reputationLevel = MIN_REPUTATION_LEVEL;
+        if (eventSystem != null)
+            eventSystem.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
     }
 
     public int getReputationLevel() {
