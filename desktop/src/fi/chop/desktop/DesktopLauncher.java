@@ -13,9 +13,10 @@ public class DesktopLauncher {
     public static void main (String[] arg) {
         packTextureAtlas("textures/unpacked/", "textures/packed", "Chop");
 
+        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = 1920;
-        config.height = 1080;
+        config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
+        config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
         new LwjglApplication(new Chop(), config);
     }
 
