@@ -2,8 +2,6 @@ package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
@@ -13,19 +11,14 @@ import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 public class PowerMeterObject extends ValueMeterObject implements EventListener {
 
     private final PowerMeterStateMachine state;
-    private BitmapFont font;
     private float toAdd;
     private boolean ready;
 
     public PowerMeterObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera, FillDirection.UP, "powermeter-background", "powermeter-fill");
+        super(assets, camera, FillDirection.UP, TextOriginX.LEFT, TextOriginY.BOTTOM,
+                1, 0, 10, 0,
+                "powermeter-background", "powermeter-fill", "ZCOOL-40.ttf");
         state = new PowerMeterStateMachine(this);
-    }
-
-    @Override
-    public void load() {
-        super.load();
-        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
     }
 
     @Override
@@ -34,16 +27,8 @@ public class PowerMeterObject extends ValueMeterObject implements EventListener 
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        super.render(batch);
-        drawPercent(batch);
-    }
-
-    private void drawPercent(SpriteBatch batch) {
-        float drawX = getX() + getWidth() + 10;
-        float drawY = getY() + font.getLineHeight();
-        String percentStr = String.format("%.1f", getMeterFillPercentage() * 100);
-        font.draw(batch, percentStr + "%", drawX, drawY);
+    protected String getLabel() {
+        return String.format("%.1f", getMeterFillPercentage() * 100) + "%";
     }
 
     @Override

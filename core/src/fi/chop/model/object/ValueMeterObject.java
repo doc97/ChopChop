@@ -2,9 +2,7 @@ package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.ValueMeter;
 
@@ -14,22 +12,48 @@ public abstract class ValueMeterObject extends GameObject {
         LEFT, RIGHT, UP, DOWN
     }
 
+    public enum TextOriginX {
+        NONE, LEFT, RIGHT
+    }
+
+    public enum TextOriginY {
+        NONE, TOP, BOTTOM
+    }
+
     private final String backgroundAssetName;
     private final String fillAssetName;
+    private final String fontName;
 
     private final ValueMeter meter;
     private final FillDirection direction;
+    private final TextOriginX textOriginX;
+    private final TextOriginY textOriginY;
+    private final float textOriginXOffset;
+    private final float textOriginYOffset;
+    private final float textSpacingX;
+    private final float textSpacingY;
     private TextureRegion background;
     private TextureRegion fill;
     private DrawParameters backgroundParams;
     private DrawParameters fillParams;
+    private BitmapFont font;
 
-    protected ValueMeterObject(AssetManager assets, OrthographicCamera camera, FillDirection direction,
-                               String backgroundAssetName, String fillAssetName) {
+    protected ValueMeterObject(AssetManager assets, OrthographicCamera camera,
+                               FillDirection direction, TextOriginX textOriginX, TextOriginY textOriginY,
+                               float textOriginXOffset, float textOriginYOffset,
+                               float textSpacingX, float textSpacingY,
+                               String backgroundAssetName, String fillAssetName, String fontName) {
         super(assets, camera);
         this.direction = direction;
+        this.textOriginX = textOriginX;
+        this.textOriginY = textOriginY;
+        this.textOriginXOffset = textOriginXOffset;
+        this.textOriginYOffset = textOriginYOffset;
+        this.textSpacingX = textSpacingX;
+        this.textSpacingY = textSpacingY;
         this.backgroundAssetName = backgroundAssetName;
         this.fillAssetName = fillAssetName;
+        this.fontName = fontName;
         meter = new ValueMeter();
     }
 
@@ -38,6 +62,7 @@ public abstract class ValueMeterObject extends GameObject {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         background = atlas.findRegion(backgroundAssetName);
         fill = atlas.findRegion(fillAssetName);
+        font = getAssets().get(fontName, BitmapFont.class);
 
         backgroundParams = new DrawParameters(background);
         fillParams = new DrawParameters(fill);
@@ -53,6 +78,7 @@ public abstract class ValueMeterObject extends GameObject {
     public void render(SpriteBatch batch) {
         drawBackground(batch);
         drawFill(batch);
+        drawLabel(batch);
     }
 
     private void drawBackground(SpriteBatch batch) {
@@ -90,6 +116,28 @@ public abstract class ValueMeterObject extends GameObject {
         }
         draw(batch, fill.getTexture(), fillParams);
     }
+
+    private void drawLabel(SpriteBatch batch) {
+        if (textOriginX == TextOriginX.NONE || textOriginY == TextOriginY.NONE)
+            return;
+
+        String text = getLabel();
+        GlyphLayout layout = new GlyphLayout(font, text);
+        float drawX = getX() + textSpacingX;
+        float drawY = getY() - textSpacingY;
+
+        if (textOriginX == TextOriginX.RIGHT)
+            drawX = getX() - layout.width - textSpacingX;
+        if (textOriginY == TextOriginY.BOTTOM)
+            drawY = getY() + font.getLineHeight() + textSpacingY;
+
+        drawX += textOriginXOffset * getWidth();
+        drawY += textOriginYOffset * getHeight();
+
+        font.draw(batch, text, drawX, drawY);
+    }
+
+    protected abstract String getLabel();
 
     public void addMeterValue(float value) {
         meter.add(value);
