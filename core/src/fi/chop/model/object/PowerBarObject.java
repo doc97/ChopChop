@@ -16,7 +16,7 @@ public class PowerBarObject extends GameObject {
     public PowerBarObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
         bar = new PowerBar();
-        bar.setDurationSec(2);
+        bar.setDurationSec(0.75f);
         bar.randomize();
     }
 
