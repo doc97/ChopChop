@@ -28,7 +28,7 @@ public class ScrollObject extends GameObject {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         scrollTexture = atlas.findRegion("scroll-background");
         scrollParams = new DrawParameters(scrollTexture);
-        font = getAssets().get("ZCOOL-30.ttf", BitmapFont.class);
+        font = getAssets().get("Dance-30.ttf", BitmapFont.class);
 
         setSize(scrollTexture.getRegionWidth(), scrollTexture.getRegionHeight());
     }
@@ -47,7 +47,7 @@ public class ScrollObject extends GameObject {
     }
 
     private void drawText(SpriteBatch batch) {
-        float offset = getWidth() * 0.1f;
+        float offset = getWidth() * 0.07f;
         float leftX = getX() - getOriginX() * getWidth();
         float drawX = leftX + offset;
 
