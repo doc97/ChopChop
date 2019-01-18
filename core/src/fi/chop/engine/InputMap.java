@@ -24,7 +24,7 @@ public class InputMap {
     public void defaults() {
         bind(Action.BACK, Input.Keys.ESCAPE);
         bind(Action.INTERACT, Input.Keys.SPACE);
-        bind(Action.MERCY, Input.Keys.SHIFT_RIGHT);
+        bind(Action.MERCY, Input.Keys.ENTER);
     }
 
     public void bind(Action action, int keyCode) {
