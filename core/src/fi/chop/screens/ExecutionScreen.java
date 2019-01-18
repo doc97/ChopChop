@@ -11,17 +11,23 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GuillotineScreenInput;
-import fi.chop.model.Sentence;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
+import fi.chop.model.world.Execution;
+import fi.chop.model.world.SocialStatus;
+import fi.chop.model.world.Victim;
 import fi.chop.util.DrawUtil;
+
+import java.util.Random;
 
 public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private static final float NEW_PERSON_DELAY_SEC = 2;
 
     private Scene scene;
+    private Execution execution;
+    private ScrollObject scroll;
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
@@ -42,7 +48,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         newDay();
         newPerson();
-        newSentence();
+        newExecution();
 
         font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
     }
@@ -59,19 +65,32 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         PopularityMeterObject popMeter = new PopularityMeterObject(getAssets(), getCamera());
         popMeter.setOrigin(1, 1);
         popMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
+        popMeter.load();
 
         ReputationMeterObject repMeter = new ReputationMeterObject(getAssets(), getCamera());
         repMeter.setOrigin(1, 1);
         repMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
+        repMeter.load();
 
         powerBar = new PowerBarObject(getAssets(), getCamera());
-        powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
+        powerBar.setOrigin(0.5f, 0.5f);
+        powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        powerBar.load();
 
         powerMeter = new PowerMeterObject(getAssets(), getCamera());
-        powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
+        powerMeter.setOrigin(0, 0.5f);
+        powerMeter.setPosition(powerBar.getX() + powerBar.getWidth() / 2 + 10, powerBar.getY());
+        powerMeter.load();
 
         guillotine = new GuillotineObject(getAssets(), getCamera());
+        guillotine.setOrigin(0.5f, 0);
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
+        guillotine.load();
+
+        scroll = new ScrollObject(getAssets(), getCamera());
+        scroll.setOrigin(0.5f, 0.5f);
+        scroll.setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
+        scroll.load();
 
         Chop.events.addListener(this,
                 Events.ACTION_BACK, Events.ACTION_INTERACT,
@@ -81,14 +100,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
-        popMeter.load();
-        repMeter.load();
-        powerBar.load();
-        powerMeter.load();
-        guillotine.load();
-
         scene.addObjects("Guillotine", guillotine);
-        scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter);
+        scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
     }
 
     @Override
@@ -145,17 +158,18 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void newPerson() {
         PersonObject person = new PersonObject(getAssets(), getCamera());
-        person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
+        person.setOrigin(0.5f, 0.5f);
+        person.setPosition(guillotine.getX(), guillotine.getY() + 125);
         person.load();
         Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_HEAD_CHOP);
         scene.addObjects("Heads", person);
     }
 
-    private void newSentence() {
-        Sentence sentence = new Sentence("farmer", 400);
-        ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), sentence);
-        scroll.load();
-        scene.addObjects("UI", scroll);
+    private void newExecution() {
+        Victim victim = new Victim("John Doe", SocialStatus.NOBILITY);
+        execution = new Execution(victim, "Plotting against the revolution");
+        execution.setFairPunishment(new Random().nextBoolean());
+        scroll.setExecution(execution);
     }
 
     private void newDay() {
