@@ -64,6 +64,7 @@ public class Chop extends Game {
     public void render() {
         super.render();
         timer.update(Gdx.graphics.getRawDeltaTime());
+        events.update();
     }
 
     @Override
