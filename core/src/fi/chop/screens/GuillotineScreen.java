@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.engine.Layer;
+import fi.chop.engine.Scene;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.GuillotineScreenInput;
-import fi.chop.engine.Layer;
-import fi.chop.engine.Scene;
 import fi.chop.model.Sentence;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
@@ -56,6 +56,11 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     }
 
     private void initializeScene() {
+        PopularityMeterObject popMeter = new PopularityMeterObject(getAssets(), getCamera());
+        popMeter.setOrigin(1, 1);
+        popMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
+        popMeter.addMeterValue(0.3f);
+
         powerBar = new PowerBarObject(getAssets(), getCamera());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
 
@@ -71,12 +76,13 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
                 Events.EVT_HEAD_CHOP);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
+        popMeter.load();
         powerBar.load();
         powerMeter.load();
         guillotine.load();
 
         scene.addObjects("Guillotine", guillotine);
-        scene.addObjects("UI", powerBar, powerMeter);
+        scene.addObjects("UI", popMeter, powerBar, powerMeter);
     }
 
     @Override
