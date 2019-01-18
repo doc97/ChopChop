@@ -37,16 +37,31 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     public void show() {
         Gdx.input.setInputProcessor(new GuillotineScreenInput(this, getInputMap()));
 
+        createScene();
+        initializeScene();
+
+        newDay();
+        newPerson();
+        newSentence();
+
+        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
+    }
+
+    private void createScene() {
         scene = new Scene();
         scene.addLayer("Background", new Layer());
         scene.addLayer("Guillotine", new Layer());
         scene.addLayer("Heads", new Layer());
         scene.addLayer("UI", new Layer());
+    }
 
+    private void initializeScene() {
         powerBar = new PowerBarObject(getAssets(), getCamera());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
+
         powerMeter = new PowerMeterObject(getAssets(), getCamera());
         powerMeter.setPosition(powerBar.getX() + 100 + 10, powerBar.getY());
+
         guillotine = new GuillotineObject(getAssets(), getCamera());
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
 
@@ -62,12 +77,6 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
 
         scene.addObjects("Guillotine", guillotine);
         scene.addObjects("UI", powerBar, powerMeter);
-
-        newDay();
-        newPerson();
-        newSentence();
-
-        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
     }
 
     @Override
