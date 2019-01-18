@@ -18,7 +18,7 @@ public class PowerMeterObject extends ValueMeterObject implements EventListener 
     private boolean ready;
 
     public PowerMeterObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera, "powermeter-background", "powermeter-fill");
+        super(assets, camera, FillDirection.UP, "powermeter-background", "powermeter-fill");
         state = new PowerMeterStateMachine(this);
     }
 
