@@ -25,7 +25,7 @@ public class PowerMeterObject extends ValueMeterObject implements EventListener 
     @Override
     public void load() {
         super.load();
-        font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
+        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class MainMenuScreen extends ChopScreen {
         Gdx.input.setInputProcessor(new MainMenuScreenInput(this, getInputMap()));
 
         text = "Press [Space] to start";
-        font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
+        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
 
         fade = new ColorFade(Color.WHITE, Color.BLACK, 1.5f,
                 (t) -> MathUtil.smoothStartN(t, 2));

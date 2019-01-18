@@ -23,18 +23,23 @@ public class LoadingScreen extends ChopScreen {
 
     @Override
     public void show() {
-        FreeTypeFontLoaderParameter zcoolParams = new FreeTypeFontLoaderParameter();
-        zcoolParams.fontFileName = "fonts/ZCOOL-Regular.ttf";
-        zcoolParams.fontParameters.size = 40;
+        FreeTypeFontLoaderParameter zcool20Params = new FreeTypeFontLoaderParameter();
+        zcool20Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
+        zcool20Params.fontParameters.size = 20;
+
+        FreeTypeFontLoaderParameter zcool40Params = new FreeTypeFontLoaderParameter();
+        zcool40Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
+        zcool40Params.fontParameters.size = 40;
 
         // Needed by LoadingScreen
-        getAssets().load("fonts/ZCOOL-Regular.ttf", BitmapFont.class, zcoolParams);
+        getAssets().load("ZCOOL-40.ttf", BitmapFont.class, zcool40Params);
         getAssets().finishLoading();
 
         // Queue other assets to be loaded asynchronously
+        getAssets().load("ZCOOL-20.ttf", BitmapFont.class, zcool20Params);
         getAssets().load("textures/packed/Chop.atlas", TextureAtlas.class);
 
-        font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
+        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
         layout = new GlyphLayout(font, "0.0%");
         fade = new ColorFade(Color.WHITE, Color.BLACK, 2);
     }

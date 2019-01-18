@@ -67,7 +67,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         newPerson();
         newSentence();
 
-        font = getAssets().get("fonts/ZCOOL-Regular.ttf", BitmapFont.class);
+        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
     }
 
     @Override
