@@ -2,7 +2,7 @@ package fi.chop.input;
 
 import fi.chop.Chop;
 import fi.chop.event.Events;
-import fi.chop.model.InputMap;
+import fi.chop.engine.InputMap;
 import fi.chop.screens.ChopScreen;
 
 public class GuillotineScreenInput extends ChopScreenInput {

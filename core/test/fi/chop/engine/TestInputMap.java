@@ -1,7 +1,8 @@
-package fi.chop.model;
+package fi.chop.engine;
 
 import com.badlogic.gdx.Input.Keys;
-import fi.chop.model.InputMap.Action;
+import fi.chop.engine.InputMap;
+import fi.chop.engine.InputMap.Action;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.chop.event.EventSystem;
 import fi.chop.model.GameStats;
-import fi.chop.model.InputMap;
+import fi.chop.engine.InputMap;
 import fi.chop.screens.LoadingScreen;
 import fi.chop.timer.GameTimer;
 

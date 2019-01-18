@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.model.GameStats;
-import fi.chop.model.InputMap;
+import fi.chop.engine.InputMap;
 
 public abstract class ChopScreen extends ScreenAdapter {
 

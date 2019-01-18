@@ -1,6 +1,7 @@
-package fi.chop.model;
+package fi.chop.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fi.chop.engine.Layer;
 import fi.chop.model.object.GameObject;
 import org.junit.Before;
 import org.junit.Test;

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.model.DrawParameters;
+import fi.chop.engine.DrawParameters;
 import fi.chop.model.fsm.machines.PersonStateMachine;
 import fi.chop.model.fsm.states.person.PersonStates;
 

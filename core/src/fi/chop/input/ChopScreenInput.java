@@ -1,7 +1,7 @@
 package fi.chop.input;
 
 import com.badlogic.gdx.InputAdapter;
-import fi.chop.model.InputMap;
+import fi.chop.engine.InputMap;
 import fi.chop.screens.ChopScreen;
 
 public class ChopScreenInput extends InputAdapter {

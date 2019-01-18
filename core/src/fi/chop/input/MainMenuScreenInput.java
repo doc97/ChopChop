@@ -1,6 +1,6 @@
 package fi.chop.input;
 
-import fi.chop.model.InputMap;
+import fi.chop.engine.InputMap;
 import fi.chop.screens.ChopScreen;
 import fi.chop.screens.Screens;
 

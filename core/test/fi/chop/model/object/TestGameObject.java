@@ -1,4 +1,4 @@
-package fi.chop.model;
+package fi.chop.model.object;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.model.object.GameObject;

@@ -1,4 +1,4 @@
-package fi.chop.model;
+package fi.chop.engine;
 
 import com.badlogic.gdx.Input;
 
