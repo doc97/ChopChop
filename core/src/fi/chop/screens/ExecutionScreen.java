@@ -17,7 +17,7 @@ import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
 import fi.chop.util.DrawUtil;
 
-public class GuillotineScreen extends ChopScreen implements EventListener {
+public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private static final float NEW_PERSON_DELAY_SEC = 2;
 
@@ -29,7 +29,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     private float leftOfDaySec;
     private int day;
 
-    public GuillotineScreen(Chop game) {
+    public ExecutionScreen(Chop game) {
         super(game);
     }
 
