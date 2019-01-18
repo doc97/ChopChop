@@ -61,6 +61,11 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         popMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
         popMeter.addMeterValue(0.3f);
 
+        ReputationMeterObject repMeter = new ReputationMeterObject(getAssets(), getCamera());
+        repMeter.setOrigin(1, 1);
+        repMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
+        repMeter.addMeterValue(0.5f);
+
         powerBar = new PowerBarObject(getAssets(), getCamera());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
 
@@ -77,12 +82,13 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
         popMeter.load();
+        repMeter.load();
         powerBar.load();
         powerMeter.load();
         guillotine.load();
 
         scene.addObjects("Guillotine", guillotine);
-        scene.addObjects("UI", popMeter, powerBar, powerMeter);
+        scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter);
     }
 
     @Override
