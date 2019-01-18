@@ -5,15 +5,15 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestPowerMeter {
+public class TestValueMeter {
 
     private static final float EPSILON = 0.000001f;
 
-    private PowerMeter meter;
+    private ValueMeter meter;
 
     @Before
     public void setUp() {
-        meter = new PowerMeter();
+        meter = new ValueMeter();
     }
 
     @Test

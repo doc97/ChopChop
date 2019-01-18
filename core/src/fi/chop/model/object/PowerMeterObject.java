@@ -10,13 +10,13 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.engine.DrawParameters;
-import fi.chop.model.PowerMeter;
+import fi.chop.model.ValueMeter;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 
 public class PowerMeterObject extends GameObject implements EventListener {
 
-    private final PowerMeter meter;
+    private final ValueMeter meter;
     private final PowerMeterStateMachine state;
     private TextureRegion background;
     private TextureRegion fill;
@@ -27,7 +27,7 @@ public class PowerMeterObject extends GameObject implements EventListener {
 
     public PowerMeterObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
-        meter = new PowerMeter();
+        meter = new ValueMeter();
         state = new PowerMeterStateMachine(this);
     }
 

@@ -1,6 +1,6 @@
 package fi.chop.model;
 
-public class PowerMeter {
+public class ValueMeter {
 
     private float value;
 
