@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.chop.event.EventSystem;
 import fi.chop.model.GameStats;
 import fi.chop.engine.InputMap;
+import fi.chop.model.world.Player;
 import fi.chop.screens.LoadingScreen;
 import fi.chop.timer.GameTimer;
 
@@ -30,6 +31,7 @@ public class Chop extends Game {
     private AssetManager assets;
     private InputMap input;
     private GameStats stats;
+    private Player player;
 
     @Override
     public void create() {
@@ -48,6 +50,7 @@ public class Chop extends Game {
         batch = new SpriteBatch();
         input = new InputMap();
         stats = new GameStats();
+        player = new Player();
 
         // Set TTF and bitmap font loader
         FileHandleResolver resolver = new InternalFileHandleResolver();
@@ -93,5 +96,9 @@ public class Chop extends Game {
 
     public GameStats getStats() {
         return stats;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

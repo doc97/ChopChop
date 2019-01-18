@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
@@ -65,9 +66,11 @@ public class PersonObject extends GameObject implements EventListener {
                 if (state.getCurrent() == PersonStates.IDLE)
                     state.setCurrent(PersonStates.DEAD);
                 break;
-            case EVT_PERSON_SAVED:
-                if (state.getCurrent() == PersonStates.IDLE)
+            case ACTION_MERCY:
+                if (state.getCurrent() == PersonStates.IDLE) {
+                    Chop.events.notify(Events.EVT_PERSON_SAVED);
                     state.setCurrent(PersonStates.SAVED);
+                }
                 break;
         }
     }

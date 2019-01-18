@@ -143,6 +143,10 @@ public abstract class ValueMeterObject extends GameObject {
         meter.add(value);
     }
 
+    public void setMeterValue(float value) {
+        meter.set(value);
+    }
+
     public float getMeterFillPercentage() {
         return meter.getFillPercentage();
     }

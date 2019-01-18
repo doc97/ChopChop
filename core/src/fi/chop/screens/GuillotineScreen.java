@@ -59,12 +59,10 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         PopularityMeterObject popMeter = new PopularityMeterObject(getAssets(), getCamera());
         popMeter.setOrigin(1, 1);
         popMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
-        popMeter.addMeterValue(0.3f);
 
         ReputationMeterObject repMeter = new ReputationMeterObject(getAssets(), getCamera());
         repMeter.setOrigin(1, 1);
         repMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
-        repMeter.addMeterValue(0.5f);
 
         powerBar = new PowerBarObject(getAssets(), getCamera());
         powerBar.setPosition(getCamera().viewportWidth * 3 / 4, getCamera().viewportHeight / 2 - 200);
@@ -76,9 +74,11 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
 
         Chop.events.addListener(this,
-                Events.ACTION_BACK, Events.ACTION_INTERACT, Events.ACTION_MERCY,
+                Events.ACTION_BACK, Events.ACTION_INTERACT,
                 Events.EVT_GUILLOTINE_RAISED, Events.EVT_GUILLOTINE_RESTORED,
-                Events.EVT_HEAD_CHOP);
+                Events.EVT_PERSON_SAVED, Events.EVT_HEAD_CHOP);
+        Chop.events.addListener(popMeter, Events.EVT_POPULARITY_CHANGED);
+        Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
         popMeter.load();
@@ -147,7 +147,7 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
         PersonObject person = new PersonObject(getAssets(), getCamera());
         person.setPosition(guillotine.getX() + 150, guillotine.getY() + 125);
         person.load();
-        Chop.events.addListener(person, Events.EVT_HEAD_CHOP, Events.EVT_PERSON_SAVED);
+        Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_HEAD_CHOP);
         scene.addObjects("Heads", person);
     }
 
@@ -167,10 +167,6 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
     @Override
     public void handle(Events event, EventData data) {
         switch (event) {
-            case ACTION_MERCY:
-                Chop.events.notify(Events.EVT_PERSON_SAVED);
-                Chop.timer.addAction(NEW_PERSON_DELAY_SEC, this::newPerson);
-                break;
             case ACTION_INTERACT:
                 boolean isMeterIdle = powerMeter.getState() == PowerMeterStates.IDLE;
                 boolean isGuillotineIdle = guillotine.getState() == GuillotineStates.IDLE;
@@ -189,8 +185,15 @@ public class GuillotineScreen extends ChopScreen implements EventListener {
             case EVT_GUILLOTINE_RESTORED:
                 newPerson();
                 break;
+            case EVT_PERSON_SAVED:
+                getPlayer().addPopularity(0.15f);
+                Chop.timer.addAction(NEW_PERSON_DELAY_SEC, this::newPerson);
+                break;
             case EVT_HEAD_CHOP:
                 getStats().addDailyKill();
+                getPlayer().addReputation(0.05f);
+                getPlayer().addPopularity(-0.05f);
+                break;
             default:
                 break;
         }

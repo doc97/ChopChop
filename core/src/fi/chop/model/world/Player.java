@@ -1,5 +1,9 @@
 package fi.chop.model.world;
 
+import fi.chop.Chop;
+import fi.chop.event.EventData;
+import fi.chop.event.Events;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
@@ -37,6 +41,7 @@ public class Player {
 
     public void addPopularity(float delta) {
         popularity = Math.min(Math.max(popularity + delta, 0), 1);
+        Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(popularity));
     }
 
     public float getPopularity() {
@@ -52,13 +57,16 @@ public class Player {
                 reputation = 1;
                 break;
             }
+            Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
         }
         while (reputation < 0) {
             decreaseReputationLevel();
             reputation += 1.0f;
             if (reputationLevel == MIN_REPUTATION_LEVEL)
                 reputation = 0;
+            Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
         }
+        Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(reputation));
     }
 
     public float getReputation() {

@@ -2,8 +2,13 @@ package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import fi.chop.event.EventData;
+import fi.chop.event.EventListener;
+import fi.chop.event.Events;
 
-public class ReputationMeterObject extends ValueMeterObject {
+public class ReputationMeterObject extends ValueMeterObject implements EventListener {
+
+    private int repLevel = 1;
 
     public ReputationMeterObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera, FillDirection.LEFT, TextOriginX.RIGHT, TextOriginY.BOTTOM,
@@ -12,12 +17,21 @@ public class ReputationMeterObject extends ValueMeterObject {
     }
 
     @Override
-    public void update(float delta) { }
+    public void update(float delta) {
+    }
 
     @Override
     protected String getLabel() {
-        String label = "Reputation (R1)";
+        String label = "Reputation (R" + repLevel + ")";
         String percentStr = String.format("%.1f", getMeterFillPercentage() * 100);
         return label + ": " + percentStr + "%";
+    }
+
+    @Override
+    public void handle(Events event, EventData data) {
+        if (event == Events.EVT_REPUTATION_CHANGED)
+            setMeterValue((float) data.get());
+        else if (event == Events.EVT_REPUTATION_LVL_CHANGED)
+            repLevel = (int) data.get();
     }
 }
