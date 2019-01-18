@@ -43,6 +43,7 @@ public class TestEventSystem {
         TestListener listener = new TestListener();
         system.addListener(Events.ACTION_INTERACT, listener);
         system.notify(Events.ACTION_INTERACT);
+        system.update();
         assertTrue(listener.hasTriggered());
     }
 
@@ -51,6 +52,7 @@ public class TestEventSystem {
         TestListener listener = new TestListener();
         system.addListener(Events.ACTION_BACK, listener);
         system.notify(Events.ACTION_INTERACT);
+        system.update();
         assertFalse(listener.hasTriggered());
     }
 
@@ -61,6 +63,7 @@ public class TestEventSystem {
         system.addListener(Events.ACTION_BACK, listener1);
         system.addListener(Events.ACTION_BACK, listener2);
         system.notify(Events.ACTION_BACK);
+        system.update();
         assertTrue(listener1.hasTriggered());
         assertTrue(listener2.hasTriggered());
     }
@@ -71,6 +74,7 @@ public class TestEventSystem {
         system.addListener(listener, Events.ACTION_BACK, Events.ACTION_INTERACT);
         system.notify(Events.ACTION_BACK);
         system.notify(Events.ACTION_INTERACT);
+        system.update();
         assertEquals(2, listener.getCount());
     }
 
@@ -80,6 +84,7 @@ public class TestEventSystem {
         system.addListener(Events.ACTION_BACK, listener);
         system.addListener(Events.ACTION_BACK, listener);
         system.notify(Events.ACTION_BACK);
+        system.update();
         assertEquals(1, listener.getCount());
     }
 
@@ -90,6 +95,7 @@ public class TestEventSystem {
         system.removeListener(listener);
         system.notify(Events.ACTION_BACK);
         system.notify(Events.ACTION_INTERACT);
+        system.update();
         assertEquals(0, listener.getCount());
     }
 
@@ -99,6 +105,7 @@ public class TestEventSystem {
         system.addListener(listener, Events.ACTION_BACK, Events.ACTION_INTERACT);
         system.clear();
         system.notify(Events.ACTION_BACK);
+        system.update();
         assertFalse(listener.hasTriggered());
     }
 
@@ -109,6 +116,7 @@ public class TestEventSystem {
         system.clear(Events.ACTION_INTERACT);
         system.notify(Events.ACTION_BACK);
         system.notify(Events.ACTION_INTERACT);
+        system.update();
         assertEquals(1, listener.getCount());
     }
 
@@ -118,6 +126,7 @@ public class TestEventSystem {
         TestListener listener = new TestListener();
         system.addListener(Events.ACTION_BACK, listener);
         system.notify(Events.ACTION_BACK, expected);
+        system.update();
         EventData data = listener.getData();
         assertSame(data.get().getClass(), Integer.class);
         int dataVal = (Integer) data.get();

@@ -1,16 +1,25 @@
 package fi.chop.event;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class EventSystem {
 
+    private class Event {
+        private Events type;
+        private EventData data;
+
+        public Event(Events type, EventData data) {
+            this.type = type;
+            this.data = data;
+        }
+    }
+
     private final Map<Events, ArrayList<EventListener>> listeners;
+    private final Queue<Event> queue;
 
     public EventSystem() {
         listeners = new EnumMap<>(Events.class);
+        queue = new ArrayDeque<>();
     }
 
     public void notify(Events event) {
@@ -18,10 +27,17 @@ public class EventSystem {
     }
 
     public void notify(Events event, EventData data) {
-        if (!listeners.containsKey(event))
-            return;
-        for (EventListener listener : listeners.get(event))
-            listener.handle(event, data);
+        queue.add(new Event(event, data));
+    }
+
+    public void update() {
+        Event evt;
+        while ((evt = queue.poll()) != null) {
+            if (!listeners.containsKey(evt.type))
+                continue;
+            for (EventListener listener : listeners.get(evt.type))
+                listener.handle(evt.type, evt.data);
+        }
     }
 
     public void clear() {
