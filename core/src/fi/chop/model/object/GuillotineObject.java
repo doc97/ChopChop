@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.engine.DrawParameters;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 
@@ -16,20 +17,20 @@ public class GuillotineObject extends GameObject {
 
     private final GuillotineStateMachine state;
     private TextureRegion blade;
-    private float bladeYOffset;
+    private DrawParameters bladeParams;
     private float toRaise;
     private int raiseCount;
 
     public GuillotineObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
         state = new GuillotineStateMachine(this);
-        bladeYOffset = IDLE_Y_OFFSET_PX;
     }
 
     @Override
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         blade = atlas.findRegion("blade");
+        bladeParams = new DrawParameters(blade, 0, IDLE_Y_OFFSET_PX);
         setSize(blade.getRegionWidth(), blade.getRegionHeight());
     }
 
@@ -40,7 +41,7 @@ public class GuillotineObject extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(blade, getX(), getY() + bladeYOffset);
+        draw(batch, blade, bladeParams);
     }
 
     public GuillotineStates getState() {
@@ -55,11 +56,11 @@ public class GuillotineObject extends GameObject {
     }
 
     public void addBladeYOffset(float amount) {
-        bladeYOffset = Math.max(bladeYOffset + amount, 0);
+        bladeParams.y = Math.max(bladeParams.y + amount, 0);
     }
 
     public float getBladeYOffset() {
-        return bladeYOffset;
+        return bladeParams.y;
     }
 
     public void setToRaise(float amount) {

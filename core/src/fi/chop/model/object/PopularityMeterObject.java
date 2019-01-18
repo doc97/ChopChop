@@ -10,7 +10,7 @@ public class PopularityMeterObject extends ValueMeterObject implements EventList
 
     public PopularityMeterObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera, FillDirection.LEFT, TextOriginX.RIGHT, TextOriginY.BOTTOM,
-                0, 0, 0, 5,
+                1, 1, 0, 5,
                 "meter-background", "meter-fill", "ZCOOL-30.ttf");
     }
 

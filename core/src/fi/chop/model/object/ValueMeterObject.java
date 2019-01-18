@@ -96,22 +96,28 @@ public abstract class ValueMeterObject extends GameObject {
 
         switch (direction) {
             case UP:
+                fillParams.y = (1 - p) * rh * -oy;
                 fillParams.height = p * rh;
+                fillParams.srcY = Math.round(ry);
+                fillParams.srcHeight = Math.round(p * rh);
                 break;
             case DOWN:
                 fillParams.y = (1 - p) * rh * (1 - oy);
+                fillParams.height = p * rh;
                 fillParams.srcY = Math.round(ry + (1 - p) * rh);
                 fillParams.srcHeight = Math.round(p * rh);
-                fillParams.height = p * rh;
                 break;
             case RIGHT:
+                fillParams.x = (1 - p) * rw * -ox;
                 fillParams.width = p * rw;
+                fillParams.srcX = Math.round(rx);
+                fillParams.srcWidth = Math.round(p * rw);
                 break;
             case LEFT:
                 fillParams.x = (1 - p) * rw * (1 - ox);
+                fillParams.width = p * rw;
                 fillParams.srcX = Math.round(rx + (1 - p) * rw);
                 fillParams.srcWidth = Math.round(p * rw);
-                fillParams.width = p * rw;
                 break;
         }
         draw(batch, fill.getTexture(), fillParams);
@@ -131,8 +137,8 @@ public abstract class ValueMeterObject extends GameObject {
         if (textOriginY == TextOriginY.BOTTOM)
             drawY = getY() + font.getLineHeight() + textSpacingY;
 
-        drawX += textOriginXOffset * getWidth();
-        drawY += textOriginYOffset * getHeight();
+        drawX += (-getOriginX() + textOriginXOffset) * getWidth();
+        drawY += (-getOriginY() + textOriginYOffset) * getHeight();
 
         font.draw(batch, text, drawX, drawY);
     }

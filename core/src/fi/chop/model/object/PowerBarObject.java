@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.chop.engine.DrawParameters;
 import fi.chop.model.PowerBar;
 
 public class PowerBarObject extends GameObject {
@@ -12,6 +13,8 @@ public class PowerBarObject extends GameObject {
     private final PowerBar bar;
     private TextureRegion background;
     private TextureRegion marker;
+    private DrawParameters backgroundParams;
+    private DrawParameters markerParams;
 
     public PowerBarObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
@@ -25,6 +28,9 @@ public class PowerBarObject extends GameObject {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         background = atlas.findRegion("powerbar-background");
         marker = atlas.findRegion("powerbar-marker");
+        backgroundParams = new DrawParameters(background);
+        markerParams = new DrawParameters(marker);
+
         setSize(background.getRegionWidth(), background.getRegionHeight());
     }
 
@@ -40,18 +46,12 @@ public class PowerBarObject extends GameObject {
     }
 
     private void drawBackground(SpriteBatch batch) {
-        batch.draw(background, getX(), getY());
+        draw(batch, background, backgroundParams);
     }
 
     private void drawMarker(SpriteBatch batch) {
-        float drawWidth = marker.getRegionWidth();
-        float drawHeight = marker.getRegionHeight();
-        float topBarY = getY() + getHeight();
-        float markerOffset = bar.getValue() * getHeight();
-
-        // -drawHeight because origin is at lower left
-        float drawY = topBarY - drawHeight - markerOffset;
-        batch.draw(marker, getX(), drawY, drawWidth, drawHeight);
+        markerParams.y = (-getOriginY() + (1 - bar.getValue())) * getHeight();
+        draw(batch, marker, markerParams);
     }
 
     public float getValue() {

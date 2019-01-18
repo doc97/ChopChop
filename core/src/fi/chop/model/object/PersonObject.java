@@ -23,7 +23,6 @@ public class PersonObject extends GameObject implements EventListener {
 
     public PersonObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
-        setOrigin(0.5f, 0.5f);
     }
 
     @Override
