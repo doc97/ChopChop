@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.effect.ColorFade;
 import fi.chop.engine.Layer;
 import fi.chop.engine.Scene;
 import fi.chop.event.EventData;
@@ -18,12 +19,13 @@ import fi.chop.model.world.Execution;
 import fi.chop.model.world.SocialStatus;
 import fi.chop.model.world.Victim;
 import fi.chop.util.FontRenderer;
+import fi.chop.util.MathUtil;
 
 import java.util.Random;
 
 public class ExecutionScreen extends ChopScreen implements EventListener {
 
-    private static final float NEW_PERSON_DELAY_SEC = 2;
+    private static final float FADEOUT_START_DELAY_SEC = 1.5f;
 
     private Scene scene;
     private ScrollObject scroll;
@@ -34,6 +36,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private FontRenderer killText;
     private FontRenderer timeText;
     private FontRenderer dayText;
+    private ColorFade fadeOut;
+    private boolean isExiting;
     private float leftOfDaySec;
     private int day;
 
@@ -51,6 +55,9 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         newDay();
         newPerson();
         newExecution();
+
+        fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.5f, (t) -> MathUtil.smoothStartN(t, 2))
+                .onFinish(() -> Chop.timer.addAction(1, () -> setScreen(Screens.MAIN_MENU)));
 
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
         powerText = new FontRenderer(font);
@@ -119,17 +126,23 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     protected void update(float delta) {
         scene.update(delta);
 
-        leftOfDaySec -= delta;
-        if (leftOfDaySec <= 0)
-            newDay();
+        if (isExiting) {
+            fadeOut.update(delta);
+        } else {
+            leftOfDaySec -= delta;
+            if (leftOfDaySec <= 0)
+                endDay();
+        }
     }
 
     @Override
     protected void render(SpriteBatch batch) {
         beginRender();
         batch.begin();
+        batch.setColor(fadeOut.getColor());
         scene.render(batch);
         drawGUI(batch);
+        batch.setColor(Color.WHITE);
         batch.end();
     }
 
@@ -191,6 +204,10 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         day++;
     }
 
+    private void endDay() {
+        isExiting = true;
+    }
+
     @Override
     public void handle(Events event, EventData data) {
         switch (event) {
@@ -210,11 +227,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 getStats().registerPower(power);
                 break;
             case EVT_GUILLOTINE_RESTORED:
-                newPerson();
+                endDay();
                 break;
             case EVT_PERSON_SAVED:
                 getPlayer().addPopularity(0.15f);
-                Chop.timer.addAction(NEW_PERSON_DELAY_SEC, this::newPerson);
+                Chop.timer.addAction(FADEOUT_START_DELAY_SEC, this::endDay);
                 break;
             case EVT_HEAD_CHOP:
                 getStats().addDailyKill();
