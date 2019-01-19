@@ -228,7 +228,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 }
                 break;
             case ACTION_BACK:
-                Gdx.app.exit();
+                setScreen(Screens.MAIN_MENU);
                 break;
             case EVT_GUILLOTINE_RAISED:
                 float power = powerMeter.getMeterFillPercentage();
