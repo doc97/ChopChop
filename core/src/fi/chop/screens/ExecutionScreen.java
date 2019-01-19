@@ -15,6 +15,7 @@ import fi.chop.input.GuillotineScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
+import fi.chop.model.world.Execution;
 import fi.chop.model.world.ExecutionFactory;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
@@ -22,8 +23,11 @@ import fi.chop.util.MathUtil;
 public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private static final float FADEOUT_START_DELAY_SEC = 1.5f;
+    private static final float POPULARITY_DELTA = 0.05f;
+    private static final float REPUTATION_DELTA = 0.05f;
 
     private Scene scene;
+    private Execution execution;
     private ScrollObject scroll;
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
@@ -109,6 +113,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
 
+        // Initialize meters
+        Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
+        Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(getPlayer().getReputation()));
+        Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(getPlayer().getReputationLevel()));
+
         scene.addObjects("Guillotine", guillotine);
         scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
     }
@@ -188,7 +197,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void newExecution() {
-        scroll.setExecution(ExecutionFactory.create());
+        execution = ExecutionFactory.create();
+        scroll.setExecution(execution);
     }
 
     private void newDay() {
@@ -199,6 +209,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void endDay() {
         isExiting = true;
+    }
+
+    private void updatePlayerStats(boolean wasCorrect, boolean wasKill) {
+        getPlayer().addPopularity(wasCorrect ? POPULARITY_DELTA : -POPULARITY_DELTA);
+        getPlayer().addReputation(wasKill ? REPUTATION_DELTA : -REPUTATION_DELTA);
     }
 
     @Override
@@ -223,13 +238,12 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 endDay();
                 break;
             case EVT_PERSON_SAVED:
-                getPlayer().addPopularity(0.15f);
                 Chop.timer.addAction(FADEOUT_START_DELAY_SEC, this::endDay);
+                updatePlayerStats(!execution.isFairPunishment(), false);
                 break;
             case EVT_HEAD_CHOP:
                 getStats().addDailyKill();
-                getPlayer().addReputation(0.05f);
-                getPlayer().addPopularity(-0.05f);
+                updatePlayerStats(execution.isFairPunishment(), true);
                 break;
             default:
                 break;
