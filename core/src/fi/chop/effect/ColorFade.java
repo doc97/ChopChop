@@ -11,6 +11,7 @@ public class ColorFade {
     private Color end;
     private Color current;
     private FadeFunction func;
+    private CallbackFunction finish;
 
     public ColorFade(Color start, Color end, float duration) {
         this(start, end, duration, (t) -> MathUtil.lerp(0, 1, t));
@@ -22,6 +23,11 @@ public class ColorFade {
         this.end = new Color(end);
         this.duration = duration;
         this.func = func;
+    }
+
+    public ColorFade onFinish(CallbackFunction finish) {
+        this.finish = finish;
+        return this;
     }
 
     public void update(float delta) {
@@ -36,6 +42,9 @@ public class ColorFade {
                 MathUtil.lerp(start.b, end.b, percent),
                 MathUtil.lerp(start.a, end.a, percent)
         );
+
+        if (hasFinished() && finish != null)
+            finish.call();
     }
 
     public void flip() {

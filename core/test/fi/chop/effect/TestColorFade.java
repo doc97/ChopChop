@@ -2,11 +2,23 @@ package fi.chop.effect;
 
 import com.badlogic.gdx.graphics.Color;
 import fi.chop.util.MathUtil;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class TestColorFade {
+
+    private boolean check;
+
+    private void check() {
+        check = !check;
+    }
+
+    @Before
+    public void setUp() {
+        check = false;
+    }
 
     @Test
     public void testDefaultValues() {
@@ -127,5 +139,15 @@ public class TestColorFade {
         assertEquals(Color.BLUE, fade.getColor());
         fade.update(0.3f);
         assertEquals(new Color(0.3f, 0, 0.7f, 1), fade.getColor());
+    }
+
+    @Test
+    public void testOnFinish() {
+        ColorFade fade = new ColorFade(Color.BLACK, Color.WHITE, 1)
+                .onFinish(this::check);
+        fade.update(1);
+        assertTrue(check);
+        fade.update(1);
+        assertTrue(check);
     }
 }
