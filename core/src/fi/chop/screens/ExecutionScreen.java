@@ -15,13 +15,9 @@ import fi.chop.input.GuillotineScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
-import fi.chop.model.world.Execution;
-import fi.chop.model.world.SocialStatus;
-import fi.chop.model.world.Victim;
+import fi.chop.model.world.ExecutionFactory;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
-
-import java.util.Random;
 
 public class ExecutionScreen extends ChopScreen implements EventListener {
 
@@ -192,10 +188,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void newExecution() {
-        Victim victim = new Victim("John Doe", SocialStatus.NOBILITY);
-        Execution execution = new Execution(victim, "Plotting against the revolution");
-        execution.setFairPunishment(new Random().nextBoolean());
-        scroll.setExecution(execution);
+        scroll.setExecution(ExecutionFactory.create());
     }
 
     private void newDay() {
