@@ -7,14 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.effect.ColorFade;
 import fi.chop.input.MainMenuScreenInput;
-import fi.chop.util.DrawUtil;
+import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
 
 public class MainMenuScreen extends ChopScreen {
 
-    private BitmapFont font;
-    private String text;
     private ColorFade fade;
+    private FontRenderer instructionText;
 
     public MainMenuScreen(Chop game) {
         super(game);
@@ -24,8 +23,9 @@ public class MainMenuScreen extends ChopScreen {
     public void show() {
         Gdx.input.setInputProcessor(new MainMenuScreenInput(this, getInputMap()));
 
-        text = "Press [Space] to start";
-        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
+        BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
+        instructionText = new FontRenderer(font);
+        instructionText.text("Press [Space] to start");
 
         fade = new ColorFade(Color.WHITE, Color.BLACK, 1.5f,
                 (t) -> MathUtil.smoothStartN(t, 2));
@@ -42,7 +42,11 @@ public class MainMenuScreen extends ChopScreen {
     protected void render(SpriteBatch batch) {
         beginRender();
         batch.begin();
-        DrawUtil.drawCenteredText(batch, font, text, fade.getColor(), getCamera());
+        batch.setColor(fade.getColor());
+        instructionText
+                .center(getCamera(), true, true)
+                .draw(batch);
+        batch.setColor(Color.WHITE);
         batch.end();
     }
 }

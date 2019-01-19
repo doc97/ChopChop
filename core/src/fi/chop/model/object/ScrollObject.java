@@ -9,13 +9,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.world.Execution;
+import fi.chop.util.FontRenderer;
 
 public class ScrollObject extends GameObject {
 
     private Execution execution;
     private TextureRegion scrollTexture;
     private DrawParameters scrollParams;
-    private BitmapFont font;
+    private FontRenderer scrollText;
     private final Color textColor;
 
     public ScrollObject(AssetManager assets, OrthographicCamera camera) {
@@ -28,7 +29,9 @@ public class ScrollObject extends GameObject {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         scrollTexture = atlas.findRegion("scroll-background");
         scrollParams = new DrawParameters(scrollTexture);
-        font = getAssets().get("Dance-30.ttf", BitmapFont.class);
+
+        BitmapFont font = getAssets().get("Dance-30.ttf", BitmapFont.class);
+        scrollText = new FontRenderer(font);
 
         setSize(scrollTexture.getRegionWidth(), scrollTexture.getRegionHeight());
     }
@@ -67,10 +70,11 @@ public class ScrollObject extends GameObject {
         text.append("\n");
         text.append("Bribe: ").append(execution.getBribe()).append("$").append("\n");
 
-        font.getCache().clear();
-        font.getCache().addText(text.toString(), drawX, drawY);
-        font.getCache().tint(textColor);
-        font.getCache().draw(batch);
+        scrollText
+                .text(text.toString())
+                .pos(drawX, drawY)
+                .tint(textColor)
+                .draw(batch);
     }
 
     public void setExecution(Execution execution) {

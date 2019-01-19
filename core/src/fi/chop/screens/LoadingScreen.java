@@ -2,18 +2,16 @@ package fi.chop.screens;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 import fi.chop.Chop;
 import fi.chop.effect.ColorFade;
-import fi.chop.util.DrawUtil;
+import fi.chop.util.FontRenderer;
 
 public class LoadingScreen extends ChopScreen {
 
-    private BitmapFont font;
-    private GlyphLayout layout;
+    private FontRenderer progressText;
     private ColorFade fade;
     private float progress;
 
@@ -44,8 +42,8 @@ public class LoadingScreen extends ChopScreen {
         getAssets().load("Dance-30.ttf", BitmapFont.class, dance30Params);
         getAssets().load("textures/packed/Chop.atlas", TextureAtlas.class);
 
-        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
-        layout = new GlyphLayout(font, "0.0%");
+        BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
+        progressText = new FontRenderer(font);
         fade = new ColorFade(Color.WHITE, Color.BLACK, 2);
     }
 
@@ -62,11 +60,14 @@ public class LoadingScreen extends ChopScreen {
 
     @Override
     protected void render(SpriteBatch batch) {
-        String percent = String.format("%.1f", progress * 100) + "%";
-        layout.setText(font, percent);
         beginRender();
         batch.begin();
-        DrawUtil.drawCenteredText(batch, font, percent, fade.getColor(), getCamera());
+        batch.setColor(fade.getColor());
+        progressText
+                .text(String.format("%.1f", progress * 100) + "%")
+                .center(getCamera(), true, true)
+                .draw(batch);
+        batch.setColor(Color.WHITE);
         batch.end();
     }
 }

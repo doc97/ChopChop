@@ -17,7 +17,7 @@ import fi.chop.model.object.*;
 import fi.chop.model.world.Execution;
 import fi.chop.model.world.SocialStatus;
 import fi.chop.model.world.Victim;
-import fi.chop.util.DrawUtil;
+import fi.chop.util.FontRenderer;
 
 import java.util.Random;
 
@@ -26,12 +26,14 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private static final float NEW_PERSON_DELAY_SEC = 2;
 
     private Scene scene;
-    private Execution execution;
     private ScrollObject scroll;
     private PowerBarObject powerBar;
     private PowerMeterObject powerMeter;
     private GuillotineObject guillotine;
-    private BitmapFont font;
+    private FontRenderer powerText;
+    private FontRenderer killText;
+    private FontRenderer timeText;
+    private FontRenderer dayText;
     private float leftOfDaySec;
     private int day;
 
@@ -50,7 +52,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         newPerson();
         newExecution();
 
-        font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
+        BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
+        powerText = new FontRenderer(font);
+        killText = new FontRenderer(font);
+        timeText = new FontRenderer(font);
+        dayText = new FontRenderer(font);
     }
 
     private void createScene() {
@@ -128,32 +134,39 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void drawGUI(SpriteBatch batch) {
-        float bestX = 50;
-        float bestY = getCamera().viewportHeight - 50;
-        float killX = 50;
-        float killY = getCamera().viewportHeight - 50 - 1.5f * font.getLineHeight();
-
-        drawHighestPower(batch, bestX, bestY);
-        drawKillStats(batch, killX, killY);
+        drawHighestPower(batch);
+        drawKillStats(batch);
         drawDayStats(batch);
     }
 
-    private void drawHighestPower(SpriteBatch batch, float x, float y) {
+    private void drawHighestPower(SpriteBatch batch) {
         String percentStr = String.format("%.1f", getStats().getHighestPower() * 100);
-        font.draw(batch, "Best: " + percentStr + "%", x, y);
+        powerText
+                .text("Best: " + percentStr + "%")
+                .pos(50, getCamera().viewportHeight - 50)
+                .draw(batch);
     }
 
-    private void drawKillStats(SpriteBatch batch, float x, float y) {
-        font.draw(batch, "Daily kills: " + getStats().getDailyKills(), x, y);
+    private void drawKillStats(SpriteBatch batch) {
+        killText
+                .text("Daily kills: " + getStats().getDailyKills())
+                .pos(50, getCamera().viewportHeight - 50 - 1.5f * killText.getLineHeight())
+                .draw(batch);
     }
 
     private void drawDayStats(SpriteBatch batch) {
         float centerX = getCamera().viewportWidth / 2;
         float y0 = getCamera().viewportHeight - 10;
-        float y1 = y0 - 2 * font.getLineHeight();
-        String timeText = "Time left: " + String.format("%.0f", Math.max(leftOfDaySec, 0));
-        DrawUtil.drawCenteredText(batch, font, "DAY " + day, Color.WHITE, centerX, y0);
-        DrawUtil.drawCenteredText(batch, font, timeText, Color.WHITE, centerX, y1);
+
+        dayText
+                .text("DAY" + day)
+                .pos(centerX, y0)
+                .draw(batch);
+
+        timeText
+                .text("Time left: " + String.format("%.0f", Math.max(leftOfDaySec, 0)))
+                .pos(centerX, y0 - 2 * timeText.getLineHeight())
+                .draw(batch);
     }
 
     private void newPerson() {
@@ -167,7 +180,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void newExecution() {
         Victim victim = new Victim("John Doe", SocialStatus.NOBILITY);
-        execution = new Execution(victim, "Plotting against the revolution");
+        Execution execution = new Execution(victim, "Plotting against the revolution");
         execution.setFairPunishment(new Random().nextBoolean());
         scroll.setExecution(execution);
     }

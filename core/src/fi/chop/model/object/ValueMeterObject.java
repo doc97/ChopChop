@@ -2,9 +2,13 @@ package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.ValueMeter;
+import fi.chop.util.FontRenderer;
 
 public abstract class ValueMeterObject extends GameObject {
 
@@ -36,7 +40,7 @@ public abstract class ValueMeterObject extends GameObject {
     private TextureRegion fill;
     private DrawParameters backgroundParams;
     private DrawParameters fillParams;
-    private BitmapFont font;
+    private FontRenderer labelText;
 
     protected ValueMeterObject(AssetManager assets, OrthographicCamera camera,
                                FillDirection direction, TextOriginX textOriginX, TextOriginY textOriginY,
@@ -62,7 +66,9 @@ public abstract class ValueMeterObject extends GameObject {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
         background = atlas.findRegion(backgroundAssetName);
         fill = atlas.findRegion(fillAssetName);
-        font = getAssets().get(fontName, BitmapFont.class);
+
+        BitmapFont font = getAssets().get(fontName, BitmapFont.class);
+        labelText = new FontRenderer(font);
 
         backgroundParams = new DrawParameters(background);
         fillParams = new DrawParameters(fill);
@@ -127,20 +133,19 @@ public abstract class ValueMeterObject extends GameObject {
         if (textOriginX == TextOriginX.NONE || textOriginY == TextOriginY.NONE)
             return;
 
-        String text = getLabel();
-        GlyphLayout layout = new GlyphLayout(font, text);
+        labelText.text(getLabel());
         float drawX = getX() + textSpacingX;
         float drawY = getY() - textSpacingY;
 
         if (textOriginX == TextOriginX.RIGHT)
-            drawX = getX() - layout.width - textSpacingX;
+            drawX = getX() - labelText.width() - textSpacingX;
         if (textOriginY == TextOriginY.BOTTOM)
-            drawY = getY() + font.getLineHeight() + textSpacingY;
+            drawY = getY() + labelText.getLineHeight() + textSpacingY;
 
         drawX += (-getOriginX() + textOriginXOffset) * getWidth();
         drawY += (-getOriginY() + textOriginYOffset) * getHeight();
 
-        font.draw(batch, text, drawX, drawY);
+        labelText.pos(drawX, drawY).draw(batch);
     }
 
     protected abstract String getLabel();
