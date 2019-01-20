@@ -2,7 +2,6 @@ package fi.chop.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
-import fi.chop.event.EventListener;
 import fi.chop.model.object.GameObject;
 
 import java.util.ArrayList;
@@ -23,18 +22,13 @@ public class Layer {
     }
 
     public void update(float delta) {
-        for (GameObject obj : toAdd) {
-            obj.setID(nextId++);
-            objects.add(obj);
-        }
-        toAdd.clear();
+        addQueued();
 
         for (Iterator<GameObject> it = objects.iterator(); it.hasNext();) {
             GameObject obj = it.next();
             obj.update(delta);
             if (obj.isDead()) {
-                if (obj instanceof EventListener)
-                    Chop.events.removeListener((EventListener) obj);
+                Chop.events.removeListener(obj);
                 it.remove();
             }
         }
@@ -95,6 +89,14 @@ public class Layer {
 
     public void add(GameObject... objects) {
         toAdd.addAll(Arrays.asList(objects));
+    }
+
+    public void addQueued() {
+        for (GameObject obj : toAdd) {
+            obj.setID(nextId++);
+            objects.add(obj);
+        }
+        toAdd.clear();
     }
 
     public int getObjectCount() {

@@ -25,6 +25,11 @@ public class Scene {
         layers.get(layerName).add(objects);
     }
 
+    public void addQueued() {
+        for (String name : names)
+            layers.get(name).addQueued();
+    }
+
     public GameObject findOne(Predicate<GameObject> predicate) {
         for (String name : names) {
             GameObject result = layerFindOne(name, predicate);

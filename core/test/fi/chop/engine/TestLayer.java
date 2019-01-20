@@ -1,7 +1,8 @@
 package fi.chop.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import fi.chop.engine.Layer;
+import fi.chop.Chop;
+import fi.chop.event.EventSystem;
 import fi.chop.model.object.GameObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,7 @@ public class TestLayer {
 
     @Before
     public void setUp() {
+        Chop.events = new EventSystem();
         layer = new Layer();
     }
 
@@ -70,6 +72,14 @@ public class TestLayer {
     }
 
     @Test
+    public void testAddWithAddQueued() {
+        layer.add(new TestObject());
+        layer.addQueued();
+        assertFalse(layer.isEmpty());
+        assertEquals(1, layer.getObjectCount());
+    }
+
+    @Test
     public void testAddWithTwoUpdates() {
         layer.add(new TestObject());
         layer.update(0);
@@ -78,9 +88,17 @@ public class TestLayer {
     }
 
     @Test
+    public void testAddWithTwoAddQueued() {
+        layer.add(new TestObject());
+        layer.addQueued();
+        layer.addQueued();
+        assertEquals(1, layer.getObjectCount());
+    }
+
+    @Test
     public void testAddTwoObjects() {
         layer.add(new TestObject(), new TestObject());
-        layer.update(0);
+        layer.addQueued();
         assertEquals(2, layer.getObjectCount());
     }
 
@@ -88,7 +106,7 @@ public class TestLayer {
     public void testAddTwoSeparateObjects() {
         layer.add(new TestObject());
         layer.add(new TestObject());
-        layer.update(0);
+        layer.addQueued();
         assertEquals(2, layer.getObjectCount());
     }
 
@@ -97,7 +115,7 @@ public class TestLayer {
         TestObject obj = new TestObject();
         layer.add(obj);
         assertEquals(-1, obj.getID());
-        layer.update(0);
+        layer.addQueued();
         assertEquals(0, obj.getID());
     }
 
@@ -105,14 +123,14 @@ public class TestLayer {
     public void testUpdateIncrementsID() {
         TestObject obj = new TestObject();
         layer.add(new TestObject(), obj);
-        layer.update(0);
+        layer.addQueued();
         assertEquals(1, obj.getID());
     }
 
     @Test
     public void testClear() {
         layer.add(new TestObject(), new TestObject());
-        layer.update(0);
+        layer.addQueued();
         layer.clear();
         assertTrue(layer.isEmpty());
         assertEquals(0, layer.getObjectCount());
@@ -122,7 +140,7 @@ public class TestLayer {
     public void testAddAndClearBeforeUpdate() {
         layer.add(new TestObject());
         layer.clear();
-        layer.update(0);
+        layer.addQueued();
         assertTrue(layer.isEmpty());
     }
 
@@ -130,10 +148,10 @@ public class TestLayer {
     public void testClearAndAdd() {
         TestObject obj = new TestObject();
         layer.add(new TestObject(), new TestObject());
-        layer.update(0);
+        layer.addQueued();
         layer.clear();
         layer.add(obj);
-        layer.update(0);
+        layer.addQueued();
         assertEquals(2, obj.getID());
     }
 
@@ -143,7 +161,7 @@ public class TestLayer {
         TestObject obj2 = new TestObject();
         obj2.setRotationDeg(45);
         layer.add(obj1, obj2);
-        layer.update(0);
+        layer.addQueued();
         int count = layer.killAll(o -> o.getRotationDeg() == 45);
         assertEquals(1, count);
         assertFalse(obj1.isDead());
@@ -153,7 +171,7 @@ public class TestLayer {
     @Test
     public void testKillAllTrue() {
         layer.add(new TestObject(), new TestObject(), new TestObject());
-        layer.update(0);
+        layer.addQueued();
         int count = layer.killAll(o -> true);
         assertEquals(3, count);
         assertEquals(3, layer.getObjectCount());
@@ -175,7 +193,7 @@ public class TestLayer {
     public void testRender() {
         TestObject obj = new TestObject();
         layer.add(obj);
-        layer.update(0);
+        layer.addQueued();
         layer.render(null);
         assertEquals(1, obj.renderCalls);
         layer.render(null);
@@ -194,7 +212,7 @@ public class TestLayer {
         TestObject first = new TestObject();
         layer.add(first);
         layer.add(new TestObject());
-        layer.update(0);
+        layer.addQueued();
 
         TestObject obj = layer.findOne(TestObject.class);
         assertSame(first, obj);
@@ -217,7 +235,7 @@ public class TestLayer {
         };
         TestObject test = new TestObject();
         layer.add(obj, test);
-        layer.update(0);
+        layer.addQueued();
         TestObject actual = layer.findOne(TestObject.class);
         assertSame(test, actual);
     }
@@ -233,7 +251,7 @@ public class TestLayer {
             public void render(SpriteBatch batch) { }
         };
         layer.add(obj, new TestObject());
-        layer.update(0);
+        layer.addQueued();
         GameObject actual = layer.findOne(GameObject.class);
         assertSame(obj, actual);
     }
@@ -241,7 +259,7 @@ public class TestLayer {
     @Test
     public void testFindAll() {
         layer.add(new TestObject(), new TestObject());
-        layer.update(0);
+        layer.addQueued();
         List<TestObject> list = layer.findAll(TestObject.class);
         assertEquals(2, list.size());
     }
@@ -263,7 +281,7 @@ public class TestLayer {
         };
         TestObject test = new TestObject();
         layer.add(obj, test);
-        layer.update(0);
+        layer.addQueued();
         assertEquals(1, layer.findAll(TestObject.class).size());
     }
 
@@ -278,14 +296,14 @@ public class TestLayer {
             public void render(SpriteBatch batch) { }
         };
         layer.add(obj, new TestObject());
-        layer.update(0);
+        layer.addQueued();
         assertEquals(2, layer.findAll(GameObject.class).size());
     }
 
     @Test
     public void testFindOneWithID() {
         layer.add(new TestObject(), new TestObject());
-        layer.update(0);
+        layer.addQueued();
         GameObject obj0 = layer.findOne(o -> o.getID() == 0);
         assertEquals(0, obj0.getID());
         GameObject obj1 = layer.findOne(o -> o.getID() == 1);
@@ -300,7 +318,7 @@ public class TestLayer {
         TestObject obj2 = new TestObject();
         obj2.setPosition(10, 10);
         layer.add(obj1, obj2);
-        layer.update(0);
+        layer.addQueued();
         GameObject obj = layer.findOne(o -> o.getX() == 10 && o.getY() == 10);
         assertSame(obj2, obj);
         assertNull(layer.findOne(o -> o.getX() == 10 && o.getY() == 10 && o.getID() == 0));
@@ -313,7 +331,7 @@ public class TestLayer {
         TestObject obj2 = new TestObject();
         obj2.setPosition(10, 10);
         layer.add(obj1, obj2);
-        layer.update(0);
+        layer.addQueued();
         Predicate<GameObject> xPred = o -> o.getX() == 10;
         Predicate<GameObject> yPred = o -> o.getY() == 10;
         GameObject obj = layer.findOne(xPred.and(yPred));
@@ -337,7 +355,7 @@ public class TestLayer {
         obj3.setRotationDeg(45);
 
         layer.add(new TestObject(), obj1, new TestObject(), new TestObject(), obj2, new TestObject(), obj3);
-        layer.update(0);
+        layer.addQueued();
         List<GameObject> result = layer.findAll(o -> o.getRotationDeg() == 45 && o instanceof TestObject);
         assertEquals(2, result.size());
         assertSame(obj1, result.get(0));
