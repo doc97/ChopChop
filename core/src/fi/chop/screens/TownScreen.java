@@ -11,7 +11,7 @@ import fi.chop.util.FontRenderer;
 public class TownScreen extends ChopScreen {
 
     private Scene scene;
-    private FontRenderer text;
+    private FontRenderer dayText;
 
     public TownScreen(Chop game) {
         super(game);
@@ -22,8 +22,10 @@ public class TownScreen extends ChopScreen {
         Gdx.input.setInputProcessor(new TownScreenInput(this, getInputMap()));
         scene = new Scene();
 
+        getWorld().nextDay();
+
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
-        text = new FontRenderer(font).text("TOWN");
+        dayText = new FontRenderer(font);
     }
 
     @Override
@@ -36,7 +38,15 @@ public class TownScreen extends ChopScreen {
         beginRender();
         batch.begin();
         scene.render(batch);
-        text.center(getCamera(), true, true).draw(batch);
+        drawDayText(batch);
         batch.end();
+    }
+
+    private void drawDayText(SpriteBatch batch) {
+        dayText
+                .text("DAY " + getWorld().getDay())
+                .center(getCamera(), true, false)
+                .y(getCamera().viewportHeight - 10)
+                .draw(batch);
     }
 }

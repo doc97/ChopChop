@@ -15,8 +15,6 @@ import fi.chop.input.ExecutionScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
-import fi.chop.model.world.Execution;
-import fi.chop.model.world.ExecutionFactory;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
 
@@ -27,15 +25,12 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private static final float REPUTATION_DELTA = 0.05f;
 
     private Scene scene;
-    private Execution execution;
     private FontRenderer powerText;
     private FontRenderer killText;
     private FontRenderer timeText;
-    private FontRenderer dayText;
     private ColorFade fadeOut;
     private boolean isExiting;
     private float leftOfDaySec;
-    private int day;
 
     private boolean isPowerMeterIdle;
     private boolean isGuillotineIdle;
@@ -46,27 +41,30 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new ExecutionScreenInput(this, getInputMap()));
+        loadAssets();
+        initializeScreen();
 
         createScene();
         initializeScene();
         initializeEventListener();
+    }
 
-        newDay();
-        newPerson();
-        newExecution();
+    private void initializeScreen() {
+        Gdx.input.setInputProcessor(new ExecutionScreenInput(this, getInputMap()));
 
+        leftOfDaySec = 60;
         fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.5f, (t) -> MathUtil.smoothStartN(t, 2))
-                .onFinish(() -> Chop.timer.addAction(1, () -> setScreen(Screens.MAIN_MENU)));
+                .onFinish(() -> Chop.timer.addAction(1, () -> setScreen(Screens.TOWN)));
 
+        isGuillotineIdle = true;
+        isPowerMeterIdle = true;
+    }
+
+    private void loadAssets() {
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
         powerText = new FontRenderer(font);
         killText = new FontRenderer(font);
         timeText = new FontRenderer(font);
-        dayText = new FontRenderer(font);
-
-        isGuillotineIdle = true;
-        isPowerMeterIdle = true;
     }
 
     private void createScene() {
@@ -103,21 +101,29 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
         guillotine.load();
 
-        GameObject scroll = new ScrollObject(getAssets(), getCamera());
+        GameObject person = new PersonObject(getAssets(), getCamera());
+        person.setOrigin(0.5f, 0.5f);
+        person.setPosition(guillotine.getX(), guillotine.getY() + 125);
+        person.load();
+
+        ScrollObject scroll = new ScrollObject(getAssets(), getCamera());
         scroll.setOrigin(0.5f, 0.5f);
         scroll.setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
         scroll.load();
+        scroll.setExecution(getWorld().getExecution());
 
         Chop.events.addListener(popMeter, Events.EVT_POPULARITY_CHANGED);
         Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISE, Events.EVT_GUILLOTINE_PREPARED);
         Chop.events.addListener(guillotine, Events.EVT_GUILLOTINE_RAISE);
+        Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_PERSON_KILLED);
 
         // Initialize meters
         Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
         Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(getPlayer().getReputation()));
         Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(getPlayer().getReputationLevel()));
 
+        scene.addObjects("Heads", person);
         scene.addObjects("Guillotine", guillotine);
         scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
         scene.addQueued();
@@ -135,6 +141,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     @Override
     public void hide() {
         Chop.events.clear();
+        getStats().resetDailyKills();
     }
 
     @Override
@@ -183,40 +190,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void drawDayStats(SpriteBatch batch) {
-        float centerX = getCamera().viewportWidth / 2;
-        float y0 = getCamera().viewportHeight - 10;
-
-        dayText
-                .text("DAY" + day)
-                .pos(centerX, y0)
-                .draw(batch);
-
         timeText
                 .text("Time left: " + String.format("%.0f", Math.max(leftOfDaySec, 0)))
-                .pos(centerX, y0 - 2 * timeText.getLineHeight())
+                .center(getCamera(), true, false)
+                .y(getCamera().viewportHeight - 10)
                 .draw(batch);
-    }
-
-    private void newPerson() {
-        GuillotineObject guillotine = scene.findOne(GuillotineObject.class);
-
-        PersonObject person = new PersonObject(getAssets(), getCamera());
-        person.setOrigin(0.5f, 0.5f);
-        person.setPosition(guillotine.getX(), guillotine.getY() + 125);
-        person.load();
-        Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_PERSON_KILLED);
-        scene.addObjects("Heads", person);
-    }
-
-    private void newExecution() {
-        execution = ExecutionFactory.create();
-        scene.findOne(ScrollObject.class).setExecution(execution);
-    }
-
-    private void newDay() {
-        getStats().resetDailyKills();
-        leftOfDaySec = 60;
-        day++;
     }
 
     private void endDay() {
@@ -256,11 +234,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 break;
             case EVT_PERSON_SAVED:
                 Chop.timer.addAction(FADEOUT_START_DELAY_SEC, this::endDay);
-                updatePlayerStats(!execution.isFairPunishment(), false);
+                updatePlayerStats(!getWorld().getExecution().isFairPunishment(), false);
                 break;
             case EVT_PERSON_KILLED:
                 getStats().addDailyKill();
-                updatePlayerStats(execution.isFairPunishment(), true);
+                updatePlayerStats(getWorld().getExecution().isFairPunishment(), true);
                 break;
             default:
                 break;
