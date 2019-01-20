@@ -17,6 +17,7 @@ import fi.chop.event.EventSystem;
 import fi.chop.model.GameStats;
 import fi.chop.engine.InputMap;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 import fi.chop.screens.LoadingScreen;
 import fi.chop.timer.GameTimer;
 
@@ -31,6 +32,7 @@ public class Chop extends Game {
     private AssetManager assets;
     private InputMap input;
     private GameStats stats;
+    private WorldState world;
     private Player player;
 
     @Override
@@ -50,6 +52,7 @@ public class Chop extends Game {
         batch = new SpriteBatch();
         input = new InputMap();
         stats = new GameStats();
+        world = new WorldState();
         player = new Player();
 
         // Set TTF and bitmap font loader
@@ -97,6 +100,10 @@ public class Chop extends Game {
 
     public GameStats getStats() {
         return stats;
+    }
+
+    public WorldState getWorld() {
+        return world;
     }
 
     public Player getPlayer() {

@@ -10,6 +10,7 @@ import fi.chop.Chop;
 import fi.chop.model.GameStats;
 import fi.chop.engine.InputMap;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public abstract class ChopScreen extends ScreenAdapter {
 
@@ -19,6 +20,7 @@ public abstract class ChopScreen extends ScreenAdapter {
     private final AssetManager manager;
     private final InputMap input;
     private final GameStats stats;
+    private final WorldState world;
     private final Player player;
 
     public ChopScreen(Chop game) {
@@ -28,6 +30,7 @@ public abstract class ChopScreen extends ScreenAdapter {
         this.camera = game.getCamera();
         this.input = game.getInputMap();
         this.stats = game.getStats();
+        this.world = game.getWorld();
         this.player = game.getPlayer();
     }
 
@@ -73,6 +76,10 @@ public abstract class ChopScreen extends ScreenAdapter {
 
     protected GameStats getStats() {
         return stats;
+    }
+
+    protected WorldState getWorld() {
+        return world;
     }
 
     protected Player getPlayer() {
