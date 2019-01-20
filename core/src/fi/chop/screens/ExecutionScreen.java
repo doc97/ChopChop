@@ -28,10 +28,6 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private Scene scene;
     private Execution execution;
-    private ScrollObject scroll;
-    private PowerBarObject powerBar;
-    private PowerMeterObject powerMeter;
-    private GuillotineObject guillotine;
     private FontRenderer powerText;
     private FontRenderer killText;
     private FontRenderer timeText;
@@ -40,6 +36,9 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private boolean isExiting;
     private float leftOfDaySec;
     private int day;
+
+    private boolean isPowerMeterIdle;
+    private boolean isGuillotineIdle;
 
     public ExecutionScreen(Chop game) {
         super(game);
@@ -51,6 +50,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         createScene();
         initializeScene();
+        initializeEventListener();
 
         newDay();
         newPerson();
@@ -64,6 +64,9 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         killText = new FontRenderer(font);
         timeText = new FontRenderer(font);
         dayText = new FontRenderer(font);
+
+        isGuillotineIdle = true;
+        isPowerMeterIdle = true;
     }
 
     private void createScene() {
@@ -75,40 +78,36 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void initializeScene() {
-        PopularityMeterObject popMeter = new PopularityMeterObject(getAssets(), getCamera());
+        GameObject popMeter = new PopularityMeterObject(getAssets(), getCamera());
         popMeter.setOrigin(1, 1);
         popMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
         popMeter.load();
 
-        ReputationMeterObject repMeter = new ReputationMeterObject(getAssets(), getCamera());
+        GameObject repMeter = new ReputationMeterObject(getAssets(), getCamera());
         repMeter.setOrigin(1, 1);
         repMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
         repMeter.load();
 
-        powerBar = new PowerBarObject(getAssets(), getCamera());
+        GameObject powerBar = new PowerBarObject(getAssets(), getCamera());
         powerBar.setOrigin(0.5f, 0.5f);
         powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
         powerBar.load();
 
-        powerMeter = new PowerMeterObject(getAssets(), getCamera());
+        GameObject powerMeter = new PowerMeterObject(getAssets(), getCamera());
         powerMeter.setOrigin(0, 0.5f);
         powerMeter.setPosition(powerBar.getX() + powerBar.getWidth() / 2 + 10, powerBar.getY());
         powerMeter.load();
 
-        guillotine = new GuillotineObject(getAssets(), getCamera());
+        GameObject guillotine = new GuillotineObject(getAssets(), getCamera());
         guillotine.setOrigin(0.5f, 0);
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
         guillotine.load();
 
-        scroll = new ScrollObject(getAssets(), getCamera());
+        GameObject scroll = new ScrollObject(getAssets(), getCamera());
         scroll.setOrigin(0.5f, 0.5f);
         scroll.setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
         scroll.load();
 
-        Chop.events.addListener(this,
-                Events.ACTION_BACK, Events.ACTION_INTERACT,
-                Events.EVT_GUILLOTINE_PREPARED, Events.EVT_GUILLOTINE_RESTORED,
-                Events.EVT_PERSON_SAVED, Events.EVT_PERSON_KILLED);
         Chop.events.addListener(popMeter, Events.EVT_POPULARITY_CHANGED);
         Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISE, Events.EVT_GUILLOTINE_PREPARED);
@@ -121,6 +120,16 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         scene.addObjects("Guillotine", guillotine);
         scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
+        scene.addQueued();
+    }
+
+    private void initializeEventListener() {
+        Chop.events.addListener(this,
+                Events.ACTION_BACK, Events.ACTION_INTERACT,
+                Events.EVT_GUILLOTINE_PREPARED, Events.EVT_GUILLOTINE_RESTORED,
+                Events.EVT_PERSON_SAVED, Events.EVT_PERSON_KILLED,
+                Events.EVT_GUILLOTINE_STATE_CHANGED, Events.EVT_POWERMETER_STATE_CHANGED
+                );
     }
 
     @Override
@@ -189,6 +198,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void newPerson() {
+        GuillotineObject guillotine = scene.findOne(GuillotineObject.class);
+
         PersonObject person = new PersonObject(getAssets(), getCamera());
         person.setOrigin(0.5f, 0.5f);
         person.setPosition(guillotine.getX(), guillotine.getY() + 125);
@@ -199,7 +210,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void newExecution() {
         execution = ExecutionFactory.create();
-        scroll.setExecution(execution);
+        scene.findOne(ScrollObject.class).setExecution(execution);
     }
 
     private void newDay() {
@@ -221,16 +232,23 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         switch (event) {
             case ACTION_INTERACT:
-                boolean isMeterIdle = powerMeter.getState() == PowerMeterStates.IDLE;
-                boolean isGuillotineIdle = guillotine.getState() == GuillotineStates.IDLE;
-                if (isMeterIdle && isGuillotineIdle)
-                    Chop.events.notify(Events.EVT_GUILLOTINE_RAISE, new EventData<>(powerBar.getValue()));
+                if (isPowerMeterIdle && isGuillotineIdle) {
+                    float value = scene.findOne(PowerBarObject.class).getValue();
+                    Chop.events.notify(Events.EVT_GUILLOTINE_RAISE, new EventData<>(value));
+                }
                 break;
             case ACTION_BACK:
                 setScreen(Screens.MAIN_MENU);
                 break;
+            case EVT_GUILLOTINE_STATE_CHANGED:
+                isGuillotineIdle = data.get() == GuillotineStates.IDLE;
+                break;
+            case EVT_POWERMETER_STATE_CHANGED:
+                isPowerMeterIdle = data.get() == PowerMeterStates.IDLE;
+                break;
             case EVT_GUILLOTINE_PREPARED:
-                float power = powerMeter.getMeterFillPercentage();
+                PowerMeterObject meter = scene.findOne(PowerMeterObject.class);
+                float power = meter.getMeterFillPercentage();
                 getStats().registerPower(power);
                 break;
             case EVT_GUILLOTINE_RESTORED:
