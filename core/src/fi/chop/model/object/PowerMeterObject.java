@@ -32,17 +32,19 @@ public class PowerMeterObject extends ValueMeterObject {
 
     @Override
     public void handle(Events event, EventData data) {
-        if (event == Events.EVT_GUILLOTINE_PREPARED)
+        if (event == Events.EVT_GUILLOTINE_RAISE)
+            addPower((float) data.get());
+        else if (event == Events.EVT_GUILLOTINE_PREPARED)
             ready = true;
+    }
+
+    private void addPower(float power) {
+        toAdd = power / GuillotineObject.MAX_RAISE_COUNT;
+        state.setCurrent(PowerMeterStates.POWER_UP);
     }
 
     public PowerMeterStates getState() {
         return state.getCurrent();
-    }
-
-    public void addPower(float power) {
-        toAdd = power / GuillotineObject.MAX_RAISE_COUNT;
-        state.setCurrent(PowerMeterStates.POWER_UP);
     }
 
     public void setToAdd(float toAdd) {

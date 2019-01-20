@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
+import fi.chop.event.EventData;
+import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 
@@ -44,11 +46,17 @@ public class GuillotineObject extends GameObject {
         draw(batch, blade, bladeParams);
     }
 
+    @Override
+    public void handle(Events event, EventData data) {
+        if (event == Events.EVT_GUILLOTINE_RAISE)
+            raiseBlade((float) data.get());
+    }
+
     public GuillotineStates getState() {
         return state.getCurrent();
     }
 
-    public void raiseBlade(float amount) {
+    private void raiseBlade(float amount) {
         amount = Math.min(Math.max(amount, 0), 1);
         toRaise = amount * MAX_RAISE_AMOUNT_PX;
         raiseCount++;

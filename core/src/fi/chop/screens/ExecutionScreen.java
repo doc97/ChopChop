@@ -111,7 +111,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 Events.EVT_PERSON_SAVED, Events.EVT_PERSON_KILLED);
         Chop.events.addListener(popMeter, Events.EVT_POPULARITY_CHANGED);
         Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
-        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_PREPARED);
+        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISE, Events.EVT_GUILLOTINE_PREPARED);
+        Chop.events.addListener(guillotine, Events.EVT_GUILLOTINE_RAISE);
 
         // Initialize meters
         Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
@@ -222,10 +223,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
             case ACTION_INTERACT:
                 boolean isMeterIdle = powerMeter.getState() == PowerMeterStates.IDLE;
                 boolean isGuillotineIdle = guillotine.getState() == GuillotineStates.IDLE;
-                if (isMeterIdle && isGuillotineIdle) {
-                    powerMeter.addPower(powerBar.getValue());
-                    guillotine.raiseBlade(powerBar.getValue());
-                }
+                if (isMeterIdle && isGuillotineIdle)
+                    Chop.events.notify(Events.EVT_GUILLOTINE_RAISE, new EventData<>(powerBar.getValue()));
                 break;
             case ACTION_BACK:
                 setScreen(Screens.MAIN_MENU);
