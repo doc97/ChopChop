@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
+import fi.chop.event.EventData;
+import fi.chop.event.EventListener;
+import fi.chop.event.Events;
 
-public abstract class GameObject {
+public abstract class GameObject implements EventListener {
 
     private int id = -1;
     private float x;
@@ -59,6 +62,9 @@ public abstract class GameObject {
                 params.flipX, params.flipY
         );
     }
+
+    @Override
+    public void handle(Events event, EventData data) { }
 
     public void translate(float dx, float dy) {
         x += dx;

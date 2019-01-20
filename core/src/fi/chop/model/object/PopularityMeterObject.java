@@ -3,10 +3,9 @@ package fi.chop.model.object;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.event.EventData;
-import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 
-public class PopularityMeterObject extends ValueMeterObject implements EventListener {
+public class PopularityMeterObject extends ValueMeterObject {
 
     public PopularityMeterObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera, FillDirection.LEFT, TextOriginX.RIGHT, TextOriginY.BOTTOM,

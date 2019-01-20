@@ -3,12 +3,11 @@ package fi.chop.model.object;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.event.EventData;
-import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 
-public class PowerMeterObject extends ValueMeterObject implements EventListener {
+public class PowerMeterObject extends ValueMeterObject {
 
     private final PowerMeterStateMachine state;
     private float toAdd;

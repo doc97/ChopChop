@@ -3,10 +3,9 @@ package fi.chop.model.object;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.event.EventData;
-import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 
-public class ReputationMeterObject extends ValueMeterObject implements EventListener {
+public class ReputationMeterObject extends ValueMeterObject {
 
     private int repLevel = 1;
 

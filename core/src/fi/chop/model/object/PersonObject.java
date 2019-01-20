@@ -6,14 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.Chop;
-import fi.chop.event.EventData;
-import fi.chop.event.EventListener;
-import fi.chop.event.Events;
 import fi.chop.engine.DrawParameters;
+import fi.chop.event.EventData;
+import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.PersonStateMachine;
 import fi.chop.model.fsm.states.person.PersonStates;
 
-public class PersonObject extends GameObject implements EventListener {
+public class PersonObject extends GameObject {
 
     private TextureRegion headSaved;
     private TextureRegion headAlive;
