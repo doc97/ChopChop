@@ -117,21 +117,23 @@ public class DrawParameters {
     }
 
     public DrawParameters(DrawParameters params) {
-        this.x = params.x;
-        this.y = params.y;
-        this.width = params.width;
-        this.height = params.height;
-        this.originX = params.originX;
-        this.originY = params.originY;
-        this.scaleX = params.scaleX;
-        this.scaleY = params.scaleY;
-        this.rotationDeg = params.rotationDeg;
-        this.srcX = params.srcX;
-        this.srcY = params.srcY;
-        this.srcWidth = params.srcWidth;
-        this.srcHeight = params.srcHeight;
-        this.flipX = params.flipX;
-        this.flipY = params.flipY;
+        if (params != null) {
+            this.x = params.x;
+            this.y = params.y;
+            this.width = params.width;
+            this.height = params.height;
+            this.originX = params.originX;
+            this.originY = params.originY;
+            this.scaleX = params.scaleX;
+            this.scaleY = params.scaleY;
+            this.rotationDeg = params.rotationDeg;
+            this.srcX = params.srcX;
+            this.srcY = params.srcY;
+            this.srcWidth = params.srcWidth;
+            this.srcHeight = params.srcHeight;
+            this.flipX = params.flipX;
+            this.flipY = params.flipY;
+        }
     }
 
     public DrawParameters combine(DrawParameters params) {

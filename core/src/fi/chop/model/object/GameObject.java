@@ -37,6 +37,8 @@ public abstract class GameObject implements EventListener {
     public abstract void render(SpriteBatch batch);
 
     protected void draw(SpriteBatch batch, TextureRegion region, DrawParameters params) {
+        if (params == null)
+            params = new DrawParameters(region);
         batch.draw(region,
                 x - (originX + params.originX) * params.width + params.x,
                 y - (originY + params.originY) * params.height + params.y,
@@ -49,6 +51,8 @@ public abstract class GameObject implements EventListener {
     }
 
     protected void draw(SpriteBatch batch, Texture texture, DrawParameters params) {
+        if (params == null)
+            params = new DrawParameters(texture);
         batch.draw(texture,
                 x - (originX + params.originX) * params.width + params.x,
                 y - (originY + params.originY) * params.height + params.y,
