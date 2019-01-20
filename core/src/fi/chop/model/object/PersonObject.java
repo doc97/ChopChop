@@ -60,7 +60,7 @@ public class PersonObject extends GameObject {
     @Override
     public void handle(Events event, EventData data) {
         switch (event) {
-            case EVT_HEAD_CHOP:
+            case EVT_PERSON_KILLED:
                 if (state.getCurrent() == PersonStates.IDLE)
                     state.setCurrent(PersonStates.DEAD);
                 break;

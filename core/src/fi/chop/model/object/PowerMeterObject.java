@@ -32,7 +32,7 @@ public class PowerMeterObject extends ValueMeterObject {
 
     @Override
     public void handle(Events event, EventData data) {
-        if (event == Events.EVT_GUILLOTINE_RAISED)
+        if (event == Events.EVT_GUILLOTINE_PREPARED)
             ready = true;
     }
 

@@ -107,11 +107,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         Chop.events.addListener(this,
                 Events.ACTION_BACK, Events.ACTION_INTERACT,
-                Events.EVT_GUILLOTINE_RAISED, Events.EVT_GUILLOTINE_RESTORED,
-                Events.EVT_PERSON_SAVED, Events.EVT_HEAD_CHOP);
+                Events.EVT_GUILLOTINE_PREPARED, Events.EVT_GUILLOTINE_RESTORED,
+                Events.EVT_PERSON_SAVED, Events.EVT_PERSON_KILLED);
         Chop.events.addListener(popMeter, Events.EVT_POPULARITY_CHANGED);
         Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
-        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISED);
+        Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_PREPARED);
 
         // Initialize meters
         Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
@@ -192,7 +192,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         person.setOrigin(0.5f, 0.5f);
         person.setPosition(guillotine.getX(), guillotine.getY() + 125);
         person.load();
-        Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_HEAD_CHOP);
+        Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_PERSON_KILLED);
         scene.addObjects("Heads", person);
     }
 
@@ -230,7 +230,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
             case ACTION_BACK:
                 setScreen(Screens.MAIN_MENU);
                 break;
-            case EVT_GUILLOTINE_RAISED:
+            case EVT_GUILLOTINE_PREPARED:
                 float power = powerMeter.getMeterFillPercentage();
                 getStats().registerPower(power);
                 break;
@@ -241,7 +241,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 Chop.timer.addAction(FADEOUT_START_DELAY_SEC, this::endDay);
                 updatePlayerStats(!execution.isFairPunishment(), false);
                 break;
-            case EVT_HEAD_CHOP:
+            case EVT_PERSON_KILLED:
                 getStats().addDailyKill();
                 updatePlayerStats(execution.isFairPunishment(), true);
                 break;

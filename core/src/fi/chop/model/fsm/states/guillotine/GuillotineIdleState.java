@@ -22,7 +22,7 @@ public class GuillotineIdleState extends ObjectState<GuillotineStateMachine, Gui
     @Override
     public void update(float delta) {
         if (getObject().isReady()) {
-            Chop.events.notify(Events.EVT_GUILLOTINE_RAISED);
+            Chop.events.notify(Events.EVT_GUILLOTINE_PREPARED);
             getStateMachine().setCurrent(GuillotineStates.BLADE_FALL);
         }
     }

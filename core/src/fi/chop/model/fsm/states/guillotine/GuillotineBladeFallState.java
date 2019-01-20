@@ -35,7 +35,7 @@ public class GuillotineBladeFallState extends ObjectState<GuillotineStateMachine
         if (getObject().getBladeYOffset() == 0) {
             time = 0;
             velocity = 0;
-            Chop.events.notify(Events.EVT_HEAD_CHOP);
+            Chop.events.notify(Events.EVT_PERSON_KILLED);
             getStateMachine().setCurrent(GuillotineStates.RESTORE);
         }
     }
