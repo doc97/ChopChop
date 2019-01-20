@@ -1,5 +1,5 @@
 package fi.chop.screens;
 
 public enum Screens {
-    MAIN_MENU, GUILLOTINE
+    MAIN_MENU, TOWN, EXECUTION
 }

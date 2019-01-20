@@ -15,7 +15,7 @@ public class MainMenuScreenInput extends ChopScreenInput {
     public boolean keyDown(int keyCode) {
         InputMap.Action action = getInputMap().getAction(keyCode);
         if (action == InputMap.Action.INTERACT) {
-            getScreen().setScreen(Screens.GUILLOTINE);
+            getScreen().setScreen(Screens.TOWN);
             return true;
         } else if (action == InputMap.Action.BACK) {
             Gdx.app.exit();
