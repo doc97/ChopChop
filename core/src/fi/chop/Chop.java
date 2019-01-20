@@ -50,7 +50,7 @@ public class Chop extends Game {
         batch = new SpriteBatch();
         input = new InputMap();
         stats = new GameStats();
-        player = new Player(events);
+        player = new Player();
 
         // Set TTF and bitmap font loader
         FileHandleResolver resolver = new InternalFileHandleResolver();

@@ -1,5 +1,6 @@
 package fi.chop.model.world;
 
+import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.EventSystem;
@@ -12,7 +13,6 @@ import static org.junit.Assert.*;
 public class TestPlayer implements EventListener {
 
     private static final float EPSILON = 0.000001f;
-    private EventSystem eventSystem;
     private Player player;
 
     private int reputationLvl;
@@ -21,11 +21,11 @@ public class TestPlayer implements EventListener {
 
     @Before
     public void setUp() {
-        eventSystem = new EventSystem();
-        player = new Player(eventSystem);
-        eventSystem.addListener(this, Events.EVT_POPULARITY_CHANGED,
+        Chop.events = new EventSystem();
+        Chop.events.addListener(this, Events.EVT_POPULARITY_CHANGED,
                 Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
 
+        player = new Player();
         reputationLvl = 1;
         reputation = 0;
         popularity = 0;
@@ -36,7 +36,7 @@ public class TestPlayer implements EventListener {
         assertFalse(player.hasAnyPerks());
         assertEquals(0, player.getPopularity(), EPSILON);
         assertEquals(0, player.getReputation(), EPSILON);
-        assertEquals(0, player.getReputationLevel());
+        assertEquals(1, player.getReputationLevel());
         assertEquals(0, player.getMoney());
         assertTrue(player.hasEnoughMoney(0));
         assertFalse(player.hasEnoughMoney(1));
@@ -70,7 +70,7 @@ public class TestPlayer implements EventListener {
     @Test
     public void testAddPopularityZero() {
         player.addPopularity(0);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0, player.getPopularity(), EPSILON);
         assertEquals(0, popularity, EPSILON);
     }
@@ -78,11 +78,11 @@ public class TestPlayer implements EventListener {
     @Test
     public void testAddPopularityPositive() {
         player.addPopularity(0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.2f, player.getPopularity(), EPSILON);
         assertEquals(0.2f, popularity, EPSILON);
         player.addPopularity(0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.4f, player.getPopularity(), EPSILON);
         assertEquals(0.4f, popularity, EPSILON);
     }
@@ -91,11 +91,11 @@ public class TestPlayer implements EventListener {
     public void testAddPopularityNegative() {
         player.addPopularity(0.8f);
         player.addPopularity(-0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.6f, player.getPopularity(), EPSILON);
         assertEquals(0.6f, popularity, EPSILON);
         player.addPopularity(-0.1f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.5f, player.getPopularity(), EPSILON);
         assertEquals(0.5f, popularity, EPSILON);
     }
@@ -103,7 +103,7 @@ public class TestPlayer implements EventListener {
     @Test
     public void testAddPopularityBelowZero() {
         player.addPopularity(-0.1f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0, player.getPopularity(), EPSILON);
         assertEquals(0, popularity, EPSILON);
     }
@@ -112,7 +112,7 @@ public class TestPlayer implements EventListener {
     public void testAddPopularityAboveOne() {
         player.addPopularity(0.8f);
         player.addPopularity(0.3f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(1, player.getPopularity(), EPSILON);
         assertEquals(1, popularity, EPSILON);
     }
@@ -120,7 +120,7 @@ public class TestPlayer implements EventListener {
     @Test
     public void testAddReputationZero() {
         player.addReputation(0);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0, player.getReputation(), EPSILON);
         assertEquals(0, reputation, EPSILON);
     }
@@ -128,11 +128,11 @@ public class TestPlayer implements EventListener {
     @Test
     public void testAddReputationPositive() {
         player.addReputation(0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.2f, player.getReputation(), EPSILON);
         assertEquals(0.2f, reputation, EPSILON);
         player.addReputation(0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.4f, player.getReputation(), EPSILON);
         assertEquals(0.4f, reputation, EPSILON);
     }
@@ -141,11 +141,11 @@ public class TestPlayer implements EventListener {
     public void testAddReputationNegative() {
         player.addReputation(0.8f);
         player.addReputation(-0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.6f, player.getReputation(), EPSILON);
         assertEquals(0.6f, reputation, EPSILON);
         player.addReputation(-0.1f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.5f, player.getReputation(), EPSILON);
         assertEquals(0.5f, reputation, EPSILON);
     }
@@ -154,43 +154,43 @@ public class TestPlayer implements EventListener {
     public void testAddReputationBelowZero() {
         player.addReputation(2.1f);
         player.addReputation(-0.2f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.9f, player.getReputation(), EPSILON);
         assertEquals(0.9f, reputation, EPSILON);
-        assertEquals(1, player.getReputationLevel());
-        assertEquals(1, reputationLvl, EPSILON);
+        assertEquals(2, player.getReputationLevel());
+        assertEquals(2, reputationLvl, EPSILON);
     }
 
     @Test
     public void testAddReputationAboveOne() {
         player.addReputation(0.8f);
         player.addReputation(0.3f);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0.1f, player.getReputation(), EPSILON);
         assertEquals(0.1f, reputation, EPSILON);
-        assertEquals(1, player.getReputationLevel());
-        assertEquals(1, reputationLvl, EPSILON);
+        assertEquals(2, player.getReputationLevel());
+        assertEquals(2, reputationLvl, EPSILON);
     }
 
     @Test
     public void testIncreaseReputationLevel() {
         player.addReputation(1);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0, player.getReputation(), EPSILON);
         assertEquals(0, reputation, EPSILON);
-        assertEquals(1, player.getReputationLevel());
-        assertEquals(1, reputationLvl, EPSILON);
+        assertEquals(2, player.getReputationLevel());
+        assertEquals(2, reputationLvl, EPSILON);
     }
 
     @Test
     public void testDecreaseReputationLevel() {
         player.addReputation(2);
         player.addReputation(-1);
-        eventSystem.update();
+        Chop.events.update();
         assertEquals(0, player.getReputation(), EPSILON);
         assertEquals(0, reputation, EPSILON);
-        assertEquals(1, player.getReputationLevel());
-        assertEquals(1, reputationLvl, EPSILON);
+        assertEquals(2, player.getReputationLevel());
+        assertEquals(2, reputationLvl, EPSILON);
     }
 
     @Test

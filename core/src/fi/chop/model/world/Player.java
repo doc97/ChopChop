@@ -1,5 +1,6 @@
 package fi.chop.model.world;
 
+import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.EventSystem;
 import fi.chop.event.Events;
@@ -13,15 +14,13 @@ public class Player {
     public static final int MIN_REPUTATION_LEVEL = 1;
     public static final int MAX_REPUTATION_LEVEL = 5;
 
-    private final EventSystem eventSystem;
     private final Set<PopularityPerk> perks;
     private float popularity;
     private float reputation;
     private int reputationLevel;
     private int money;
 
-    public Player(EventSystem eventSystem) {
-        this.eventSystem = eventSystem;
+    public Player() {
         perks = EnumSet.noneOf(PopularityPerk.class);
         reputationLevel = MIN_REPUTATION_LEVEL;
     }
@@ -44,8 +43,7 @@ public class Player {
 
     public void addPopularity(float delta) {
         popularity = Math.min(Math.max(popularity + delta, 0), 1);
-        if (eventSystem != null)
-            eventSystem.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(popularity));
+        Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(popularity));
     }
 
     public float getPopularity() {
@@ -68,8 +66,7 @@ public class Player {
             if (reputationLevel == MIN_REPUTATION_LEVEL)
                 reputation = 0;
         }
-        if (eventSystem != null)
-            eventSystem.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(reputation));
+        Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(reputation));
     }
 
     public float getReputation() {
@@ -79,15 +76,13 @@ public class Player {
     private void increaseReputationLevel() {
         if (++reputationLevel > MAX_REPUTATION_LEVEL)
             reputationLevel = MAX_REPUTATION_LEVEL;
-        if (eventSystem != null)
-            eventSystem.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
+        Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
     }
 
     private void decreaseReputationLevel() {
         if (--reputationLevel < MIN_REPUTATION_LEVEL)
             reputationLevel = MIN_REPUTATION_LEVEL;
-        if (eventSystem != null)
-            eventSystem.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
+        Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(reputationLevel));
     }
 
     public int getReputationLevel() {

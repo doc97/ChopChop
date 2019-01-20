@@ -11,7 +11,7 @@ public class TestBribe {
 
     @Before
     public void setUp() {
-        player = new Player(null);
+        player = new Player();
     }
 
     @Test
