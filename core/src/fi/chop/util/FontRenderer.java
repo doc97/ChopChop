@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 
+import java.awt.*;
+
 public class FontRenderer {
 
     private String text;
@@ -28,6 +30,16 @@ public class FontRenderer {
 
     public FontRenderer pos(float x, float y) {
         cache.setPosition(x, y);
+        return this;
+    }
+
+    public FontRenderer x(float x) {
+        cache.setPosition(x, cache.getY());
+        return this;
+    }
+
+    public FontRenderer y(float y) {
+        cache.setPosition(cache.getX(), y);
         return this;
     }
 
