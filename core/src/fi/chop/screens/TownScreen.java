@@ -1,17 +1,16 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.engine.Layer;
 import fi.chop.engine.Scene;
 import fi.chop.input.TownScreenInput;
-import fi.chop.util.FontRenderer;
+import fi.chop.model.object.TextObject;
 
 public class TownScreen extends ChopScreen {
 
     private Scene scene;
-    private FontRenderer dayText;
 
     public TownScreen(Chop game) {
         super(game);
@@ -19,13 +18,27 @@ public class TownScreen extends ChopScreen {
 
     @Override
     public void show() {
+        initializeScreen();
+        initializeScene();
+    }
+
+    private void initializeScreen() {
         Gdx.input.setInputProcessor(new TownScreenInput(this, getInputMap()));
-        scene = new Scene();
-
         getWorld().nextDay();
+    }
 
-        BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
-        dayText = new FontRenderer(font);
+    private void initializeScene() {
+        scene = new Scene();
+        scene.addLayer("Background", new Layer());
+        scene.addLayer("Text", new Layer());
+
+        TextObject text = new TextObject(getAssets(), getCamera());
+        text.setOrigin(0.5f, 0);
+        text.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        text.create("ZCOOL-40.ttf", () -> "DAY " + getWorld().getDay());
+        text.load();
+
+        scene.addObjects("Text", text);
     }
 
     @Override
@@ -38,15 +51,6 @@ public class TownScreen extends ChopScreen {
         beginRender();
         batch.begin();
         scene.render(batch);
-        drawDayText(batch);
         batch.end();
-    }
-
-    private void drawDayText(SpriteBatch batch) {
-        dayText
-                .text("DAY " + getWorld().getDay())
-                .center(getCamera(), true, false)
-                .y(getCamera().viewportHeight - 10)
-                .draw(batch);
     }
 }
