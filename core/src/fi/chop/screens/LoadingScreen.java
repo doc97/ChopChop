@@ -33,12 +33,17 @@ public class LoadingScreen extends ChopScreen {
         zcool40Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
         zcool40Params.fontParameters.size = 40;
 
+        FreeTypeFontLoaderParameter zcool60Params = new FreeTypeFontLoaderParameter();
+        zcool60Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
+        zcool60Params.fontParameters.size = 60;
+
         // Needed by LoadingScreen
         getAssets().load("ZCOOL-40.ttf", BitmapFont.class, zcool40Params);
         getAssets().finishLoading();
 
         // Queue other assets to be loaded asynchronously
         getAssets().load("ZCOOL-30.ttf", BitmapFont.class, zcool30Params);
+        getAssets().load("ZCOOL-60.ttf", BitmapFont.class, zcool60Params);
         getAssets().load("Dance-30.ttf", BitmapFont.class, dance30Params);
         getAssets().load("textures/packed/Chop.atlas", TextureAtlas.class);
 
