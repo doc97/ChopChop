@@ -65,14 +65,11 @@ public class LoadingScreen extends ChopScreen {
 
     @Override
     protected void render(SpriteBatch batch) {
-        beginRender();
-        batch.begin();
         batch.setColor(fade.getColor());
         progressText
                 .text(String.format("%.1f", progress * 100) + "%")
                 .center(getCamera(), true, true)
                 .draw(batch);
         batch.setColor(Color.WHITE);
-        batch.end();
     }
 }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.effect.ColorFade;
 import fi.chop.engine.Layer;
-import fi.chop.engine.Scene;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
@@ -24,7 +23,6 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private static final float POPULARITY_DELTA = 0.05f;
     private static final float REPUTATION_DELTA = 0.05f;
 
-    private Scene scene;
     private FontRenderer powerText;
     private FontRenderer killText;
     private FontRenderer timeText;
@@ -68,11 +66,10 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void createScene() {
-        scene = new Scene();
-        scene.addLayer("Background", new Layer());
-        scene.addLayer("Guillotine", new Layer());
-        scene.addLayer("Heads", new Layer());
-        scene.addLayer("UI", new Layer());
+        getScene().addLayer("Background", new Layer());
+        getScene().addLayer("Guillotine", new Layer());
+        getScene().addLayer("Heads", new Layer());
+        getScene().addLayer("UI", new Layer());
     }
 
     private void initializeScene() {
@@ -123,10 +120,10 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(getPlayer().getReputation()));
         Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(getPlayer().getReputationLevel()));
 
-        scene.addObjects("Heads", person);
-        scene.addObjects("Guillotine", guillotine);
-        scene.addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
-        scene.addQueued();
+        getScene().addObjects("Heads", person);
+        getScene().addObjects("Guillotine", guillotine);
+        getScene().addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
+        getScene().addQueued();
     }
 
     private void initializeEventListener() {
@@ -146,7 +143,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     @Override
     protected void update(float delta) {
-        scene.update(delta);
+        getScene().update(delta);
 
         if (isExiting) {
             fadeOut.update(delta);
@@ -159,13 +156,10 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     @Override
     protected void render(SpriteBatch batch) {
-        beginRender();
-        batch.begin();
         batch.setColor(fadeOut.getColor());
-        scene.render(batch);
+        getScene().render(batch);
         drawGUI(batch);
         batch.setColor(Color.WHITE);
-        batch.end();
     }
 
     private void drawGUI(SpriteBatch batch) {
@@ -211,7 +205,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         switch (event) {
             case ACTION_INTERACT:
                 if (isPowerMeterIdle && isGuillotineIdle) {
-                    float value = scene.findOne(PowerBarObject.class).getValue();
+                    float value = getScene().findOne(PowerBarObject.class).getValue();
                     Chop.events.notify(Events.EVT_GUILLOTINE_RAISE, new EventData<>(value));
                 }
                 break;
@@ -225,7 +219,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 isPowerMeterIdle = data.get() == PowerMeterStates.IDLE;
                 break;
             case EVT_GUILLOTINE_PREPARED:
-                PowerMeterObject meter = scene.findOne(PowerMeterObject.class);
+                PowerMeterObject meter = getScene().findOne(PowerMeterObject.class);
                 float power = meter.getMeterFillPercentage();
                 getStats().registerPower(power);
                 break;

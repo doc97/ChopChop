@@ -4,13 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
-import fi.chop.engine.Scene;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.TextObject;
 
 public class TownScreen extends ChopScreen {
-
-    private Scene scene;
 
     public TownScreen(Chop game) {
         super(game);
@@ -28,9 +25,8 @@ public class TownScreen extends ChopScreen {
     }
 
     private void initializeScene() {
-        scene = new Scene();
-        scene.addLayer("Background", new Layer());
-        scene.addLayer("Text", new Layer());
+        getScene().addLayer("Background", new Layer());
+        getScene().addLayer("Text", new Layer());
 
         TextObject dayText = new TextObject(getAssets(), getCamera());
         dayText.setOrigin(0.5f, 1);
@@ -56,19 +52,16 @@ public class TownScreen extends ChopScreen {
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineText.load();
 
-        scene.addObjects("Text", dayText, castleText, tavernText, guillotineText);
+        getScene().addObjects("Text", dayText, castleText, tavernText, guillotineText);
     }
 
     @Override
     protected void update(float delta) {
-        scene.update(delta);
+        getScene().update(delta);
     }
 
     @Override
     protected void render(SpriteBatch batch) {
-        beginRender();
-        batch.begin();
-        scene.render(batch);
-        batch.end();
+        getScene().render(batch);
     }
 }

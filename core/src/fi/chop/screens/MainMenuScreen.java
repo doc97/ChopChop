@@ -40,13 +40,10 @@ public class MainMenuScreen extends ChopScreen {
 
     @Override
     protected void render(SpriteBatch batch) {
-        beginRender();
-        batch.begin();
         batch.setColor(fade.getColor());
         instructionText
                 .center(getCamera(), true, true)
                 .draw(batch);
         batch.setColor(Color.WHITE);
-        batch.end();
     }
 }

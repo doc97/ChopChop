@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.engine.Scene;
 import fi.chop.model.GameStats;
 import fi.chop.engine.InputMap;
 import fi.chop.model.world.Player;
@@ -15,6 +16,7 @@ import fi.chop.model.world.WorldState;
 public abstract class ChopScreen extends ScreenAdapter {
 
     private final Chop game;
+    private final Scene scene;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final AssetManager manager;
@@ -32,20 +34,27 @@ public abstract class ChopScreen extends ScreenAdapter {
         this.stats = game.getStats();
         this.world = game.getWorld();
         this.player = game.getPlayer();
+
+        scene = new Scene();
     }
 
     protected abstract void update(float delta);
     protected abstract void render(SpriteBatch batch);
 
-    protected void beginRender() {
+    private void beginRender() {
         getCamera().update();
         batch.setProjectionMatrix(getCamera().combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
+
     @Override
     public void render(float delta) {
         update(delta);
+
+        beginRender();
+        batch.begin();
         render(batch);
+        batch.end();
     }
 
     public void setScreen(Screens screen) {
@@ -60,6 +69,10 @@ public abstract class ChopScreen extends ScreenAdapter {
                 game.setScreen(new MainMenuScreen(game));
                 break;
         }
+    }
+
+    protected Scene getScene() {
+        return scene;
     }
 
     protected OrthographicCamera getCamera() {
