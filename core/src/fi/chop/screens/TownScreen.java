@@ -1,6 +1,7 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
@@ -40,6 +41,7 @@ public class TownScreen extends ChopScreen {
         castleText.setOrigin(0.5f, 1);
         castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 200);
         castleText.create("ZCOOL-40.ttf", () -> "Castle");
+        castleText.pad(50, 50);
         castleText.load();
         castleText.setTouchable(true);
         castleText.setTouchHandler(new TouchHandler() {
@@ -47,12 +49,27 @@ public class TownScreen extends ChopScreen {
             public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
                 Gdx.app.log("Castle", "Go!");
             }
+
+            @Override
+            public void enter(GameObject obj, float worldX, float worldY) {
+                TextObject txt = (TextObject) obj;
+                txt.tint(Color.YELLOW);
+                txt.background(Color.FIREBRICK);
+            }
+
+            @Override
+            public void exit(GameObject obj, float worldX, float worldY) {
+                TextObject txt = (TextObject) obj;
+                txt.tint(Color.WHITE);
+                txt.background(null);
+            }
         });
 
         TextObject tavernText = new TextObject(getAssets(), getCamera());
         tavernText.setOrigin(0, 1);
         tavernText.setPosition(200, 300);
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
+        tavernText.pad(50, 50);
         tavernText.load();
         tavernText.setTouchable(true);
         tavernText.setTouchHandler(new TouchHandler() {
@@ -60,12 +77,27 @@ public class TownScreen extends ChopScreen {
             public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
                 Gdx.app.log("Tavern", "Go!");
             }
+
+            @Override
+            public void enter(GameObject obj, float worldX, float worldY) {
+                TextObject txt = (TextObject) obj;
+                txt.tint(Color.YELLOW);
+                txt.background(Color.FIREBRICK);
+            }
+
+            @Override
+            public void exit(GameObject obj, float worldX, float worldY) {
+                TextObject txt = (TextObject) obj;
+                txt.tint(Color.WHITE);
+                txt.background(null);
+            }
         });
 
         TextObject guillotineText = new TextObject(getAssets(), getCamera());
         guillotineText.setOrigin(1, 1);
         guillotineText.setPosition(getCamera().viewportWidth - 200, 500);
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
+        guillotineText.pad(50, 50);
         guillotineText.load();
         guillotineText.setTouchable(true);
         guillotineText.setTouchHandler(new TouchHandler() {
@@ -73,9 +105,24 @@ public class TownScreen extends ChopScreen {
             public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
                 setScreen(Screens.EXECUTION);
             }
+
+            @Override
+            public void enter(GameObject obj, float worldX, float worldY) {
+                TextObject txt = (TextObject) obj;
+                txt.tint(Color.YELLOW);
+                txt.background(Color.FIREBRICK);
+            }
+
+            @Override
+            public void exit(GameObject obj, float worldX, float worldY) {
+                TextObject txt = (TextObject) obj;
+                txt.tint(Color.WHITE);
+                txt.background(null);
+            }
         });
 
         getScene().addObjects("Text", dayText, castleText, tavernText, guillotineText);
+        getScene().addQueued();
     }
 
     @Override

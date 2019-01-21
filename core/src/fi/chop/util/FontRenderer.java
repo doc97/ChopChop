@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 
-import java.awt.*;
-
 public class FontRenderer {
 
     private String text;
@@ -25,6 +23,12 @@ public class FontRenderer {
             this.text = text == null ? "" : text;
             cache.setText(this.text, 0, 0);
         }
+        return this;
+    }
+
+    public FontRenderer edit(String text) {
+        BitmapFontCache oldCache = cache;
+        text(text).pos(oldCache.getX(), oldCache.getY()).tint(oldCache.getColor());
         return this;
     }
 
@@ -86,7 +90,11 @@ public class FontRenderer {
         return cache.getLayouts().get(0).height;
     }
 
-    public boolean isEmpty() {
+    public String str() {
+        return text;
+    }
+
+    private boolean isEmpty() {
         return cache.getLayouts().isEmpty();
     }
 }
