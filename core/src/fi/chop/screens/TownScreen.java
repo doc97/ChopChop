@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
+import fi.chop.input.TouchHandler;
 import fi.chop.input.TownScreenInput;
+import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
 
 public class TownScreen extends ChopScreen {
@@ -39,18 +41,39 @@ public class TownScreen extends ChopScreen {
         castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 200);
         castleText.create("ZCOOL-40.ttf", () -> "Castle");
         castleText.load();
+        castleText.setTouchable(true);
+        castleText.setTouchHandler(new TouchHandler() {
+            @Override
+            public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
+                Gdx.app.log("Castle", "Go!");
+            }
+        });
 
         TextObject tavernText = new TextObject(getAssets(), getCamera());
         tavernText.setOrigin(0, 1);
         tavernText.setPosition(200, 300);
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernText.load();
+        tavernText.setTouchable(true);
+        tavernText.setTouchHandler(new TouchHandler() {
+            @Override
+            public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
+                Gdx.app.log("Tavern", "Go!");
+            }
+        });
 
         TextObject guillotineText = new TextObject(getAssets(), getCamera());
         guillotineText.setOrigin(1, 1);
         guillotineText.setPosition(getCamera().viewportWidth - 200, 500);
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineText.load();
+        guillotineText.setTouchable(true);
+        guillotineText.setTouchHandler(new TouchHandler() {
+            @Override
+            public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
+                setScreen(Screens.EXECUTION);
+            }
+        });
 
         getScene().addObjects("Text", dayText, castleText, tavernText, guillotineText);
     }

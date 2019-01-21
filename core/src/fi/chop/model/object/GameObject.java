@@ -9,6 +9,7 @@ import fi.chop.engine.DrawParameters;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
+import fi.chop.input.TouchHandler;
 
 public abstract class GameObject implements EventListener {
 
@@ -22,7 +23,10 @@ public abstract class GameObject implements EventListener {
     private float originX;
     private float originY;
     private double rotDeg;
+    private boolean touchable;
     private boolean dead;
+
+    private TouchHandler touchHandler;
 
     private final AssetManager assets;
     private final OrthographicCamera camera;
@@ -30,6 +34,7 @@ public abstract class GameObject implements EventListener {
     protected GameObject(AssetManager assets, OrthographicCamera camera) {
         this.assets = assets;
         this.camera = camera;
+        touchHandler = new TouchHandler();
     }
 
     public abstract void load();
@@ -209,6 +214,22 @@ public abstract class GameObject implements EventListener {
         return rotDeg;
     }
 
+    public void setTouchHandler(TouchHandler touchHandler) {
+        this.touchHandler = touchHandler == null ? new TouchHandler() : touchHandler;
+    }
+
+    public TouchHandler getTouchHandler() {
+        return touchHandler;
+    }
+
+    public void setTouchable(boolean touchable) {
+        this.touchable = touchable;
+    }
+
+    public boolean isTouchable() {
+        return touchable;
+    }
+
     public void die() {
         dead = true;
     }
@@ -225,6 +246,22 @@ public abstract class GameObject implements EventListener {
                     y + (1 - originY) * height < camera.position.y - camera.viewportHeight / 2 ||
                     y - originY * height > camera.position.y + camera.viewportHeight / 2
                 );
+    }
+
+    public boolean isXYInside(float x0, float y0) {
+        if (!isInsideRadius(x0, y0))
+            return false;
+        float top = y + (1 - originY) * height;
+        float left = x - originX * width;
+        float right = x + (1 - originX) * width;
+        float bottom = y - originY * height;
+
+        return y0 <= top && y0 >= bottom && x0 <= right && x0 >= left;
+    }
+
+    private boolean isInsideRadius(float x0, float y0) {
+        float radiusSqrd = Math.max(width * width, height * height);
+        return (x0 - x) * (x0 - x) + (y0 - y) * (y0 - y) < radiusSqrd;
     }
 
     protected AssetManager getAssets() {

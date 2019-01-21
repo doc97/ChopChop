@@ -44,6 +44,7 @@ public class TextObject extends GameObject {
         if (fbo != null)
             fbo.dispose();
         createTexture(renderer.text(text));
+        setSize(fboRegion.getRegionWidth(), fboRegion.getRegionHeight());
         params = new DrawParameters(fboRegion);
     }
 

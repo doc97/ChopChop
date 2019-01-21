@@ -71,11 +71,11 @@ public abstract class ChopScreen extends ScreenAdapter {
         }
     }
 
-    protected Scene getScene() {
+    public Scene getScene() {
         return scene;
     }
 
-    protected OrthographicCamera getCamera() {
+    public OrthographicCamera getCamera() {
         return camera;
     }
 
