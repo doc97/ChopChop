@@ -100,6 +100,17 @@ public class Scene {
         layers.get(layerName).killAll(predicate);
     }
 
+    public void clear() {
+        for (String name : names)
+            layers.get(name).clear();
+    }
+
+    public void layerClear(String layerName) {
+        if (!names.contains(layerName))
+            throw new IllegalArgumentException("No layer with name: " + layerName);
+        layers.get(layerName).clear();
+    }
+
     public void update(float delta) {
         /* Layers are updated from "bottom" to "top" */
         for (String name : names)

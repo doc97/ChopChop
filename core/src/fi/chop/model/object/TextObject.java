@@ -113,6 +113,12 @@ public class TextObject extends GameObject {
         draw(batch, fboRegion, params);
     }
 
+    @Override
+    public void dispose() {
+        batch.dispose();
+        fbo.dispose();
+    }
+
     public void tint(Color color) {
         renderer.tint(color);
         dirty = true;

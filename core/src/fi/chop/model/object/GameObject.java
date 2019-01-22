@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 import fi.chop.engine.DrawParameters;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
 
-public abstract class GameObject implements EventListener {
+public abstract class GameObject implements EventListener, Disposable {
 
     private int id = -1;
     private float x;

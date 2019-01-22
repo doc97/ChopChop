@@ -48,6 +48,13 @@ public abstract class ChopScreen extends ScreenAdapter {
     }
 
     @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+        getScene().clear();
+        Chop.events.clear();
+    }
+
+    @Override
     public void render(float delta) {
         update(delta);
 

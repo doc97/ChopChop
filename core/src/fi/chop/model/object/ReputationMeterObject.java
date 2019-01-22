@@ -20,6 +20,9 @@ public class ReputationMeterObject extends ValueMeterObject {
     }
 
     @Override
+    public void dispose() { }
+
+    @Override
     protected String getLabel() {
         String label = "Reputation (R" + repLevel + ")";
         String percentStr = String.format("%.1f", getMeterFillPercentage() * 100);

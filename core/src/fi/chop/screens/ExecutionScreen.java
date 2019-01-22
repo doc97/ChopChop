@@ -137,7 +137,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     @Override
     public void hide() {
-        Chop.events.clear();
+        super.hide();
         getStats().resetDailyKills();
     }
 

@@ -148,6 +148,9 @@ public abstract class ValueMeterObject extends GameObject {
         labelText.pos(drawX, drawY).draw(batch);
     }
 
+    @Override
+    public void dispose() { }
+
     protected abstract String getLabel();
 
     public void addMeterValue(float value) {

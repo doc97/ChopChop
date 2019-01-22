@@ -77,6 +77,9 @@ public class ScrollObject extends GameObject {
                 .draw(batch);
     }
 
+    @Override
+    public void dispose() { }
+
     public void setExecution(Execution execution) {
         this.execution = execution;
     }

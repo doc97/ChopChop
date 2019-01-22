@@ -45,6 +45,9 @@ public class PowerBarObject extends GameObject {
         drawMarker(batch);
     }
 
+    @Override
+    public void dispose() { }
+
     private void drawBackground(SpriteBatch batch) {
         draw(batch, background, backgroundParams);
     }

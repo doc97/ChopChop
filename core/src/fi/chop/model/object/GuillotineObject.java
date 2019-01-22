@@ -47,6 +47,9 @@ public class GuillotineObject extends GameObject {
     }
 
     @Override
+    public void dispose() { }
+
+    @Override
     public void handle(Events event, EventData data) {
         if (event == Events.EVT_GUILLOTINE_RAISE)
             raiseBlade((float) data.get());

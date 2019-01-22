@@ -58,6 +58,9 @@ public class PersonObject extends GameObject {
     }
 
     @Override
+    public void dispose() { }
+
+    @Override
     public void handle(Events event, EventData data) {
         switch (event) {
             case EVT_PERSON_KILLED:

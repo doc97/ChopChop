@@ -29,6 +29,7 @@ public class Layer {
             obj.update(delta);
             if (obj.isDead()) {
                 Chop.events.removeListener(obj);
+                obj.dispose();
                 it.remove();
             }
         }
@@ -83,8 +84,12 @@ public class Layer {
     }
 
     public void clear() {
-        objects.clear();
         toAdd.clear();
+        for (GameObject obj : objects) {
+            Chop.events.removeListener(obj);
+            obj.dispose();
+        }
+        objects.clear();
     }
 
     public void add(GameObject... objects) {
