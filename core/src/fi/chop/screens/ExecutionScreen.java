@@ -201,6 +201,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private void updatePlayerStats(boolean wasCorrect, boolean wasKill) {
         getPlayer().addPopularity(wasCorrect ? POPULARITY_DELTA : -POPULARITY_DELTA);
         getPlayer().addReputation(wasKill ? REPUTATION_DELTA : -REPUTATION_DELTA);
+
+        if (wasKill)
+            getPlayer().addMoney(getWorld().getExecution().getSalary());
+        if (wasCorrect)
+            getPlayer().addMoney(getWorld().getExecution().getBribe());
     }
 
     @Override

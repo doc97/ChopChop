@@ -4,6 +4,7 @@ public class Execution {
 
     private final Victim victim;
     private final String[] charges;
+    private int salary;
     private int bribe;
     private boolean fair;
 
@@ -18,6 +19,16 @@ public class Execution {
 
     public boolean isFairPunishment() {
         return fair;
+    }
+
+    public void setSalary(int salary) {
+        if (salary < 0)
+            throw new IllegalArgumentException("A salary cannot be negative");
+        this.salary = salary;
+    }
+
+    public int getSalary() {
+        return salary;
     }
 
     public void setBribe(int bribe) {

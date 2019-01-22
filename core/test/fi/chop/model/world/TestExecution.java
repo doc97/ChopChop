@@ -39,6 +39,19 @@ public class TestExecution {
     }
 
     @Test
+    public void testSetSalary() {
+        exec.setSalary(10);
+        assertEquals(10, exec.getSalary());
+        exec.setSalary(20);
+        assertEquals(20, exec.getSalary());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetSalaryNegative() {
+        exec.setSalary(-10);
+    }
+
+    @Test
     public void testSetBribe() {
         exec.setBribe(10);
         assertEquals(10, exec.getBribe());
