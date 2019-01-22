@@ -268,4 +268,8 @@ public abstract class GameObject implements EventListener, Disposable {
     protected AssetManager getAssets() {
         return assets;
     }
+
+    protected OrthographicCamera getCamera() {
+        return camera;
+    }
 }
