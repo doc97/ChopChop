@@ -1,6 +1,8 @@
 package fi.chop.input;
 
+import fi.chop.Chop;
 import fi.chop.engine.InputMap;
+import fi.chop.event.Events;
 import fi.chop.screens.ChopScreen;
 import fi.chop.screens.Screens;
 
@@ -15,10 +17,10 @@ public class TownScreenInput extends ChopScreenInput {
         InputMap.Action action = getInputMap().getAction(keyCode);
         switch (action) {
             case BACK:
-                getScreen().setScreen(Screens.MAIN_MENU);
+                Chop.events.notify(Events.ACTION_BACK);
                 return true;
             case INTERACT:
-                getScreen().setScreen(Screens.EXECUTION);
+                Chop.events.notify(Events.ACTION_INTERACT);
             default:
                 return false;
         }

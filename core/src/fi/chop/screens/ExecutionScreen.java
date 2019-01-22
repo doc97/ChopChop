@@ -210,7 +210,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 }
                 break;
             case ACTION_BACK:
-                setScreen(Screens.TOWN);
+                setScreen(Screens.MAIN_MENU);
                 break;
             case EVT_GUILLOTINE_STATE_CHANGED:
                 isGuillotineIdle = data.get() == GuillotineStates.IDLE;

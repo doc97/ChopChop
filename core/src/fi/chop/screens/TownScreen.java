@@ -5,12 +5,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
+import fi.chop.event.EventData;
+import fi.chop.event.EventListener;
+import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
 
-public class TownScreen extends ChopScreen {
+public class TownScreen extends ChopScreen implements EventListener {
 
     public TownScreen(Chop game) {
         super(game);
@@ -18,13 +21,18 @@ public class TownScreen extends ChopScreen {
 
     @Override
     public void show() {
+        getWorld().nextDay();
+        registerEventListener();
         initializeScreen();
         initializeScene();
     }
 
+    private void registerEventListener() {
+        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT);
+    }
+
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new TownScreenInput(this, getInputMap()));
-        getWorld().nextDay();
     }
 
     private void initializeScene() {
@@ -133,5 +141,15 @@ public class TownScreen extends ChopScreen {
     @Override
     protected void render(SpriteBatch batch) {
         getScene().render(batch);
+    }
+
+    @Override
+    public void handle(Events event, EventData data) {
+        if (event == Events.ACTION_BACK) {
+            getWorld().reset();
+            setScreen(Screens.MAIN_MENU);
+        } else if (event == Events.ACTION_INTERACT) {
+            setScreen(Screens.EXECUTION);
+        }
     }
 }

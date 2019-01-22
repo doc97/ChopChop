@@ -5,6 +5,11 @@ public class WorldState {
     private int day;
     private Execution execution;
 
+    public void reset() {
+        day = 0;
+        execution = null;
+    }
+
     public void nextDay() {
         day++;
         execution = ExecutionFactory.create();

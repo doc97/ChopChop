@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.effect.ColorFade;
+import fi.chop.event.EventData;
+import fi.chop.event.EventListener;
+import fi.chop.event.Events;
 import fi.chop.input.MainMenuScreenInput;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
 
-public class MainMenuScreen extends ChopScreen {
+public class MainMenuScreen extends ChopScreen implements EventListener {
 
     private ColorFade fade;
     private FontRenderer instructionText;
@@ -22,6 +25,9 @@ public class MainMenuScreen extends ChopScreen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new MainMenuScreenInput(this, getInputMap()));
+        Chop.events.addListener(this, Events.ACTION_EXIT, Events.ACTION_INTERACT);
+
+        getWorld().reset();
 
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
         instructionText = new FontRenderer(font);
@@ -45,5 +51,14 @@ public class MainMenuScreen extends ChopScreen {
                 .center(getCamera(), true, true)
                 .draw(batch);
         batch.setColor(Color.WHITE);
+    }
+
+    @Override
+    public void handle(Events event, EventData data) {
+        if (event == Events.ACTION_INTERACT) {
+            setScreen(Screens.TOWN);
+        } else if (event == Events.ACTION_EXIT) {
+            Gdx.app.exit();
+        }
     }
 }
