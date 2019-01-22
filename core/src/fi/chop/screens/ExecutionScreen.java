@@ -178,7 +178,10 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private void endDay() {
         if (fadeOut == null) {
             fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.0f, (t) -> MathUtil.smoothStartN(t, 2))
-                    .onFinish(() -> Chop.timer.addAction(1.0f, () -> setScreen(Screens.TOWN)));
+                    .onFinish(() -> Chop.timer.addAction(1.0f, () -> {
+                        getWorld().nextDay();
+                        setScreen(Screens.TOWN);
+                    }));
         }
     }
 

@@ -56,6 +56,7 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
     @Override
     public void handle(Events event, EventData data) {
         if (event == Events.ACTION_INTERACT) {
+            getWorld().nextDay();
             setScreen(Screens.TOWN);
         } else if (event == Events.ACTION_EXIT) {
             Gdx.app.exit();

@@ -21,7 +21,6 @@ public class TownScreen extends ChopScreen implements EventListener {
 
     @Override
     public void show() {
-        getWorld().nextDay();
         registerEventListener();
         initializeScreen();
         initializeScene();
