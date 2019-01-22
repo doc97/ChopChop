@@ -24,6 +24,9 @@ public class TownScreen extends ChopScreen implements EventListener {
         registerEventListener();
         initializeScreen();
         initializeScene();
+
+        if (getWorld().getDay() % 7 == 0)
+            getPlayer().addMoney(-getWorld().getTaxes());
     }
 
     private void registerEventListener() {
