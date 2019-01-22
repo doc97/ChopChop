@@ -1,4 +1,4 @@
-# ChopChopChop
+# ChopChop
 
 This project is for the [Helsinki GameDev-club](http://gamedevclub.munstadi.fi/)
 Q1 2019. The theme this time was: **Simple Controls**.
@@ -6,8 +6,8 @@ Q1 2019. The theme this time was: **Simple Controls**.
 ## Getting started
 First, please clone this repository,
 ```
-$ git clone https://github.com/doc97/ChopChopChop.git
-$ cd ChopChopChop
+$ git clone https://github.com/doc97/ChopChop.git
+$ cd ChopChop
 ```
 
 and then run the [Gradle](https://gradle.org/) command:
