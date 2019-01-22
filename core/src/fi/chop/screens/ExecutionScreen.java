@@ -24,8 +24,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private static final float POPULARITY_DELTA = 0.05f;
     private static final float REPUTATION_DELTA = 0.05f;
 
-    private FontRenderer powerText;
-    private FontRenderer killText;
+    private FontRenderer moneyText;
     private FontRenderer timeText;
     private ColorFade fadeOut;
     private GameTimer.DelayedAction timer;
@@ -57,8 +56,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void loadAssets() {
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
-        powerText = new FontRenderer(font);
-        killText = new FontRenderer(font);
+        moneyText = new FontRenderer(font);
         timeText = new FontRenderer(font);
     }
 
@@ -156,27 +154,18 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void drawGUI(SpriteBatch batch) {
-        drawHighestPower(batch);
-        drawKillStats(batch);
-        drawDayStats(batch);
+        drawMoney(batch);
+        drawTime(batch);
     }
 
-    private void drawHighestPower(SpriteBatch batch) {
-        String percentStr = String.format("%.1f", getStats().getHighestPower() * 100);
-        powerText
-                .text("Best: " + percentStr + "%")
+    private void drawMoney(SpriteBatch batch) {
+        moneyText
+                .text("Money: " + getPlayer().getMoney())
                 .pos(50, getCamera().viewportHeight - 50)
                 .draw(batch);
     }
 
-    private void drawKillStats(SpriteBatch batch) {
-        killText
-                .text("Daily kills: " + getStats().getDailyKills())
-                .pos(50, getCamera().viewportHeight - 50 - 1.5f * killText.getLineHeight())
-                .draw(batch);
-    }
-
-    private void drawDayStats(SpriteBatch batch) {
+    private void drawTime(SpriteBatch batch) {
         timeText
                 .text("Time left: " + String.format("%.0f", Math.max(timer.time, 0)))
                 .center(getCamera(), true, false)
