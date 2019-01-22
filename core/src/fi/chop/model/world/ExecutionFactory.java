@@ -58,15 +58,15 @@ public class ExecutionFactory {
 
         switch (status) {
             case LOWER_CLASS:
-                return 100 + r.nextInt(50);
+                return 25 + r.nextInt(25);
             case WORKING_CLASS:
-                return 250 + r.nextInt(100);
+                return 75 + r.nextInt(50);
             case MIDDLE_CLASS:
-                return 500 + r.nextInt(100);
+                return 250 + r.nextInt(50);
             case NOBILITY:
-                return 600 + r.nextInt(400);
+                return 400 + r.nextInt(100);
             case ROYALTY:
-                return 750 + r.nextInt(250);
+                return 600 + r.nextInt(50);
             default:
                 return 0;
         }
@@ -75,15 +75,15 @@ public class ExecutionFactory {
     private static int randomizeSalary(Random r, SocialStatus status) {
         switch (status) {
             case LOWER_CLASS:
-                return 50 + r.nextInt(50);
+                return 5 + r.nextInt(5);
             case WORKING_CLASS:
-                return 150 + r.nextInt(75);
+                return 15 + r.nextInt(10);
             case MIDDLE_CLASS:
-                return 300 + r.nextInt(100);
+                return 30 + r.nextInt(20);
             case NOBILITY:
-                return 400 + r.nextInt(50);
+                return 75 + r.nextInt(50);
             case ROYALTY:
-                return 500;
+                return 150;
             default:
                 return 0;
         }

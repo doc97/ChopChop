@@ -29,6 +29,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private ColorFade fadeOut;
     private GameTimer.DelayedAction timer;
 
+    private float powerUsed;
+
     private boolean isPowerMeterIdle;
     private boolean isGuillotineIdle;
 
@@ -192,9 +194,19 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         getPlayer().addReputation(wasKill ? REPUTATION_DELTA : -REPUTATION_DELTA);
 
         if (wasKill)
-            getPlayer().addMoney(getWorld().getExecution().getSalary());
+            paySalary();
         if (wasCorrect)
-            getPlayer().addMoney(getWorld().getExecution().getBribe());
+            payBribe();
+    }
+
+    private void paySalary() {
+        int baseIncome = getWorld().getExecution().getSalary();
+        int skillIncome = (int) (MathUtil.smoothStartN(powerUsed, 3) * baseIncome);
+        getPlayer().addMoney(baseIncome + skillIncome);
+    }
+
+    private void payBribe() {
+        getPlayer().addMoney(getWorld().getExecution().getBribe());
     }
 
     @Override
@@ -218,6 +230,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
             case EVT_GUILLOTINE_PREPARED:
                 PowerMeterObject meter = getScene().findOne(PowerMeterObject.class);
                 float power = meter.getMeterFillPercentage();
+                powerUsed = power;
                 getStats().registerPower(power);
                 break;
             case EVT_GUILLOTINE_RESTORED:
