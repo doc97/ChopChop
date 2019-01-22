@@ -17,12 +17,12 @@ public class TestGameObject {
         object = new GameObject(null, null) {
             @Override
             public void load() {}
-
             @Override
             public void update(float delta) { }
-
             @Override
             public void render(SpriteBatch batch) { }
+            @Override
+            public void dispose() { }
         };
     }
 

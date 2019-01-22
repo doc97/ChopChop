@@ -42,6 +42,9 @@ public class TestLayer {
         public void render(SpriteBatch batch) {
             renderCalls++;
         }
+
+        @Override
+        public void dispose() { }
     }
 
     private Layer layer;
@@ -232,6 +235,8 @@ public class TestLayer {
             public void update(float delta) { }
             @Override
             public void render(SpriteBatch batch) { }
+            @Override
+            public void dispose() { }
         };
         TestObject test = new TestObject();
         layer.add(obj, test);
@@ -249,6 +254,8 @@ public class TestLayer {
             public void update(float delta) { }
             @Override
             public void render(SpriteBatch batch) { }
+            @Override
+            public void dispose() { }
         };
         layer.add(obj, new TestObject());
         layer.addQueued();
@@ -278,6 +285,8 @@ public class TestLayer {
             public void update(float delta) { }
             @Override
             public void render(SpriteBatch batch) { }
+            @Override
+            public void dispose() { }
         };
         TestObject test = new TestObject();
         layer.add(obj, test);
@@ -294,6 +303,8 @@ public class TestLayer {
             public void update(float delta) { }
             @Override
             public void render(SpriteBatch batch) { }
+            @Override
+            public void dispose() { }
         };
         layer.add(obj, new TestObject());
         layer.addQueued();
@@ -351,6 +362,8 @@ public class TestLayer {
             public void update(float delta) { }
             @Override
             public void render(SpriteBatch batch) { }
+            @Override
+            public void dispose() { }
         };
         obj3.setRotationDeg(45);
 
