@@ -52,6 +52,7 @@ public abstract class ChopScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(null);
         getScene().clear();
         Chop.events.clear();
+        Chop.timer.clear();
     }
 
     @Override

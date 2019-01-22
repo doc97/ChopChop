@@ -14,6 +14,7 @@ import fi.chop.input.ExecutionScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
+import fi.chop.timer.GameTimer;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
 
@@ -27,8 +28,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private FontRenderer killText;
     private FontRenderer timeText;
     private ColorFade fadeOut;
-    private boolean isExiting;
-    private float leftOfDaySec;
+    private GameTimer.DelayedAction timer;
 
     private boolean isPowerMeterIdle;
     private boolean isGuillotineIdle;
@@ -49,10 +49,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new ExecutionScreenInput(this, getInputMap()));
-
-        leftOfDaySec = 60;
-        fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.5f, (t) -> MathUtil.smoothStartN(t, 2))
-                .onFinish(() -> Chop.timer.addAction(1, () -> setScreen(Screens.TOWN)));
+        timer = Chop.timer.addAction(60, this::endDay);
 
         isGuillotineIdle = true;
         isPowerMeterIdle = true;
@@ -145,18 +142,14 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     protected void update(float delta) {
         getScene().update(delta);
 
-        if (isExiting) {
+        if (fadeOut != null)
             fadeOut.update(delta);
-        } else {
-            leftOfDaySec -= delta;
-            if (leftOfDaySec <= 0)
-                endDay();
-        }
     }
 
     @Override
     protected void render(SpriteBatch batch) {
-        batch.setColor(fadeOut.getColor());
+        if (fadeOut != null)
+            batch.setColor(fadeOut.getColor());
         getScene().render(batch);
         drawGUI(batch);
         batch.setColor(Color.WHITE);
@@ -185,14 +178,24 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void drawDayStats(SpriteBatch batch) {
         timeText
-                .text("Time left: " + String.format("%.0f", Math.max(leftOfDaySec, 0)))
+                .text("Time left: " + String.format("%.0f", Math.max(timer.time, 0)))
                 .center(getCamera(), true, false)
                 .y(getCamera().viewportHeight - 10)
                 .draw(batch);
     }
 
     private void endDay() {
-        isExiting = true;
+        if (fadeOut == null) {
+            fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.0f, (t) -> MathUtil.smoothStartN(t, 2))
+                    .onFinish(() -> Chop.timer.addAction(1.0f, () -> setScreen(Screens.TOWN)));
+        }
+    }
+
+    private void exitGame() {
+        if (fadeOut == null) {
+            fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 1.0f, (t) -> MathUtil.smoothStartN(t, 2))
+                    .onFinish(() -> Chop.timer.addAction(0.5f, () -> setScreen(Screens.MAIN_MENU)));
+        }
     }
 
     private void updatePlayerStats(boolean wasCorrect, boolean wasKill) {
@@ -210,7 +213,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 }
                 break;
             case ACTION_BACK:
-                setScreen(Screens.MAIN_MENU);
+                exitGame();
                 break;
             case EVT_GUILLOTINE_STATE_CHANGED:
                 isGuillotineIdle = data.get() == GuillotineStates.IDLE;

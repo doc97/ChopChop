@@ -19,22 +19,27 @@ public class GameTimer {
             actions.poll().action.call();
     }
 
-    public void addAction(float delaySec, TimedAction action) {
+    public DelayedAction addAction(float delaySec, TimedAction action) {
         if (delaySec < 0)
             throw new IllegalArgumentException("delaySec must not be negative");
         if (delaySec == 0) {
             action.call();
-            return;
+            return null;
         }
 
         DelayedAction delayedAction = new DelayedAction();
         delayedAction.time = time + delaySec;
         delayedAction.action = action;
         actions.add(delayedAction);
+        return delayedAction;
     }
 
-    private class DelayedAction {
-        private float time;
+    public void clear() {
+        actions.clear();
+    }
+
+    public class DelayedAction {
+        public float time;
         private TimedAction action;
     }
 }
