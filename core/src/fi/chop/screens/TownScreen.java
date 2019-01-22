@@ -39,6 +39,13 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Text", new Layer());
 
+        TextObject moneyText = new TextObject(getAssets(), getCamera());
+        moneyText.setOrigin(0, 1);
+        moneyText.setPosition(50, getCamera().viewportHeight - 50);
+        moneyText.pad(5, 5);
+        moneyText.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney());
+        moneyText.load();
+
         TextObject dayText = new TextObject(getAssets(), getCamera());
         dayText.setOrigin(0.5f, 1);
         dayText.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 50);
@@ -129,7 +136,7 @@ public class TownScreen extends ChopScreen implements EventListener {
             }
         });
 
-        getScene().addObjects("Text", dayText, castleText, tavernText, guillotineText);
+        getScene().addObjects("Text", moneyText, dayText, castleText, tavernText, guillotineText);
         getScene().addQueued();
     }
 
