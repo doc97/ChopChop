@@ -31,6 +31,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private float powerUsed;
 
+    private boolean isNotExiting;
     private boolean isPowerMeterIdle;
     private boolean isGuillotineIdle;
 
@@ -176,7 +177,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void endDay() {
-        if (fadeOut == null) {
+        if (isNotExiting) {
+            isNotExiting = false;
             fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.0f, (t) -> MathUtil.smoothStartN(t, 2))
                     .onFinish(() -> Chop.timer.addAction(1.0f, () -> {
                         getWorld().nextDay();
@@ -186,7 +188,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void exitGame() {
-        if (fadeOut == null) {
+        if (isNotExiting) {
+            isNotExiting = false;
             fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 1.0f, (t) -> MathUtil.smoothStartN(t, 2))
                     .onFinish(() -> Chop.timer.addAction(0.5f, () -> setScreen(Screens.MAIN_MENU)));
         }
@@ -198,7 +201,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         if (wasKill)
             paySalary();
-        if (wasCorrect)
+        else
             payBribe();
     }
 
@@ -216,7 +219,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         switch (event) {
             case ACTION_INTERACT:
-                if (isPowerMeterIdle && isGuillotineIdle) {
+                if (isPowerMeterIdle && isGuillotineIdle && isNotExiting) {
                     float value = getScene().findOne(PowerBarObject.class).getValue();
                     Chop.events.notify(Events.EVT_GUILLOTINE_RAISE, new EventData<>(value));
                 }
