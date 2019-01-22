@@ -53,6 +53,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         Gdx.input.setInputProcessor(new ExecutionScreenInput(this, getInputMap()));
         timer = Chop.timer.addAction(60, this::endDay);
 
+        isNotExiting = true;
         isGuillotineIdle = true;
         isPowerMeterIdle = true;
     }
@@ -170,7 +171,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void drawTime(SpriteBatch batch) {
         timeText
-                .text("Time left: " + String.format("%.0f", Math.max(timer.time, 0)))
+                .text("Time left: " + String.format("%.0f", Chop.timer.getTimeLeft(timer)))
                 .center(getCamera(), true, false)
                 .y(getCamera().viewportHeight - 10)
                 .draw(batch);

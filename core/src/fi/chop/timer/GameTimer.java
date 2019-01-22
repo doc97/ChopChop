@@ -34,8 +34,17 @@ public class GameTimer {
         return delayedAction;
     }
 
+
     public void clear() {
         actions.clear();
+    }
+
+    public float getGlobalTime() {
+        return time;
+    }
+
+    public float getTimeLeft(DelayedAction action) {
+        return Math.max(action.time - time, 0);
     }
 
     public class DelayedAction {
