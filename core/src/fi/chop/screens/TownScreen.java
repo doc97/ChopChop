@@ -71,14 +71,14 @@ public class TownScreen extends ChopScreen implements EventListener {
             public void enter(GameObject obj, float worldX, float worldY) {
                 TextObject txt = (TextObject) obj;
                 txt.tint(Color.YELLOW);
-                txt.background(Color.FIREBRICK);
+                txt.bgColor(Color.FIREBRICK);
             }
 
             @Override
             public void exit(GameObject obj, float worldX, float worldY) {
                 TextObject txt = (TextObject) obj;
                 txt.tint(Color.WHITE);
-                txt.background(null);
+                txt.bgColor(null);
             }
         });
 
@@ -99,14 +99,14 @@ public class TownScreen extends ChopScreen implements EventListener {
             public void enter(GameObject obj, float worldX, float worldY) {
                 TextObject txt = (TextObject) obj;
                 txt.tint(Color.YELLOW);
-                txt.background(Color.FIREBRICK);
+                txt.bgColor(Color.FIREBRICK);
             }
 
             @Override
             public void exit(GameObject obj, float worldX, float worldY) {
                 TextObject txt = (TextObject) obj;
                 txt.tint(Color.WHITE);
-                txt.background(null);
+                txt.bgColor(null);
             }
         });
 
@@ -127,14 +127,14 @@ public class TownScreen extends ChopScreen implements EventListener {
             public void enter(GameObject obj, float worldX, float worldY) {
                 TextObject txt = (TextObject) obj;
                 txt.tint(Color.YELLOW);
-                txt.background(Color.FIREBRICK);
+                txt.bgColor(Color.FIREBRICK);
             }
 
             @Override
             public void exit(GameObject obj, float worldX, float worldY) {
                 TextObject txt = (TextObject) obj;
                 txt.tint(Color.WHITE);
-                txt.background(null);
+                txt.bgColor(null);
             }
         });
 

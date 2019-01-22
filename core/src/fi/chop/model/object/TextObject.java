@@ -22,7 +22,8 @@ public class TextObject extends GameObject {
     private String fontName;
     private TextConstructor textConstructor;
     private FontRenderer renderer;
-    private Color background;
+    private TextureRegion bgTexture;
+    private Color bgColor;
     private Color tint;
 
     private OrthographicCamera cam;
@@ -37,7 +38,7 @@ public class TextObject extends GameObject {
 
     public TextObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
-        background = new Color(Color.CLEAR);
+        bgColor = new Color(Color.CLEAR);
         tint = new Color(Color.WHITE);
         batch = new SpriteBatch();
         cam = new OrthographicCamera(0, 0);
@@ -75,13 +76,16 @@ public class TextObject extends GameObject {
         fboRegion.flip(false, true);
 
         fbo.begin();
-        Gdx.gl.glClearColor(background.r, background.g, background.b, background.a);
+        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(cam.combined);
 
         batch.begin();
         batch.setBlendFunction(-1, -1);
         Gdx.gl20.glBlendFuncSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE);
+
+        if (bgTexture != null)
+            batch.draw(bgTexture, 0, 0, totalWidth, totalHeight);
 
         textRenderer
                 .center(cam, true, true)
@@ -133,8 +137,13 @@ public class TextObject extends GameObject {
         dirty = true;
     }
 
-    public void background(Color background) {
-        this.background = background == null ? new Color(Color.CLEAR) : new Color(background);
+    public void bgColor(Color bgColor) {
+        this.bgColor = bgColor == null ? new Color(Color.CLEAR) : new Color(bgColor);
+        dirty = true;
+    }
+
+    public void bgTexture(TextureRegion bgTexture) {
+        this.bgTexture = bgTexture;
         dirty = true;
     }
 }
