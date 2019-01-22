@@ -23,6 +23,7 @@ public class TextObject extends GameObject {
     private TextConstructor textConstructor;
     private FontRenderer renderer;
     private Color background;
+    private Color tint;
 
     private OrthographicCamera cam;
     private SpriteBatch batch;
@@ -37,6 +38,7 @@ public class TextObject extends GameObject {
     public TextObject(AssetManager assets, OrthographicCamera camera) {
         super(assets, camera);
         background = new Color(Color.CLEAR);
+        tint = new Color(Color.WHITE);
         batch = new SpriteBatch();
         cam = new OrthographicCamera(0, 0);
     }
@@ -61,9 +63,9 @@ public class TextObject extends GameObject {
         dirty = false;
     }
 
-    private void createTexture(FontRenderer text) {
-        int width = Math.round(text.width());
-        int height = Math.round(text.height());
+    private void createTexture(FontRenderer textRenderer) {
+        int width = Math.round(textRenderer.width());
+        int height = Math.round(textRenderer.height());
         int totalWidth = Math.round(width + paddingX);
         int totalHeight = Math.round(height + paddingY);
 
@@ -81,7 +83,11 @@ public class TextObject extends GameObject {
         batch.setBlendFunction(-1, -1);
         Gdx.gl20.glBlendFuncSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE);
 
-        text.center(cam, true, true).translate(0, height).draw(batch);
+        textRenderer
+                .center(cam, true, true)
+                .translate(0, height)
+                .tint(tint)
+                .draw(batch);
         batch.end();
 
         fbo.end();
@@ -98,6 +104,9 @@ public class TextObject extends GameObject {
 
     @Override
     public void update(float delta) {
+        if (renderer == null || textConstructor == null)
+            return;
+
         String newText = textConstructor.construct();
         if (!newText.equals(renderer.str())) {
             dirty = true;
@@ -119,12 +128,13 @@ public class TextObject extends GameObject {
         fbo.dispose();
     }
 
-    public void tint(Color color) {
-        renderer.tint(color);
+    public void tint(Color tint) {
+        this.tint = tint == null ? new Color(Color.WHITE) : new Color(tint);
         dirty = true;
     }
 
     public void background(Color background) {
         this.background = background == null ? new Color(Color.CLEAR) : new Color(background);
+        dirty = true;
     }
 }
