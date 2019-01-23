@@ -1,16 +1,14 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.TouchHandler;
+import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
-import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
 
 public class TownScreen extends ChopScreen implements EventListener {
@@ -61,26 +59,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         castleText.pad(50, 50);
         castleText.load();
         castleText.setTouchable(true);
-        castleText.setTouchHandler(new TouchHandler() {
-            @Override
-            public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
-                Gdx.app.log("Castle", "Go!");
-            }
-
-            @Override
-            public void enter(GameObject obj, float worldX, float worldY) {
-                TextObject txt = (TextObject) obj;
-                txt.tint(Color.YELLOW);
-                txt.bgColor(Color.FIREBRICK);
-            }
-
-            @Override
-            public void exit(GameObject obj, float worldX, float worldY) {
-                TextObject txt = (TextObject) obj;
-                txt.tint(Color.WHITE);
-                txt.bgColor(null);
-            }
-        });
+        castleText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Castle", "Go!")));
 
         TextObject tavernText = new TextObject(getAssets(), getCamera());
         tavernText.setOrigin(0, 1);
@@ -89,26 +68,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         tavernText.pad(50, 50);
         tavernText.load();
         tavernText.setTouchable(true);
-        tavernText.setTouchHandler(new TouchHandler() {
-            @Override
-            public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
-                Gdx.app.log("Tavern", "Go!");
-            }
-
-            @Override
-            public void enter(GameObject obj, float worldX, float worldY) {
-                TextObject txt = (TextObject) obj;
-                txt.tint(Color.YELLOW);
-                txt.bgColor(Color.FIREBRICK);
-            }
-
-            @Override
-            public void exit(GameObject obj, float worldX, float worldY) {
-                TextObject txt = (TextObject) obj;
-                txt.tint(Color.WHITE);
-                txt.bgColor(null);
-            }
-        });
+        tavernText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.TAVERN)));
 
         TextObject guillotineText = new TextObject(getAssets(), getCamera());
         guillotineText.setOrigin(1, 1);
@@ -117,26 +77,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         guillotineText.pad(50, 50);
         guillotineText.load();
         guillotineText.setTouchable(true);
-        guillotineText.setTouchHandler(new TouchHandler() {
-            @Override
-            public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
-                setScreen(Screens.EXECUTION);
-            }
-
-            @Override
-            public void enter(GameObject obj, float worldX, float worldY) {
-                TextObject txt = (TextObject) obj;
-                txt.tint(Color.YELLOW);
-                txt.bgColor(Color.FIREBRICK);
-            }
-
-            @Override
-            public void exit(GameObject obj, float worldX, float worldY) {
-                TextObject txt = (TextObject) obj;
-                txt.tint(Color.WHITE);
-                txt.bgColor(null);
-            }
-        });
+        guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
 
         getScene().addObjects("Text", moneyText, dayText, castleText, tavernText, guillotineText);
         getScene().addQueued();
