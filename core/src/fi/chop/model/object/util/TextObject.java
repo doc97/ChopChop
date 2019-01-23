@@ -19,10 +19,18 @@ import java.util.function.Supplier;
 
 public class TextObject extends GameObject {
 
+    public enum StyleType {
+        CUSTOM, DISABLED, NORMAL, HOVER
+    }
+
     private String fontName;
     private Supplier<String> textConstructor;
     private FontRenderer renderer;
-    private TextObjectStyle style;
+    private TextObjectStyle customStyle;
+    private TextObjectStyle disabledStyle;
+    private TextObjectStyle normalStyle;
+    private TextObjectStyle hoverStyle;
+    private StyleType usedStyle;
 
     private OrthographicCamera cam;
     private SpriteBatch batch;
@@ -33,12 +41,17 @@ public class TextObject extends GameObject {
     private float paddingX;
     private float paddingY;
     private boolean dirty;
+    private boolean disabled;
 
     public TextObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
-        style = new TextObjectStyle();
         batch = new SpriteBatch();
         cam = new OrthographicCamera(0, 0);
+        customStyle = new TextObjectStyle();
+        disabledStyle = new TextObjectStyle().bgColor(Color.DARK_GRAY).tint(Color.GRAY);
+        normalStyle = new TextObjectStyle();
+        hoverStyle = new TextObjectStyle().bgColor(Color.FIREBRICK).tint(Color.YELLOW);
+        usedStyle = StyleType.NORMAL;
     }
 
     public void create(String fontName, Supplier<String> textConstructor) {
@@ -66,6 +79,7 @@ public class TextObject extends GameObject {
         int height = Math.round(textRenderer.height());
         int totalWidth = Math.round(width + paddingX);
         int totalHeight = Math.round(height + paddingY);
+        TextObjectStyle style = getUsedStyle();
 
         cam.setToOrtho(false, totalWidth, totalHeight);
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, totalWidth, totalHeight, false);
@@ -131,22 +145,83 @@ public class TextObject extends GameObject {
     }
 
     public void tint(Color tint) {
-        style.tint(tint);
-        dirty = true;
+        customStyle.tint(tint);
+        if (usedStyle == StyleType.CUSTOM)
+            dirty = true;
     }
 
     public void bgColor(Color bgColor) {
-        style.bgColor(bgColor);
-        dirty = true;
+        customStyle.bgColor(bgColor);
+        if (usedStyle == StyleType.CUSTOM)
+            dirty = true;
     }
 
     public void bgTexture(TextureRegion bgTexture) {
-        style.bgTexture(bgTexture);
+        customStyle.bgTexture(bgTexture);
+        if (usedStyle == StyleType.CUSTOM)
+            dirty = true;
+    }
+
+    public void setStyles(TextObjectStyle customStyle, TextObjectStyle disabledStyle,
+                          TextObjectStyle normalStyle, TextObjectStyle hoverStyle) {
+        this.customStyle.set(customStyle);
+        this.disabledStyle.set(disabledStyle);
+        this.normalStyle.set(normalStyle);
+        this.hoverStyle.set(hoverStyle);
         dirty = true;
     }
 
-    public void style(TextObjectStyle style) {
-        this.style.set(style);
-        dirty = true;
+    public void setStyle(StyleType type, TextObjectStyle style) {
+        switch (type) {
+            case CUSTOM:
+                customStyle.set(style);
+                break;
+            case DISABLED:
+                disabledStyle.set(style);
+                break;
+            case NORMAL:
+                normalStyle.set(style);
+                break;
+            case HOVER:
+                hoverStyle.set(style);
+                break;
+        }
+        if (type == usedStyle)
+            dirty = true;
+    }
+
+    public void useStyle(StyleType type) {
+        if (disabled)
+            return;
+        if (usedStyle != type)
+            dirty = true;
+        usedStyle = type;
+    }
+
+    public TextObjectStyle getUsedStyle() {
+        switch (usedStyle) {
+            case CUSTOM:
+                return customStyle;
+            case DISABLED:
+                return disabledStyle;
+            case NORMAL:
+                return normalStyle;
+            case HOVER:
+                return hoverStyle;
+            default:
+                throw new RuntimeException("Invalid TextObject style!");
+        }
+    }
+
+    public void enable() {
+        disabled = false;
+    }
+
+    public void disable() {
+        disabled = true;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
     }
 }
