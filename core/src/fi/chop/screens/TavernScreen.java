@@ -13,7 +13,15 @@ import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
 
+import java.util.Random;
+
 public class TavernScreen extends ChopScreen implements EventListener {
+
+    private static final int DRINK_PRICE = 10;
+    private static final float POPULARITY_DELTA = 0.05f;
+
+    private Random random;
+    private int round;
 
     public TavernScreen(Chop game) {
         super(game);
@@ -32,6 +40,8 @@ public class TavernScreen extends ChopScreen implements EventListener {
 
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new TavernScreenInput(this, getInputMap()));
+        random = new Random();
+        round = 1;
     }
 
     private void initializeScene() {
@@ -46,7 +56,24 @@ public class TavernScreen extends ChopScreen implements EventListener {
         drinkText.create("ZCOOL-40.ttf", () -> "Buy a drink");
         drinkText.load();
         drinkText.setTouchable(true);
-        drinkText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Tavern", "Drink!")));
+        drinkText.setTouchHandler(new TextButtonHandler(() -> {
+            if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
+                Gdx.app.log("Tavern", "Bought a drink...");
+                getPlayer().addMoney(-DRINK_PRICE);
+
+                int threshold = 100 - round * 10;
+                round++;
+                Gdx.app.log("Tavern", threshold + "% chance of gaining popularity");
+                if (random.nextInt(100) < threshold) {
+                    Gdx.app.log("Tavern", "Received " + (POPULARITY_DELTA * 100) + "% popularity!");
+                    getPlayer().addPopularity(POPULARITY_DELTA);
+                } else {
+                    Gdx.app.log("Tavern", "No luck... No one was looking.");
+                }
+            } else {
+                Gdx.app.log("Tavern", "Not enough money!");
+            }
+        }));
 
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
