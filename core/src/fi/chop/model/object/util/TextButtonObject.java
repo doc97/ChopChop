@@ -32,6 +32,13 @@ public class TextButtonObject extends TextObject {
         style(getUsedStyle());
     }
 
+    private void useStyle(StyleType type) {
+        if (usedStyle != type) {
+            usedStyle = type;
+            syncStyle();
+        }
+    }
+
     private TextButtonStyle getUsedStyle() {
         switch (usedStyle) {
             case CUSTOM:
@@ -66,11 +73,16 @@ public class TextButtonObject extends TextObject {
             syncStyle();
     }
 
-    public void useStyle(StyleType type) {
-        if (disabled || usedStyle == type)
+    public void normal() {
+        if (disabled)
             return;
-        usedStyle = type;
-        syncStyle();
+        useStyle(StyleType.NORMAL);
+    }
+
+    public void hover() {
+        if (disabled)
+            return;
+        useStyle(StyleType.HOVER);
     }
 
     public void enable() {

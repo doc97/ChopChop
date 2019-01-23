@@ -19,13 +19,11 @@ public class TextButtonHandler extends TouchHandler {
 
     @Override
     public void enter(GameObject obj, float worldX, float worldY) {
-        TextButtonObject btn = (TextButtonObject) obj;
-        btn.useStyle(TextButtonObject.StyleType.HOVER);
+        ((TextButtonObject) obj).hover();
     }
 
     @Override
     public void exit(GameObject obj, float worldX, float worldY) {
-        TextButtonObject btn = (TextButtonObject) obj;
-        btn.useStyle(TextButtonObject.StyleType.NORMAL);
+        ((TextButtonObject) obj).normal();
     }
 }
