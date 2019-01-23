@@ -79,8 +79,8 @@ public class ScrollObject extends GameObject {
             text.append("\n");
             text.append("Crowd's opinion: ").append(execution.isFairPunishment() ? "Fair :)" : "Unfair :(").append("\n");
             text.append("\n");
-            text.append("Salary: ").append(execution.getSalary()).append("$").append("\n");
-            text.append("Bribe: ").append(execution.getBribe()).append("$").append("\n");
+            text.append("Salary: ").append(execution.getSalary()).append(" gold").append("\n");
+            text.append("Bribe: ").append(execution.getBribe()).append(" gold").append("\n");
             return text.toString();
         });
         scrollText.load();

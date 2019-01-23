@@ -26,7 +26,7 @@ public class GameGUIObject extends GameObject {
         money.setOrigin(0, 1);
         money.setPosition(50, getCamera().viewportHeight - 50);
         money.pad(10, 10);
-        money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney());
+        money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney() + " gold");
         money.load();
 
         popularity = new PopularityMeterObject(getAssets(), getCamera(), getPlayer());
