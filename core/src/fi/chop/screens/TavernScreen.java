@@ -47,14 +47,14 @@ public class TavernScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Buttons", new Layer());
         getScene().addLayer("GUI", new Layer());
 
-        TextObject drinkText = new TextObject(getAssets(), getCamera(), getPlayer());
-        drinkText.setOrigin(0.5f, 1);
-        drinkText.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f);
-        drinkText.pad(50, 50);
-        drinkText.create("ZCOOL-40.ttf", () -> "Buy a drink");
-        drinkText.load();
-        drinkText.setTouchable(true);
-        drinkText.setTouchHandler(new TextButtonHandler(() -> {
+        TextObject buyText = new TextObject(getAssets(), getCamera(), getPlayer());
+        buyText.setOrigin(0.5f, 1);
+        buyText.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f);
+        buyText.pad(50, 50);
+        buyText.create("ZCOOL-40.ttf", () -> "Buy a drink");
+        buyText.load();
+        buyText.setTouchable(true);
+        buyText.setTouchHandler(new TextButtonHandler(() -> {
             if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
                 Gdx.app.log("Tavern", "Bought a drink...");
                 getPlayer().addMoney(-DRINK_PRICE);
@@ -67,9 +67,14 @@ public class TavernScreen extends ChopScreen implements EventListener {
                     Gdx.app.log("Tavern", "No luck... No one was looking.");
                 }
             } else {
+                buyText.disable();
                 Gdx.app.log("Tavern", "Not enough money!");
             }
         }));
+        if (!getPlayer().hasEnoughMoney(DRINK_PRICE)) {
+            buyText.useStyle(TextObject.StyleType.DISABLED);
+            buyText.disable();
+        }
 
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
@@ -96,7 +101,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
                 Math.max(100 - (getWorld().getDrinkCount() + 1) * 10, 5) + "%");
         probabilityText.load();
 
-        getScene().addObjects("Buttons", priceText, drinkText, probabilityText);
+        getScene().addObjects("Buttons", priceText, buyText, probabilityText);
         getScene().addObjects("GUI", gui, drinksText);
         getScene().addQueued();
     }
