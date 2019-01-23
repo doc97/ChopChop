@@ -68,9 +68,6 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Heads", new Layer());
         getScene().addLayer("GUI", new Layer());
 
-        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
-        gui.load();
-
         GameObject powerBar = new PowerBarObject(getAssets(), getCamera(), getPlayer());
         powerBar.setOrigin(0.5f, 0.5f);
         powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
@@ -97,14 +94,12 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         scroll.load();
         scroll.setExecution(getWorld().getExecution());
 
+        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        gui.load();
+
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISE, Events.EVT_GUILLOTINE_PREPARED);
         Chop.events.addListener(guillotine, Events.EVT_GUILLOTINE_RAISE);
         Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_PERSON_KILLED);
-
-        // Initialize meters
-        Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
-        Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(getPlayer().getReputation()));
-        Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(getPlayer().getReputationLevel()));
 
         getScene().addObjects("Heads", person);
         getScene().addObjects("Guillotine", guillotine);

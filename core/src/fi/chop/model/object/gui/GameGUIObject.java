@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
+import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
@@ -40,6 +41,11 @@ public class GameGUIObject extends GameObject {
 
         Chop.events.addListener(popularity, Events.EVT_POPULARITY_CHANGED);
         Chop.events.addListener(reputation, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
+
+        // Initialize meters
+        Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
+        Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(getPlayer().getReputation()));
+        Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(getPlayer().getReputationLevel()));
     }
 
     @Override

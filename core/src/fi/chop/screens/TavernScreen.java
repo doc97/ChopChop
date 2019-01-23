@@ -9,7 +9,9 @@ import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TavernScreenInput;
 import fi.chop.input.TextButtonHandler;
+import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
+import fi.chop.model.object.gui.GameGUIObject;
 
 public class TavernScreen extends ChopScreen implements EventListener {
 
@@ -35,6 +37,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
     private void initializeScene() {
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Buttons", new Layer());
+        getScene().addLayer("GUI", new Layer());
 
         TextObject drinkText = new TextObject(getAssets(), getCamera(), getPlayer());
         drinkText.setOrigin(0.5f, 1);
@@ -45,7 +48,11 @@ public class TavernScreen extends ChopScreen implements EventListener {
         drinkText.setTouchable(true);
         drinkText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Tavern", "Drink!")));
 
+        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        gui.load();
+
         getScene().addObjects("Buttons", drinkText);
+        getScene().addObjects("GUI", gui);
         getScene().addQueued();
     }
 

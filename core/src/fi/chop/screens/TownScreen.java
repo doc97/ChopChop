@@ -42,9 +42,6 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Text", new Layer());
         getScene().addLayer("GUI", new Layer());
 
-        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
-        gui.load();
-
         TextObject dayText = new TextObject(getAssets(), getCamera(), getPlayer());
         dayText.setOrigin(0.5f, 1);
         dayText.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 50);
@@ -77,6 +74,9 @@ public class TownScreen extends ChopScreen implements EventListener {
         guillotineText.load();
         guillotineText.setTouchable(true);
         guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
+
+        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        gui.load();
 
         getScene().addObjects("Text", dayText, castleText, tavernText, guillotineText);
         getScene().addObjects("GUI", gui);
