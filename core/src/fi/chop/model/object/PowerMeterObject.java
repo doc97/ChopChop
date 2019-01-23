@@ -6,6 +6,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
+import fi.chop.model.object.util.ValueMeterObject;
 import fi.chop.model.world.Player;
 
 public class PowerMeterObject extends ValueMeterObject {

@@ -10,7 +10,7 @@ import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.TextObject;
+import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
 
 public class TownScreen extends ChopScreen implements EventListener {

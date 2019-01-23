@@ -1,4 +1,4 @@
-package fi.chop.model.object;
+package fi.chop.model.object.util;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.ValueMeter;
+import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 

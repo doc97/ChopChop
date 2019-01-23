@@ -7,7 +7,7 @@ import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.TextObject;
+import fi.chop.model.object.util.TextObject;
 import fi.chop.model.world.Player;
 
 public class GameGUIObject extends GameObject {

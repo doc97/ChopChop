@@ -22,7 +22,6 @@ public class WorldState {
         execution = ExecutionFactory.create();
     }
 
-
     public int getDay() {
         return day;
     }

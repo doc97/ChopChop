@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
+import fi.chop.model.object.util.TextObject;
 import fi.chop.model.world.Execution;
 import fi.chop.model.world.Player;
 

@@ -10,7 +10,7 @@ import fi.chop.event.Events;
 import fi.chop.input.TavernScreenInput;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.TextObject;
+import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
 
 import java.util.Random;

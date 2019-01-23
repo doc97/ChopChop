@@ -1,4 +1,4 @@
-package fi.chop.model.object;
+package fi.chop.model.object.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import fi.chop.engine.DrawParameters;
+import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 
@@ -21,9 +22,7 @@ public class TextObject extends GameObject {
     private String fontName;
     private Supplier<String> textConstructor;
     private FontRenderer renderer;
-    private TextureRegion bgTexture;
-    private Color bgColor;
-    private Color tint;
+    private TextObjectStyle style;
 
     private OrthographicCamera cam;
     private SpriteBatch batch;
@@ -37,8 +36,7 @@ public class TextObject extends GameObject {
 
     public TextObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
-        bgColor = new Color(Color.CLEAR);
-        tint = new Color(Color.WHITE);
+        style = new TextObjectStyle();
         batch = new SpriteBatch();
         cam = new OrthographicCamera(0, 0);
     }
@@ -75,7 +73,8 @@ public class TextObject extends GameObject {
         fboRegion.flip(false, true);
 
         fbo.begin();
-        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+        Color bg = style.getBgColor();
+        Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(cam.combined);
 
@@ -83,13 +82,13 @@ public class TextObject extends GameObject {
         batch.setBlendFunction(-1, -1);
         Gdx.gl20.glBlendFuncSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE);
 
-        if (bgTexture != null)
-            batch.draw(bgTexture, 0, 0, totalWidth, totalHeight);
+        if (style.getBgTexture() != null)
+            batch.draw(style.getBgTexture(), 0, 0, totalWidth, totalHeight);
 
         textRenderer
                 .center(cam, true, true)
                 .translate(0, height)
-                .tint(tint)
+                .tint(style.getTint())
                 .draw(batch);
         batch.end();
 
@@ -132,17 +131,22 @@ public class TextObject extends GameObject {
     }
 
     public void tint(Color tint) {
-        this.tint = tint == null ? new Color(Color.WHITE) : new Color(tint);
+        style.tint(tint);
         dirty = true;
     }
 
     public void bgColor(Color bgColor) {
-        this.bgColor = bgColor == null ? new Color(Color.CLEAR) : new Color(bgColor);
+        style.bgColor(bgColor);
         dirty = true;
     }
 
     public void bgTexture(TextureRegion bgTexture) {
-        this.bgTexture = bgTexture;
+        style.bgTexture(bgTexture);
+        dirty = true;
+    }
+
+    public void style(TextObjectStyle style) {
+        this.style.set(style);
         dirty = true;
     }
 }

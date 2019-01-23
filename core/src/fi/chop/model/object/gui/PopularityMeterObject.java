@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
-import fi.chop.model.object.ValueMeterObject;
+import fi.chop.model.object.util.ValueMeterObject;
 import fi.chop.model.world.Player;
 
 public class PopularityMeterObject extends ValueMeterObject {
