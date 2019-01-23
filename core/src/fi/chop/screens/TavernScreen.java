@@ -70,10 +70,8 @@ public class TavernScreen extends ChopScreen implements EventListener {
                 Gdx.app.log("Tavern", "Not enough money!");
             }
         }));
-        if (!getPlayer().hasEnoughMoney(DRINK_PRICE)) {
-            buyText.useStyle(TextButtonObject.StyleType.DISABLED);
+        if (!getPlayer().hasEnoughMoney(DRINK_PRICE))
             buyText.disable();
-        }
 
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();

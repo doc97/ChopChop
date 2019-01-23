@@ -14,6 +14,12 @@ public class TextButtonHandler extends TouchHandler {
 
     @Override
     public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
+        ((TextButtonObject) obj).press();
+    }
+
+    @Override
+    public void touchUp(GameObject obj, float worldX, float worldY, int pointer, int button) {
+        ((TextButtonObject) obj).hover();
         onClick.run();
     }
 
