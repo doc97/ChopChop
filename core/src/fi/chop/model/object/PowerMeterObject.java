@@ -6,6 +6,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
+import fi.chop.model.world.Player;
 
 public class PowerMeterObject extends ValueMeterObject {
 
@@ -13,8 +14,8 @@ public class PowerMeterObject extends ValueMeterObject {
     private float toAdd;
     private boolean ready;
 
-    public PowerMeterObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera, FillDirection.UP, TextOriginX.LEFT, TextOriginY.BOTTOM,
+    public PowerMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player, FillDirection.UP, TextOriginX.LEFT, TextOriginY.BOTTOM,
                 1, 0, 10, 0,
                 "powermeter-background", "powermeter-fill", "ZCOOL-40.ttf");
         state = new PowerMeterStateMachine(this);

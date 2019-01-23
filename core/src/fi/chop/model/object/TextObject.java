@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import fi.chop.engine.DrawParameters;
+import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 
 public class TextObject extends GameObject {
@@ -36,8 +37,8 @@ public class TextObject extends GameObject {
     private float paddingY;
     private boolean dirty;
 
-    public TextObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera);
+    public TextObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player);
         bgColor = new Color(Color.CLEAR);
         tint = new Color(Color.WHITE);
         batch = new SpriteBatch();

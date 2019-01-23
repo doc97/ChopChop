@@ -10,6 +10,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.GuillotineStateMachine;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
+import fi.chop.model.world.Player;
 
 public class GuillotineObject extends GameObject {
 
@@ -23,8 +24,8 @@ public class GuillotineObject extends GameObject {
     private float toRaise;
     private int raiseCount;
 
-    public GuillotineObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera);
+    public GuillotineObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player);
         state = new GuillotineStateMachine(this);
     }
 

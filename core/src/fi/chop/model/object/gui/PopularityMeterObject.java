@@ -1,14 +1,16 @@
-package fi.chop.model.object;
+package fi.chop.model.object.gui;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
+import fi.chop.model.object.ValueMeterObject;
+import fi.chop.model.world.Player;
 
 public class PopularityMeterObject extends ValueMeterObject {
 
-    public PopularityMeterObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera, FillDirection.LEFT, TextOriginX.RIGHT, TextOriginY.BOTTOM,
+    public PopularityMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player, FillDirection.LEFT, TextOriginX.RIGHT, TextOriginY.BOTTOM,
                 1, 1, 0, 5,
                 "meter-background", "meter-fill", "ZCOOL-30.ttf");
     }

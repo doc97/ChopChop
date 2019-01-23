@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.ValueMeter;
+import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 
 public abstract class ValueMeterObject extends GameObject {
@@ -42,12 +43,12 @@ public abstract class ValueMeterObject extends GameObject {
     private DrawParameters fillParams;
     private FontRenderer labelText;
 
-    protected ValueMeterObject(AssetManager assets, OrthographicCamera camera,
+    protected ValueMeterObject(AssetManager assets, OrthographicCamera camera, Player player,
                                FillDirection direction, TextOriginX textOriginX, TextOriginY textOriginY,
                                float textOriginXOffset, float textOriginYOffset,
                                float textSpacingX, float textSpacingY,
                                String backgroundAssetName, String fillAssetName, String fontName) {
-        super(assets, camera);
+        super(assets, camera, player);
         this.direction = direction;
         this.textOriginX = textOriginX;
         this.textOriginY = textOriginY;

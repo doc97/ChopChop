@@ -36,7 +36,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Buttons", new Layer());
 
-        TextObject drinkText = new TextObject(getAssets(), getCamera());
+        TextObject drinkText = new TextObject(getAssets(), getCamera(), getPlayer());
         drinkText.setOrigin(0.5f, 1);
         drinkText.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f);
         drinkText.pad(50, 50);

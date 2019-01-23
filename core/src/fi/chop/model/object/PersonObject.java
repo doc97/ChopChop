@@ -11,6 +11,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.fsm.machines.PersonStateMachine;
 import fi.chop.model.fsm.states.person.PersonStates;
+import fi.chop.model.world.Player;
 
 public class PersonObject extends GameObject {
 
@@ -20,8 +21,8 @@ public class PersonObject extends GameObject {
     private DrawParameters headParams;
     private PersonStateMachine state;
 
-    public PersonObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera);
+    public PersonObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player);
     }
 
     @Override

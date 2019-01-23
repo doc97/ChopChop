@@ -9,7 +9,9 @@ import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
+import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
+import fi.chop.model.object.gui.GameGUIObject;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -38,21 +40,18 @@ public class TownScreen extends ChopScreen implements EventListener {
     private void initializeScene() {
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Text", new Layer());
+        getScene().addLayer("GUI", new Layer());
 
-        TextObject moneyText = new TextObject(getAssets(), getCamera());
-        moneyText.setOrigin(0, 1);
-        moneyText.setPosition(50, getCamera().viewportHeight - 50);
-        moneyText.pad(5, 5);
-        moneyText.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney());
-        moneyText.load();
+        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        gui.load();
 
-        TextObject dayText = new TextObject(getAssets(), getCamera());
+        TextObject dayText = new TextObject(getAssets(), getCamera(), getPlayer());
         dayText.setOrigin(0.5f, 1);
         dayText.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 50);
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
-        TextObject castleText = new TextObject(getAssets(), getCamera());
+        TextObject castleText = new TextObject(getAssets(), getCamera(), getPlayer());
         castleText.setOrigin(0.5f, 1);
         castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 200);
         castleText.create("ZCOOL-40.ttf", () -> "Castle");
@@ -61,7 +60,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         castleText.setTouchable(true);
         castleText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Castle", "Go!")));
 
-        TextObject tavernText = new TextObject(getAssets(), getCamera());
+        TextObject tavernText = new TextObject(getAssets(), getCamera(), getPlayer());
         tavernText.setOrigin(0, 1);
         tavernText.setPosition(200, 300);
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
@@ -70,7 +69,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         tavernText.setTouchable(true);
         tavernText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.TAVERN)));
 
-        TextObject guillotineText = new TextObject(getAssets(), getCamera());
+        TextObject guillotineText = new TextObject(getAssets(), getCamera(), getPlayer());
         guillotineText.setOrigin(1, 1);
         guillotineText.setPosition(getCamera().viewportWidth - 200, 500);
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
@@ -79,7 +78,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         guillotineText.setTouchable(true);
         guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
 
-        getScene().addObjects("Text", moneyText, dayText, castleText, tavernText, guillotineText);
+        getScene().addObjects("Text", dayText, castleText, tavernText, guillotineText);
+        getScene().addObjects("GUI", gui);
         getScene().addQueued();
     }
 

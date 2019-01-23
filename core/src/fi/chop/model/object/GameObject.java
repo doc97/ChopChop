@@ -11,6 +11,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
+import fi.chop.model.world.Player;
 
 public abstract class GameObject implements EventListener, Disposable {
 
@@ -31,10 +32,12 @@ public abstract class GameObject implements EventListener, Disposable {
 
     private final AssetManager assets;
     private final OrthographicCamera camera;
+    private final Player player;
 
-    protected GameObject(AssetManager assets, OrthographicCamera camera) {
+    protected GameObject(AssetManager assets, OrthographicCamera camera, Player player) {
         this.assets = assets;
         this.camera = camera;
+        this.player = player;
         touchHandler = new TouchHandler();
     }
 
@@ -271,5 +274,9 @@ public abstract class GameObject implements EventListener, Disposable {
 
     protected OrthographicCamera getCamera() {
         return camera;
+    }
+
+    protected Player getPlayer() {
+        return player;
     }
 }

@@ -14,6 +14,7 @@ import fi.chop.input.ExecutionScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
+import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.timer.GameTimer;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
@@ -24,7 +25,6 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     private static final float POPULARITY_DELTA = 0.05f;
     private static final float REPUTATION_DELTA = 0.05f;
 
-    private FontRenderer moneyText;
     private FontRenderer timeText;
     private ColorFade fadeOut;
     private GameTimer.DelayedAction timer;
@@ -44,7 +44,6 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         loadAssets();
         initializeScreen();
 
-        createScene();
         initializeScene();
         initializeEventListener();
     }
@@ -60,56 +59,44 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private void loadAssets() {
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
-        moneyText = new FontRenderer(font);
         timeText = new FontRenderer(font);
     }
 
-    private void createScene() {
+    private void initializeScene() {
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Guillotine", new Layer());
         getScene().addLayer("Heads", new Layer());
-        getScene().addLayer("UI", new Layer());
-    }
+        getScene().addLayer("GUI", new Layer());
 
-    private void initializeScene() {
-        GameObject popMeter = new PopularityMeterObject(getAssets(), getCamera());
-        popMeter.setOrigin(1, 1);
-        popMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
-        popMeter.load();
+        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        gui.load();
 
-        GameObject repMeter = new ReputationMeterObject(getAssets(), getCamera());
-        repMeter.setOrigin(1, 1);
-        repMeter.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
-        repMeter.load();
-
-        GameObject powerBar = new PowerBarObject(getAssets(), getCamera());
+        GameObject powerBar = new PowerBarObject(getAssets(), getCamera(), getPlayer());
         powerBar.setOrigin(0.5f, 0.5f);
         powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
         powerBar.load();
 
-        GameObject powerMeter = new PowerMeterObject(getAssets(), getCamera());
+        GameObject powerMeter = new PowerMeterObject(getAssets(), getCamera(), getPlayer());
         powerMeter.setOrigin(0, 0.5f);
         powerMeter.setPosition(powerBar.getX() + powerBar.getWidth() / 2 + 10, powerBar.getY());
         powerMeter.load();
 
-        GameObject guillotine = new GuillotineObject(getAssets(), getCamera());
+        GameObject guillotine = new GuillotineObject(getAssets(), getCamera(), getPlayer());
         guillotine.setOrigin(0.5f, 0);
         guillotine.setPosition(getCamera().viewportWidth / 4, 100);
         guillotine.load();
 
-        GameObject person = new PersonObject(getAssets(), getCamera());
+        GameObject person = new PersonObject(getAssets(), getCamera(), getPlayer());
         person.setOrigin(0.5f, 0.5f);
         person.setPosition(guillotine.getX(), guillotine.getY() + 125);
         person.load();
 
-        ScrollObject scroll = new ScrollObject(getAssets(), getCamera());
+        ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), getPlayer());
         scroll.setOrigin(0.5f, 0.5f);
         scroll.setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
         scroll.load();
         scroll.setExecution(getWorld().getExecution());
 
-        Chop.events.addListener(popMeter, Events.EVT_POPULARITY_CHANGED);
-        Chop.events.addListener(repMeter, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISE, Events.EVT_GUILLOTINE_PREPARED);
         Chop.events.addListener(guillotine, Events.EVT_GUILLOTINE_RAISE);
         Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_PERSON_KILLED);
@@ -121,7 +108,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         getScene().addObjects("Heads", person);
         getScene().addObjects("Guillotine", guillotine);
-        getScene().addObjects("UI", popMeter, repMeter, powerBar, powerMeter, scroll);
+        getScene().addObjects("GUI", gui, powerBar, powerMeter, scroll);
         getScene().addQueued();
     }
 
@@ -153,20 +140,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         if (fadeOut != null)
             batch.setColor(fadeOut.getColor());
         getScene().render(batch);
-        drawGUI(batch);
-        batch.setColor(Color.WHITE);
-    }
-
-    private void drawGUI(SpriteBatch batch) {
-        drawMoney(batch);
         drawTime(batch);
-    }
-
-    private void drawMoney(SpriteBatch batch) {
-        moneyText
-                .text("Money: " + getPlayer().getMoney())
-                .pos(50, getCamera().viewportHeight - 50)
-                .draw(batch);
+        batch.setColor(Color.WHITE);
     }
 
     private void drawTime(SpriteBatch batch) {

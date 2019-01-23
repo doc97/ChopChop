@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.PowerBar;
+import fi.chop.model.world.Player;
 
 public class PowerBarObject extends GameObject {
 
@@ -16,8 +17,8 @@ public class PowerBarObject extends GameObject {
     private DrawParameters backgroundParams;
     private DrawParameters markerParams;
 
-    public PowerBarObject(AssetManager assets, OrthographicCamera camera) {
-        super(assets, camera);
+    public PowerBarObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player);
         bar = new PowerBar();
         bar.setDurationSec(0.75f);
         bar.randomize();
