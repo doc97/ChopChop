@@ -61,9 +61,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
 
                 getWorld().incrementDrinkCount();
                 int threshold = Math.max(100 - getWorld().getDrinkCount() * 10, 5);
-                Gdx.app.log("Tavern", threshold + "% chance of gaining popularity");
                 if (random.nextInt(100) < threshold) {
-                    Gdx.app.log("Tavern", "Received " + (POPULARITY_DELTA * 100) + "% popularity!");
                     getPlayer().addPopularity(POPULARITY_DELTA);
                 } else {
                     Gdx.app.log("Tavern", "No luck... No one was looking.");
@@ -76,8 +74,30 @@ public class TavernScreen extends ChopScreen implements EventListener {
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
 
-        getScene().addObjects("Buttons", drinkText);
-        getScene().addObjects("GUI", gui);
+        TextObject priceText = new TextObject(getAssets(), getCamera(), getPlayer());
+        priceText.setOrigin(0, 1);
+        priceText.setPosition(100, getCamera().viewportHeight - 200);
+        priceText.pad(10, 10);
+        priceText.create("ZCOOL-30.ttf", () -> "Price: " + DRINK_PRICE + " gold");
+        priceText.load();
+
+        TextObject drinksText = new TextObject(getAssets(), getCamera(), getPlayer());
+        drinksText.setOrigin(0, 1);
+        drinksText.setPosition(100, getCamera().viewportHeight - 250);
+        drinksText.pad(10, 10);
+        drinksText.create("ZCOOL-30.ttf", () -> "Drinks bought today: " + getWorld().getDrinkCount());
+        drinksText.load();
+
+        TextObject probabilityText = new TextObject(getAssets(), getCamera(), getPlayer());
+        probabilityText.setOrigin(0, 1);
+        probabilityText.setPosition(100, getCamera().viewportHeight - 300);
+        probabilityText.pad(10, 10);
+        probabilityText.create("ZCOOL-30.ttf", () -> "Chance of increasing popularity: " +
+                Math.max(100 - (getWorld().getDrinkCount() + 1) * 10, 5) + "%");
+        probabilityText.load();
+
+        getScene().addObjects("Buttons", priceText, drinkText, probabilityText);
+        getScene().addObjects("GUI", gui, drinksText);
         getScene().addQueued();
     }
 
