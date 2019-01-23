@@ -1,22 +1,21 @@
 package fi.chop.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import fi.chop.effect.CallbackFunction;
+import fi.chop.functional.Procedure;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.TextObject;
 
 public class TextButtonHandler extends TouchHandler {
 
-    private CallbackFunction onClick;
+    private Procedure onClick;
 
-    public TextButtonHandler(CallbackFunction onClick) {
+    public TextButtonHandler(Procedure onClick) {
         this.onClick = onClick;
     }
 
     @Override
     public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
-        onClick.call();
+        onClick.run();
     }
 
     @Override

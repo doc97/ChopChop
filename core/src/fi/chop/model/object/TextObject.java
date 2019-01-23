@@ -14,14 +14,12 @@ import fi.chop.engine.DrawParameters;
 import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 
+import java.util.function.Supplier;
+
 public class TextObject extends GameObject {
 
-    public interface TextConstructor {
-        String construct();
-    }
-
     private String fontName;
-    private TextConstructor textConstructor;
+    private Supplier<String> textConstructor;
     private FontRenderer renderer;
     private TextureRegion bgTexture;
     private Color bgColor;
@@ -45,7 +43,7 @@ public class TextObject extends GameObject {
         cam = new OrthographicCamera(0, 0);
     }
 
-    public void create(String fontName, TextConstructor textConstructor) {
+    public void create(String fontName, Supplier<String> textConstructor) {
         this.fontName = fontName;
         this.textConstructor = textConstructor;
     }
@@ -112,7 +110,7 @@ public class TextObject extends GameObject {
         if (renderer == null || textConstructor == null)
             return;
 
-        String newText = textConstructor.construct();
+        String newText = textConstructor.get();
         if (!newText.equals(renderer.str())) {
             dirty = true;
             renderer.edit(newText);

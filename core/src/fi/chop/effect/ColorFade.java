@@ -1,7 +1,10 @@
 package fi.chop.effect;
 
 import com.badlogic.gdx.graphics.Color;
+import fi.chop.functional.Procedure;
 import fi.chop.util.MathUtil;
+
+import java.util.function.Function;
 
 public class ColorFade {
 
@@ -10,14 +13,14 @@ public class ColorFade {
     private Color start;
     private Color end;
     private Color current;
-    private FadeFunction func;
-    private CallbackFunction finish;
+    private Function<Float, Float> func;
+    private Procedure onFinish;
 
     public ColorFade(Color start, Color end, float duration) {
         this(start, end, duration, (t) -> MathUtil.lerp(0, 1, t));
     }
 
-    public ColorFade(Color start, Color end, float duration, FadeFunction func) {
+    public ColorFade(Color start, Color end, float duration, Function<Float, Float> func) {
         this.current = new Color(start);
         this.start = new Color(start);
         this.end = new Color(end);
@@ -25,8 +28,8 @@ public class ColorFade {
         this.func = func;
     }
 
-    public ColorFade onFinish(CallbackFunction finish) {
-        this.finish = finish;
+    public ColorFade onFinish(Procedure onFinish) {
+        this.onFinish = onFinish;
         return this;
     }
 
@@ -35,7 +38,7 @@ public class ColorFade {
             return;
 
         time = Math.min(time + delta / duration, 1);
-        float percent = func.call(time);
+        float percent = func.apply(time);
         current.set(
                 MathUtil.lerp(start.r, end.r, percent),
                 MathUtil.lerp(start.g, end.g, percent),
@@ -43,8 +46,8 @@ public class ColorFade {
                 MathUtil.lerp(start.a, end.a, percent)
         );
 
-        if (hasFinished() && finish != null)
-            finish.call();
+        if (hasFinished() && onFinish != null)
+            onFinish.run();
     }
 
     public void flip() {
