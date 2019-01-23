@@ -73,6 +73,9 @@ public abstract class ChopScreen extends ScreenAdapter {
             case TOWN:
                 game.setScreen(new TownScreen(game));
                 break;
+            case TAVERN:
+                game.setScreen(new TavernScreen(game));
+                break;
             case MAIN_MENU:
                 game.setScreen(new MainMenuScreen(game));
                 break;
