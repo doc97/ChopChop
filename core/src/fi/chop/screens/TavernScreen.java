@@ -1,7 +1,6 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
@@ -11,9 +10,9 @@ import fi.chop.event.Events;
 import fi.chop.input.TavernScreenInput;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
-import fi.chop.model.object.util.TextObjectStyle;
+import fi.chop.model.object.util.TextButtonObject;
+import fi.chop.model.object.util.TextObject;
 
 import java.util.Random;
 
@@ -49,15 +48,11 @@ public class TavernScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Buttons", new Layer());
         getScene().addLayer("GUI", new Layer());
 
-        TextObject buyText = new TextObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject buyText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         buyText.setOrigin(0.5f, 1);
         buyText.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f);
-        buyText.pad(50, 50);
         buyText.create("ZCOOL-40.ttf", () -> "Buy a drink");
         buyText.load();
-        buyText.setStyle(TextObject.StyleType.NORMAL,
-                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
-        buyText.setTouchable(true);
         buyText.setTouchHandler(new TextButtonHandler(() -> {
             if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
                 Gdx.app.log("Tavern", "Bought a drink...");
@@ -76,7 +71,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
             }
         }));
         if (!getPlayer().hasEnoughMoney(DRINK_PRICE)) {
-            buyText.useStyle(TextObject.StyleType.DISABLED);
+            buyText.useStyle(TextButtonObject.StyleType.DISABLED);
             buyText.disable();
         }
 

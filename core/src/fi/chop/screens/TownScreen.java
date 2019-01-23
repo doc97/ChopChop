@@ -1,7 +1,6 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
@@ -11,9 +10,9 @@ import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
-import fi.chop.model.object.util.TextObjectStyle;
+import fi.chop.model.object.util.TextButtonObject;
+import fi.chop.model.object.util.TextObject;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -50,38 +49,26 @@ public class TownScreen extends ChopScreen implements EventListener {
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
-        TextObject castleText = new TextObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject castleText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         castleText.setOrigin(0.5f, 1);
         castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 200);
         castleText.create("ZCOOL-40.ttf", () -> "Castle");
-        castleText.pad(50, 50);
         castleText.load();
-        castleText.setStyle(TextObject.StyleType.NORMAL,
-                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
-        castleText.setTouchable(true);
         castleText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Castle", "Go!")));
 
-        TextObject tavernText = new TextObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject tavernText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         tavernText.setOrigin(0, 1);
         tavernText.setPosition(200, 300);
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
-        tavernText.pad(50, 50);
         tavernText.load();
-        tavernText.setStyle(TextObject.StyleType.NORMAL,
-                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
-        tavernText.setTouchable(true);
         tavernText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.TAVERN)));
 
-        TextObject guillotineText = new TextObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject guillotineText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         guillotineText.setOrigin(1, 1);
         guillotineText.setPosition(getCamera().viewportWidth - 200, 500);
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineText.pad(50, 50);
         guillotineText.load();
-        guillotineText.setStyle(TextObject.StyleType.NORMAL,
-                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
-        tavernText.setTouchable(true);
-        guillotineText.setTouchable(true);
         guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
 
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());

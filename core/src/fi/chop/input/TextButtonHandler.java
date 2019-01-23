@@ -2,7 +2,7 @@ package fi.chop.input;
 
 import fi.chop.functional.Procedure;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.util.TextObject;
+import fi.chop.model.object.util.TextButtonObject;
 
 public class TextButtonHandler extends TouchHandler {
 
@@ -19,13 +19,13 @@ public class TextButtonHandler extends TouchHandler {
 
     @Override
     public void enter(GameObject obj, float worldX, float worldY) {
-        TextObject txt = (TextObject) obj;
-        txt.useStyle(TextObject.StyleType.HOVER);
+        TextButtonObject btn = (TextButtonObject) obj;
+        btn.useStyle(TextButtonObject.StyleType.HOVER);
     }
 
     @Override
     public void exit(GameObject obj, float worldX, float worldY) {
-        TextObject txt = (TextObject) obj;
-        txt.useStyle(TextObject.StyleType.NORMAL);
+        TextButtonObject btn = (TextButtonObject) obj;
+        btn.useStyle(TextButtonObject.StyleType.NORMAL);
     }
 }
