@@ -162,15 +162,6 @@ public class TextObject extends GameObject {
             dirty = true;
     }
 
-    public void setStyles(TextObjectStyle customStyle, TextObjectStyle disabledStyle,
-                          TextObjectStyle normalStyle, TextObjectStyle hoverStyle) {
-        this.customStyle.set(customStyle);
-        this.disabledStyle.set(disabledStyle);
-        this.normalStyle.set(normalStyle);
-        this.hoverStyle.set(hoverStyle);
-        dirty = true;
-    }
-
     public void setStyle(StyleType type, TextObjectStyle style) {
         switch (type) {
             case CUSTOM:

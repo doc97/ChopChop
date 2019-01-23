@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.object.util.TextObject;
+import fi.chop.model.object.util.TextObjectStyle;
 import fi.chop.model.world.Execution;
 import fi.chop.model.world.Player;
 
@@ -23,7 +24,7 @@ public class ScrollObject extends GameObject {
         Color textColor = new Color(62.5f / 255f, 44.5f / 255f, 15f / 255f, 1);
         scrollText = new TextObject(getAssets(), getCamera(), getPlayer());
         scrollText.setOrigin(0, 1);
-        scrollText.tint(textColor);
+        scrollText.setStyle(TextObject.StyleType.NORMAL, new TextObjectStyle().tint(textColor));
     }
 
     @Override

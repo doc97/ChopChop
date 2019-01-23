@@ -1,6 +1,7 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
@@ -12,6 +13,7 @@ import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
+import fi.chop.model.object.util.TextObjectStyle;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -54,6 +56,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         castleText.create("ZCOOL-40.ttf", () -> "Castle");
         castleText.pad(50, 50);
         castleText.load();
+        castleText.setStyle(TextObject.StyleType.NORMAL,
+                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
         castleText.setTouchable(true);
         castleText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Castle", "Go!")));
 
@@ -63,6 +67,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernText.pad(50, 50);
         tavernText.load();
+        tavernText.setStyle(TextObject.StyleType.NORMAL,
+                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
         tavernText.setTouchable(true);
         tavernText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.TAVERN)));
 
@@ -72,6 +78,9 @@ public class TownScreen extends ChopScreen implements EventListener {
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineText.pad(50, 50);
         guillotineText.load();
+        guillotineText.setStyle(TextObject.StyleType.NORMAL,
+                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
+        tavernText.setTouchable(true);
         guillotineText.setTouchable(true);
         guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
 

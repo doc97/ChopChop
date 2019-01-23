@@ -1,6 +1,7 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
@@ -12,6 +13,7 @@ import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.gui.GameGUIObject;
+import fi.chop.model.object.util.TextObjectStyle;
 
 import java.util.Random;
 
@@ -53,6 +55,8 @@ public class TavernScreen extends ChopScreen implements EventListener {
         buyText.pad(50, 50);
         buyText.create("ZCOOL-40.ttf", () -> "Buy a drink");
         buyText.load();
+        buyText.setStyle(TextObject.StyleType.NORMAL,
+                new TextObjectStyle().bgColor(Color.GOLDENROD).tint(Color.BROWN));
         buyText.setTouchable(true);
         buyText.setTouchHandler(new TextButtonHandler(() -> {
             if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
