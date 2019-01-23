@@ -21,7 +21,6 @@ public class TavernScreen extends ChopScreen implements EventListener {
     private static final float POPULARITY_DELTA = 0.05f;
 
     private Random random;
-    private int round;
 
     public TavernScreen(Chop game) {
         super(game);
@@ -41,7 +40,6 @@ public class TavernScreen extends ChopScreen implements EventListener {
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new TavernScreenInput(this, getInputMap()));
         random = new Random();
-        round = 1;
     }
 
     private void initializeScene() {
@@ -61,8 +59,8 @@ public class TavernScreen extends ChopScreen implements EventListener {
                 Gdx.app.log("Tavern", "Bought a drink...");
                 getPlayer().addMoney(-DRINK_PRICE);
 
-                int threshold = 100 - round * 10;
-                round++;
+                getWorld().incrementDrinkCount();
+                int threshold = Math.max(100 - getWorld().getDrinkCount() * 10, 5);
                 Gdx.app.log("Tavern", threshold + "% chance of gaining popularity");
                 if (random.nextInt(100) < threshold) {
                     Gdx.app.log("Tavern", "Received " + (POPULARITY_DELTA * 100) + "% popularity!");

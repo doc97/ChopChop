@@ -4,11 +4,13 @@ public class WorldState {
 
     private int day;
     private int taxes;
+    private int drinkCount;
     private Execution execution;
 
     public void reset() {
         day = 0;
         taxes = 0;
+        drinkCount = 0;
         execution = null;
     }
 
@@ -16,8 +18,10 @@ public class WorldState {
         if (day % 7 == 0)
             taxes += 100;
         day++;
+        drinkCount = 0;
         execution = ExecutionFactory.create();
     }
+
 
     public int getDay() {
         return day;
@@ -25,6 +29,14 @@ public class WorldState {
 
     public int getTaxes() {
         return taxes;
+    }
+
+    public void incrementDrinkCount() {
+        drinkCount++;
+    }
+
+    public int getDrinkCount() {
+        return drinkCount;
     }
 
     public Execution getExecution() {
