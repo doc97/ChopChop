@@ -1,13 +1,15 @@
 package fi.chop.input;
 
-import fi.chop.functional.Procedure;
 import fi.chop.model.object.util.TextButtonObject;
+
+import java.util.function.Consumer;
 
 public class TextButtonHandler extends TouchHandler<TextButtonObject> {
 
-    private Procedure onClick;
+    private Consumer<TextButtonObject> onClick;
 
-    public TextButtonHandler(Procedure onClick) {
+    public TextButtonHandler(TextButtonObject object, Consumer<TextButtonObject> onClick) {
+        super(object);
         this.onClick = onClick;
     }
 
@@ -19,7 +21,7 @@ public class TextButtonHandler extends TouchHandler<TextButtonObject> {
     @Override
     public void touchUp(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
         obj.hover();
-        onClick.run();
+        onClick.accept(obj);
     }
 
     @Override

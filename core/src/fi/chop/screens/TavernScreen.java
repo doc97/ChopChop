@@ -54,12 +54,12 @@ public class TavernScreen extends ChopScreen implements EventListener {
         buyText.load();
         buyText.generateTexture();
         buyText.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f - buyText.getHeight());
-        buyText.setTouchHandler(new TextButtonHandler(() -> {
+        buyText.setTouchHandler(new TextButtonHandler(buyText, (btn) -> {
             if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
                 Gdx.app.log("Tavern", "Bought a drink...");
                 getPlayer().addMoney(-DRINK_PRICE);
                 if (!getPlayer().hasEnoughMoney(DRINK_PRICE))
-                    buyText.disable();
+                    btn.disable();
 
                 getWorld().incrementDrinkCount();
                 int threshold = Math.max(100 - getWorld().getDrinkCount() * 10, 5);

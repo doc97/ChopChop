@@ -32,25 +32,25 @@ public class ChopScreenInput extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return triggerIfInside(screenX, screenY, pointer, button,
-                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchUp(obj, wx, wy, p, btn));
+                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchUp(wx, wy, p, btn));
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return triggerIfInside(screenX, screenY, pointer, button,
-                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchDown(obj, wx, wy, p, btn));
+                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchDown(wx, wy, p, btn));
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return triggerIfInside(screenX, screenY, pointer, -1,
-                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchDragged(obj, wx, wy, p));
+                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchDragged(wx, wy, p));
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return triggerIfInside(screenX, screenY, -1, -1,
-                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerMouseMoved(obj, wx, wy));
+                (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerMouseMoved(wx, wy));
     }
 
     protected InputMap getInputMap() {

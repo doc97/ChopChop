@@ -54,7 +54,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         castleText.load();
         castleText.generateTexture();
         castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 250);
-        castleText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Castle", "Go!")));
+        castleText.setTouchHandler(new TextButtonHandler(castleText, (btn) -> Gdx.app.log("Castle", "Go!")));
         castleText.disable();
 
         TextButtonObject tavernText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
@@ -62,14 +62,14 @@ public class TownScreen extends ChopScreen implements EventListener {
         tavernText.setHoverScale(1.1f, 1.1f);
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernText.load();
-        tavernText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.TAVERN)));
+        tavernText.setTouchHandler(new TextButtonHandler(tavernText, (btn) -> setScreen(Screens.TAVERN)));
 
         TextButtonObject guillotineText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         guillotineText.setPosition(getCamera().viewportWidth - 350, 450);
         guillotineText.setHoverScale(1.1f, 1.1f);
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineText.load();
-        guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
+        guillotineText.setTouchHandler(new TextButtonHandler(guillotineText, (btn) -> setScreen(Screens.EXECUTION)));
 
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();

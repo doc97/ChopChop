@@ -38,7 +38,7 @@ public abstract class GameObject implements EventListener, Disposable {
         this.assets = assets;
         this.camera = camera;
         this.player = player;
-        touchHandler = new TouchHandler();
+        touchHandler = new TouchHandler<>(this);
     }
 
     public abstract void load();
@@ -218,8 +218,8 @@ public abstract class GameObject implements EventListener, Disposable {
         return rotDeg;
     }
 
-    public void setTouchHandler(TouchHandler touchHandler) {
-        this.touchHandler = touchHandler == null ? new TouchHandler() : touchHandler;
+    public <T extends GameObject> void setTouchHandler(TouchHandler<T> touchHandler) {
+        this.touchHandler = touchHandler == null ? new TouchHandler<>(this) : touchHandler;
     }
 
     public TouchHandler getTouchHandler() {
