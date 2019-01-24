@@ -1,10 +1,9 @@
 package fi.chop.input;
 
 import fi.chop.functional.Procedure;
-import fi.chop.model.object.GameObject;
 import fi.chop.model.object.util.TextButtonObject;
 
-public class TextButtonHandler extends TouchHandler {
+public class TextButtonHandler extends TouchHandler<TextButtonObject> {
 
     private Procedure onClick;
 
@@ -13,23 +12,23 @@ public class TextButtonHandler extends TouchHandler {
     }
 
     @Override
-    public void touchDown(GameObject obj, float worldX, float worldY, int pointer, int button) {
-        ((TextButtonObject) obj).press();
+    public void touchDown(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
+        obj.press();
     }
 
     @Override
-    public void touchUp(GameObject obj, float worldX, float worldY, int pointer, int button) {
-        ((TextButtonObject) obj).hover();
+    public void touchUp(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
+        obj.hover();
         onClick.run();
     }
 
     @Override
-    public void enter(GameObject obj, float worldX, float worldY) {
-        ((TextButtonObject) obj).hover();
+    public void enter(TextButtonObject obj, float worldX, float worldY) {
+        obj.hover();
     }
 
     @Override
-    public void exit(GameObject obj, float worldX, float worldY) {
-        ((TextButtonObject) obj).normal();
+    public void exit(TextButtonObject obj, float worldX, float worldY) {
+        obj.normal();
     }
 }
