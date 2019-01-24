@@ -48,13 +48,13 @@ public class TavernScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Buttons", new Layer());
         getScene().addLayer("GUI", new Layer());
 
-        TextButtonObject buyText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        buyText.setPressedOffset(0, -8);
-        buyText.create("ZCOOL-40.ttf", () -> "Buy a drink");
-        buyText.load();
-        buyText.generateTexture();
-        buyText.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f - buyText.getHeight());
-        buyText.setTouchHandler(new TextButtonHandler(buyText, (btn) -> {
+        TextButtonObject buyBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
+        buyBtn.setPressedOffset(0, -8);
+        buyBtn.create("ZCOOL-40.ttf", () -> "Buy a drink");
+        buyBtn.load();
+        buyBtn.generateTexture();
+        buyBtn.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f - buyBtn.getHeight());
+        buyBtn.setTouchHandler(new TextButtonHandler(buyBtn, (btn) -> {
             if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
                 Gdx.app.log("Tavern", "Bought a drink...");
                 getPlayer().addMoney(-DRINK_PRICE);
@@ -73,7 +73,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
             }
         }));
         if (!getPlayer().hasEnoughMoney(DRINK_PRICE))
-            buyText.disable();
+            buyBtn.disable();
 
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
@@ -100,7 +100,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
                 Math.max(100 - (getWorld().getDrinkCount() + 1) * 10, 5) + "%");
         probabilityText.load();
 
-        getScene().addObjects("Buttons", priceText, buyText, probabilityText);
+        getScene().addObjects("Buttons", priceText, buyBtn, probabilityText);
         getScene().addObjects("GUI", gui, drinksText);
         getScene().addQueued();
     }
