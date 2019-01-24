@@ -13,7 +13,7 @@ public class TestGameObject {
 
     @Before
     public void setUp() {
-        object = new GameObject(null, null) {
+        object = new GameObject(null, null, null) {
             @Override
             public void load() {}
             @Override

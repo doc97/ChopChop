@@ -20,7 +20,7 @@ public class TestLayer {
         private boolean dieFirstUpdate;
 
         private TestObject() {
-            super(null, null);
+            super(null, null, null);
         }
 
         private TestObject(boolean dieFirstUpdate) {
@@ -228,7 +228,7 @@ public class TestLayer {
 
     @Test
     public void testFindOneOfTypeTestObject() {
-        GameObject obj = new GameObject(null, null) {
+        GameObject obj = new GameObject(null, null, null) {
             @Override
             public void load() { }
             @Override
@@ -247,7 +247,7 @@ public class TestLayer {
 
     @Test
     public void testFindOneOfTypeGameObject() {
-        GameObject obj = new GameObject(null, null) {
+        GameObject obj = new GameObject(null, null, null) {
             @Override
             public void load() { }
             @Override
@@ -278,7 +278,7 @@ public class TestLayer {
 
     @Test
     public void testFindAllOfTypeTestObject() {
-        GameObject obj = new GameObject(null, null) {
+        GameObject obj = new GameObject(null, null, null) {
             @Override
             public void load() { }
             @Override
@@ -296,7 +296,7 @@ public class TestLayer {
 
     @Test
     public void testFindAllOfTypeGameObject() {
-        GameObject obj = new GameObject(null, null) {
+        GameObject obj = new GameObject(null, null, null) {
             @Override
             public void load() { }
             @Override
@@ -355,7 +355,7 @@ public class TestLayer {
         obj1.setRotationDeg(45);
         TestObject obj2 = new TestObject();
         obj2.setRotationDeg(45);
-        GameObject obj3 = new GameObject(null, null) {
+        GameObject obj3 = new GameObject(null, null, null) {
             @Override
             public void load() { }
             @Override
