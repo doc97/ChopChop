@@ -50,24 +50,24 @@ public class TownScreen extends ChopScreen implements EventListener {
         dayText.load();
 
         TextButtonObject castleText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        castleText.setOrigin(0.5f, 1);
-        castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 200);
         castleText.create("ZCOOL-40.ttf", () -> "Castle");
         castleText.load();
+        castleText.generateTexture();
+        castleText.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 250);
         castleText.setTouchHandler(new TextButtonHandler(() -> Gdx.app.log("Castle", "Go!")));
+        castleText.disable();
 
         TextButtonObject tavernText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        tavernText.setOrigin(0, 1);
-        tavernText.setPosition(200, 300);
+        tavernText.setPosition(300, 250);
+        tavernText.setHoverScale(1.1f, 1.1f);
         tavernText.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernText.load();
         tavernText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.TAVERN)));
 
         TextButtonObject guillotineText = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        guillotineText.setOrigin(1, 1);
-        guillotineText.setPosition(getCamera().viewportWidth - 200, 500);
+        guillotineText.setPosition(getCamera().viewportWidth - 350, 450);
+        guillotineText.setHoverScale(1.1f, 1.1f);
         guillotineText.create("ZCOOL-40.ttf", () -> "Guillotine");
-        guillotineText.pad(50, 50);
         guillotineText.load();
         guillotineText.setTouchHandler(new TextButtonHandler(() -> setScreen(Screens.EXECUTION)));
 

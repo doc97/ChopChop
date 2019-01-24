@@ -52,7 +52,7 @@ public class TextObject extends GameObject {
         dirty = true;
     }
 
-    private void generateTexture() {
+    public void generateTexture() {
         if (fbo != null)
             fbo.dispose();
         createTexture(renderer);
