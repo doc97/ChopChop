@@ -6,6 +6,9 @@ import fi.chop.engine.InputMap;
 import fi.chop.model.object.GameObject;
 import fi.chop.screens.ChopScreen;
 
+import java.util.Collections;
+import java.util.List;
+
 public class ChopScreenInput extends InputAdapter {
 
     private final InputMap inputMap;
@@ -19,14 +22,15 @@ public class ChopScreenInput extends InputAdapter {
     private boolean triggerIfInside(int screenX, int screenY, int pointer, int button, Trigger trigger) {
         Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
 
-        boolean triggered = false;
-        for (GameObject obj : screen.getScene().findAll((o) -> true)) {
+        List<GameObject> objects = screen.getScene().findAll((o) -> true);
+        Collections.reverse(objects); // findAll returns them in the order: bottom to up
+        for (GameObject obj : objects) {
             if (!obj.isTouchable())
                 continue;
-            trigger.call(obj, worldPos3D.x, worldPos3D.y, pointer, button);
-            triggered = true;
+            if (trigger.call(obj, worldPos3D.x, worldPos3D.y, pointer, button))
+                return true;
         }
-        return triggered;
+        return false;
     }
 
     @Override
@@ -62,6 +66,6 @@ public class ChopScreenInput extends InputAdapter {
     }
 
     private interface Trigger {
-        void call(GameObject obj, float worldX, float worldY, int pointer, int button);
+        boolean call(GameObject obj, float worldX, float worldY, int pointer, int button);
     }
 }

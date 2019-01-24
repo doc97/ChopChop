@@ -102,6 +102,7 @@ public class TextObject extends GameObject {
     public void load() {
         BitmapFont font = getAssets().get(fontName, BitmapFont.class);
         renderer = new FontRenderer(font);
+        dirty = true;
     }
 
     @Override

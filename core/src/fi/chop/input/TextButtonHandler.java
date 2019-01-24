@@ -14,23 +14,27 @@ public class TextButtonHandler extends TouchHandler<TextButtonObject> {
     }
 
     @Override
-    public void touchDown(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
+    public boolean touchDown(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
         obj.press();
+        return true;
     }
 
     @Override
-    public void touchUp(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
+    public boolean touchUp(TextButtonObject obj, float worldX, float worldY, int pointer, int button) {
         obj.hover();
         onClick.accept(obj);
+        return true;
     }
 
     @Override
-    public void enter(TextButtonObject obj, float worldX, float worldY) {
+    public boolean enter(TextButtonObject obj, float worldX, float worldY) {
         obj.hover();
+        return true;
     }
 
     @Override
-    public void exit(TextButtonObject obj, float worldX, float worldY) {
+    public boolean exit(TextButtonObject obj, float worldX, float worldY) {
         obj.normal();
+        return false;
     }
 }

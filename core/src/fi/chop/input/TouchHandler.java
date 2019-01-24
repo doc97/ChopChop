@@ -11,37 +11,57 @@ public class TouchHandler<T extends GameObject> {
         this.object = object;
     }
 
-    public void registerTouchUp(float worldX, float worldY, int pointer, int button) {
+    public boolean registerTouchUp(float worldX, float worldY, int pointer, int button) {
         if (object.isXYInside(worldX, worldY))
-            touchUp(object, worldX, worldY, pointer, button);
+            return touchUp(object, worldX, worldY, pointer, button);
+        return false;
     }
 
-    public void registerTouchDown(float worldX, float worldY, int pointer, int button) {
+    public boolean registerTouchDown(float worldX, float worldY, int pointer, int button) {
         if (object.isXYInside(worldX, worldY))
-            touchDown(object, worldX, worldY, pointer, button);
+            return touchDown(object, worldX, worldY, pointer, button);
+        return false;
     }
 
-    public void registerTouchDragged(float worldX, float worldY, int pointer) {
+    public boolean registerTouchDragged(float worldX, float worldY, int pointer) {
         if (object.isXYInside(worldX, worldY))
-            touchDragged(object, worldX, worldY, pointer);
+            return touchDragged(object, worldX, worldY, pointer);
+        return false;
     }
 
-    public void registerMouseMoved(float worldX, float worldY) {
+    public boolean registerMouseMoved(float worldX, float worldY) {
         if (object.isXYInside(worldX, worldY)) {
-            if (!over)
-                enter(object, worldX, worldY);
-            over = true;
+            if (!over) {
+                over = true;
+                return enter(object, worldX, worldY);
+            }
         } else {
-            if (over)
-                exit(object, worldX, worldY);
-            over = false;
+            if (over) {
+                over = false;
+                return exit(object, worldX, worldY);
+            }
         }
+        return false;
     }
 
     // Implement these yourself
-    public void touchUp(T object, float worldX, float worldY, int pointer, int button) { }
-    public void touchDown(T object, float worldX, float worldY, int pointer, int button) { }
-    public void touchDragged(T object, float worldX, float worldY, int pointer) { }
-    public void enter(T object, float worldX, float worldY) { }
-    public void exit(T object, float worldX, float worldY) { }
+    public boolean touchUp(T object, float worldX, float worldY, int pointer, int button) {
+        return false;
+    }
+
+    public boolean touchDown(T object, float worldX, float worldY, int pointer, int button) {
+        return false;
+    }
+
+    public boolean touchDragged(T object, float worldX, float worldY, int pointer) {
+        return false;
+    }
+
+    public boolean enter(T object, float worldX, float worldY) {
+        return false;
+    }
+
+    public boolean exit(T object, float worldX, float worldY) {
+        return false;
+    }
 }
