@@ -18,7 +18,7 @@ $ ./gradlew desktop:run
 This will start an instance of the game.
 
 ## Team members
-- [@Allufferi](https://github.com/Allufferi): Art
+- [@Allufferi](https://allufferi.wixsite.com/portfolio): Art
 - [@Vain0o](https://github.com/Vain0o): Programmer
 - [@doc97](https://github.com/doc97): Producer, Programmer
 
