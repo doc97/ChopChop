@@ -75,6 +75,10 @@ public abstract class GameObject implements EventListener, Disposable {
     @Override
     public void handle(Events event, EventData data) { }
 
+    public GameObject[] getChildren() {
+        return new GameObject[0];
+    }
+
     public Transform getTransform() {
         return transform;
     }

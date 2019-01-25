@@ -13,10 +13,22 @@ public class Transform {
     private float originY;
     private double rotDeg;
 
+    public void setParent(Transform parent) {
+        this.parent = parent;
+    }
+
     public Transform get() {
         if (parent == null)
             return this;
-        return cpy().combine(parent.get());
+
+        Transform parentTransform = parent.get();
+        Transform result = cpy();
+        result.translate(parentTransform.getX(), parentTransform.getY());
+        return result;
+    }
+
+    public Transform parent() {
+        return parent;
     }
 
     public Transform cpy() {
@@ -34,7 +46,7 @@ public class Transform {
         translate(other.x, other.y);
         resize(other.width, other.height);
         scale(other.scaleX, other.scaleY);
-        setOrigin(originX + other.originX, originY + other.originY);
+        setOrigin(Math.min(Math.max(originX + other.originX, 0), 1), Math.min(Math.max(originY + other.originY, 0), 1));
         rotateDeg(other.rotDeg);
         return this;
     }
