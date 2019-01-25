@@ -37,22 +37,4 @@ public class TextureObject extends GameObject {
 
     @Override
     public void dispose() { }
-
-    @Override
-    public void setSize(float width, float height) {
-        super.setSize(width, height);
-        parameters.size(width, height);
-    }
-
-    @Override
-    public void setWidth(float width) {
-        super.setWidth(width);
-        parameters.width = width;
-    }
-
-    @Override
-    public void setHeight(float height) {
-        super.setHeight(height);
-        parameters.height = height;
-    }
 }

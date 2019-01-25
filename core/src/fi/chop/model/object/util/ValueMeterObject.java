@@ -79,7 +79,7 @@ public abstract class ValueMeterObject extends GameObject {
         fillParams.srcWidth = fill.getRegionWidth();
         fillParams.srcHeight = fill.getRegionHeight();
 
-        setSize(background.getRegionWidth(), background.getRegionHeight());
+        getTransform().setSize(background.getRegionWidth(), background.getRegionHeight());
     }
 
     @Override
@@ -99,8 +99,8 @@ public abstract class ValueMeterObject extends GameObject {
         float ry = fill.getRegionY();
         float rw = fill.getRegionWidth();
         float rh = fill.getRegionHeight();
-        float ox = getOriginX();
-        float oy = getOriginY();
+        float ox = getTransform().getOriginX();
+        float oy = getTransform().getOriginY();
 
         switch (direction) {
             case UP:
@@ -136,16 +136,16 @@ public abstract class ValueMeterObject extends GameObject {
             return;
 
         labelText.text(getLabel());
-        float drawX = getX() + textSpacingX;
-        float drawY = getY() - textSpacingY;
+        float drawX = getTransform().getX() + textSpacingX;
+        float drawY = getTransform().getY() - textSpacingY;
 
         if (textOriginX == TextOriginX.RIGHT)
-            drawX = getX() - labelText.width() - textSpacingX;
+            drawX = getTransform().getX() - labelText.width() - textSpacingX;
         if (textOriginY == TextOriginY.BOTTOM)
-            drawY = getY() + labelText.getLineHeight() + textSpacingY;
+            drawY = getTransform().getY() + labelText.getLineHeight() + textSpacingY;
 
-        drawX += (-getOriginX() + textOriginXOffset) * getWidth();
-        drawY += (-getOriginY() + textOriginYOffset) * getHeight();
+        drawX += (-getTransform().getOriginX() + textOriginXOffset) * getTransform().getWidth();
+        drawY += (-getTransform().getOriginY() + textOriginYOffset) * getTransform().getHeight();
 
         labelText.pos(drawX, drawY).draw(batch);
     }

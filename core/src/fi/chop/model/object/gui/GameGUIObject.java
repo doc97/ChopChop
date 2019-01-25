@@ -23,20 +23,20 @@ public class GameGUIObject extends GameObject {
     @Override
     public void load() {
         money = new TextObject(getAssets(), getCamera(), getPlayer());
-        money.setOrigin(0, 1);
-        money.setPosition(50, getCamera().viewportHeight - 50);
+        money.getTransform().setOrigin(0, 1);
+        money.getTransform().setPosition(50, getCamera().viewportHeight - 50);
         money.pad(10, 10);
         money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney() + " gold");
         money.load();
 
         popularity = new PopularityMeterObject(getAssets(), getCamera(), getPlayer());
-        popularity.setOrigin(1, 1);
-        popularity.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
+        popularity.getTransform().setOrigin(1, 1);
+        popularity.getTransform().setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
         popularity.load();
 
         reputation = new ReputationMeterObject(getAssets(), getCamera(), getPlayer());
-        reputation.setOrigin(1, 1);
-        reputation.setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
+        reputation.getTransform().setOrigin(1, 1);
+        reputation.getTransform().setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
         reputation.load();
 
         Chop.events.addListener(popularity, Events.EVT_POPULARITY_CHANGED);

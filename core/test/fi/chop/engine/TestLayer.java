@@ -162,10 +162,10 @@ public class TestLayer {
     public void testKillAll() {
         TestObject obj1 = new TestObject();
         TestObject obj2 = new TestObject();
-        obj2.setRotationDeg(45);
+        obj2.getTransform().setRotationDeg(45);
         layer.add(obj1, obj2);
         layer.addQueued();
-        int count = layer.killAll(o -> o.getRotationDeg() == 45);
+        int count = layer.killAll(o -> o.getTransform().getRotationDeg() == 45);
         assertEquals(1, count);
         assertFalse(obj1.isDead());
         assertTrue(obj2.isDead());
@@ -325,26 +325,26 @@ public class TestLayer {
     @Test
     public void testFindOnePredicate() {
         TestObject obj1 = new TestObject();
-        obj1.setPosition(10, 5);
+        obj1.getTransform().setPosition(10, 5);
         TestObject obj2 = new TestObject();
-        obj2.setPosition(10, 10);
+        obj2.getTransform().setPosition(10, 10);
         layer.add(obj1, obj2);
         layer.addQueued();
-        GameObject obj = layer.findOne(o -> o.getX() == 10 && o.getY() == 10);
+        GameObject obj = layer.findOne(o -> o.getTransform().getX() == 10 && o.getTransform().getY() == 10);
         assertSame(obj2, obj);
-        assertNull(layer.findOne(o -> o.getX() == 10 && o.getY() == 10 && o.getID() == 0));
+        assertNull(layer.findOne(o -> o.getTransform().getX() == 10 && o.getTransform().getY() == 10 && o.getID() == 0));
     }
 
     @Test
     public void testFindOnePredicateChaining() {
         TestObject obj1 = new TestObject();
-        obj1.setPosition(10, 5);
+        obj1.getTransform().setPosition(10, 5);
         TestObject obj2 = new TestObject();
-        obj2.setPosition(10, 10);
+        obj2.getTransform().setPosition(10, 10);
         layer.add(obj1, obj2);
         layer.addQueued();
-        Predicate<GameObject> xPred = o -> o.getX() == 10;
-        Predicate<GameObject> yPred = o -> o.getY() == 10;
+        Predicate<GameObject> xPred = o -> o.getTransform().getX() == 10;
+        Predicate<GameObject> yPred = o -> o.getTransform().getY() == 10;
         GameObject obj = layer.findOne(xPred.and(yPred));
         assertSame(obj2, obj);
     }
@@ -352,9 +352,9 @@ public class TestLayer {
     @Test
     public void testFindAllPredicate() {
         TestObject obj1 = new TestObject();
-        obj1.setRotationDeg(45);
+        obj1.getTransform().setRotationDeg(45);
         TestObject obj2 = new TestObject();
-        obj2.setRotationDeg(45);
+        obj2.getTransform().setRotationDeg(45);
         GameObject obj3 = new GameObject(null, null, null) {
             @Override
             public void load() { }
@@ -365,11 +365,11 @@ public class TestLayer {
             @Override
             public void dispose() { }
         };
-        obj3.setRotationDeg(45);
+        obj3.getTransform().setRotationDeg(45);
 
         layer.add(new TestObject(), obj1, new TestObject(), new TestObject(), obj2, new TestObject(), obj3);
         layer.addQueued();
-        List<GameObject> result = layer.findAll(o -> o.getRotationDeg() == 45 && o instanceof TestObject);
+        List<GameObject> result = layer.findAll(o -> o.getTransform().getRotationDeg() == 45 && o instanceof TestObject);
         assertEquals(2, result.size());
         assertSame(obj1, result.get(0));
         assertSame(obj2, result.get(1));

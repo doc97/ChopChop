@@ -32,7 +32,7 @@ public class PowerBarObject extends GameObject {
         backgroundParams = new DrawParameters(background);
         markerParams = new DrawParameters(marker);
 
-        setSize(background.getRegionWidth(), background.getRegionHeight());
+        getTransform().setSize(background.getRegionWidth(), background.getRegionHeight());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PowerBarObject extends GameObject {
     }
 
     private void drawMarker(SpriteBatch batch) {
-        markerParams.y = (-getOriginY() + (1 - bar.getValue())) * getHeight();
+        markerParams.y = (-getTransform().getOriginY() + (1 - bar.getValue())) * getTransform().getHeight();
         draw(batch, marker, markerParams);
     }
 

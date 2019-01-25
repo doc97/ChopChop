@@ -11,23 +11,16 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
+import fi.chop.model.Transform;
 import fi.chop.model.world.Player;
 
 public abstract class GameObject implements EventListener, Disposable {
 
     private int id = -1;
-    private float x;
-    private float y;
-    private float width;
-    private float height;
-    private float scaleX = 1;
-    private float scaleY = 1;
-    private float originX;
-    private float originY;
-    private double rotDeg;
     private boolean touchable;
     private boolean dead;
 
+    private Transform transform;
     private TouchHandler touchHandler;
 
     private final AssetManager assets;
@@ -38,6 +31,7 @@ public abstract class GameObject implements EventListener, Disposable {
         this.assets = assets;
         this.camera = camera;
         this.player = player;
+        transform = new Transform();
         touchHandler = new TouchHandler<>(this);
     }
 
@@ -48,28 +42,30 @@ public abstract class GameObject implements EventListener, Disposable {
     protected void draw(SpriteBatch batch, TextureRegion region, DrawParameters params) {
         if (params == null)
             params = new DrawParameters(region);
+        Transform t = transform.get();
         batch.draw(region,
-                x - (originX + params.originX) * params.width + params.x,
-                y - (originY + params.originY) * params.height + params.y,
-                (originX + params.originX) * params.width,
-                (originY + params.originY) * params.height,
-                params.width, params.height,
-                scaleX * params.scaleX, scaleY * params.scaleY,
-                (float) (rotDeg + params.rotationDeg)
+                t.getX() - (t.getOriginX() + params.originX) * params.width + params.x,
+                t.getY() - (t.getOriginY() + params.originY) * params.height + params.y,
+                (t.getOriginX() + params.originX) * params.width,
+                (t.getOriginY() + params.originY) * params.height,
+                Math.min(t.getWidth(), params.width), Math.min(t.getHeight(), params.height),
+                t.getScaleX() * params.scaleX, t.getScaleX() * params.scaleY,
+                (float) (t.getRotationDeg() + params.rotationDeg)
         );
     }
 
     protected void draw(SpriteBatch batch, Texture texture, DrawParameters params) {
         if (params == null)
             params = new DrawParameters(texture);
+        Transform t = transform.get();
         batch.draw(texture,
-                x - (originX + params.originX) * params.width + params.x,
-                y - (originY + params.originY) * params.height + params.y,
-                (originX + params.originX) * params.width,
-                (originY + params.originY) * params.height,
-                params.width, params.height,
-                scaleX * params.scaleX, scaleY * params.scaleY,
-                (float) (rotDeg + params.rotationDeg),
+                t.getX() - (t.getOriginX() + params.originX) * params.width + params.x,
+                t.getY() - (t.getOriginY() + params.originY) * params.height + params.y,
+                (t.getOriginX() + params.originX) * params.width,
+                (t.getOriginY() + params.originY) * params.height,
+                Math.min(t.getWidth(), params.width), Math.min(t.getHeight(), params.height),
+                t.getScaleX() * params.scaleX, t.getScaleY() * params.scaleY,
+                (float) (t.getRotationDeg() + params.rotationDeg),
                 params.srcX, params.srcY,
                 params.srcWidth, params.srcHeight,
                 params.flipX, params.flipY
@@ -79,22 +75,8 @@ public abstract class GameObject implements EventListener, Disposable {
     @Override
     public void handle(Events event, EventData data) { }
 
-    public void translate(float dx, float dy) {
-        x += dx;
-        y += dy;
-    }
-
-    public void scale(float sx, float sy) {
-        scaleX *= sx;
-        scaleY *= sy;
-    }
-
-    public void rotateDeg(double delta) {
-        setRotationDeg(rotDeg + delta);
-    }
-
-    public void rotateRad(double delta) {
-        setRotationRad(getRotationRad() + delta);
+    public Transform getTransform() {
+        return transform;
     }
 
     public void invalidateID() {
@@ -114,108 +96,6 @@ public abstract class GameObject implements EventListener, Disposable {
 
     public int getID() {
         return id;
-    }
-
-    public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setSize(float width, float height) {
-        this.width = width;
-        this.height = height;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setScale(float scaleX, float scaleY) {
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
-    }
-
-    public void setScaleX(float scaleX) {
-        this.scaleX = scaleX;
-    }
-
-    public float getScaleX() {
-        return scaleX;
-    }
-
-    public void setScaleY(float scaleY) {
-        this.scaleY = scaleY;
-    }
-
-    public float getScaleY() {
-        return scaleY;
-    }
-
-    public void setOriginPx(float originXPx, float originYPx) {
-        if (width == 0 || height == 0)
-            throw new IllegalStateException("Cannot set pixel origin when width or height is 0");
-        setOrigin(originXPx / width, originYPx / height);
-    }
-
-    public void setOrigin(float originX, float originY) {
-        if (originX < 0 || originY < 0 || originX > 1 || originY > 1)
-            throw new IllegalArgumentException("origin x/y values must be between 0 and 1");
-        this.originX = originX;
-        this.originY = originY;
-    }
-
-    public float getOriginX() {
-        return originX;
-    }
-
-    public float getOriginY() {
-        return originY;
-    }
-
-    public void setRotationRad(double radians) {
-        setRotationDeg(180 * radians / Math.PI);
-    }
-
-    public double getRotationRad() {
-        return Math.PI * rotDeg / 180d;
-    }
-
-    public void setRotationDeg(double degrees) {
-        while (degrees < 0)
-            degrees += 360;
-        rotDeg = degrees % 360;
-    }
-
-    public double getRotationDeg() {
-        return rotDeg;
     }
 
     public <T extends GameObject> void setTouchHandler(TouchHandler<T> touchHandler) {
@@ -243,29 +123,38 @@ public abstract class GameObject implements EventListener, Disposable {
     }
 
     public boolean isOutsideCameraView() {
-        return camera != null &&
-                (
-                    x + (1 - originX) * width < camera.position.x - camera.viewportWidth / 2 ||
-                    x - originX * width > camera.position.x + camera.viewportWidth / 2 ||
-                    y + (1 - originY) * height < camera.position.y - camera.viewportHeight / 2 ||
-                    y - originY * height > camera.position.y + camera.viewportHeight / 2
-                );
+        if (camera == null)
+            return false;
+        float camX = camera.position.x;
+        float camY = camera.position.y;
+        float camW = camera.viewportWidth;
+        float camH = camera.viewportHeight;
+        float camTop = camY + camH / 2;
+        float camLeft = camX - camW / 2;
+        float camRight = camX + camW / 2;
+        float camBottom = camY - camH / 2;
+        Transform t = transform.get();
+        return t.getTop() < camBottom ||
+                t.getLeft() > camRight ||
+                t.getRight() < camLeft ||
+                t.getBottom() > camTop;
     }
 
     public boolean isXYInside(float x0, float y0) {
         if (!isInsideRadius(x0, y0))
             return false;
-        float top = y + (1 - originY) * height;
-        float left = x - originX * width;
-        float right = x + (1 - originX) * width;
-        float bottom = y - originY * height;
-
-        return y0 <= top && y0 >= bottom && x0 <= right && x0 >= left;
+        Transform t = transform.get();
+        return y0 <= t.getTop() && y0 >= t.getBottom() && x0 <= t.getRight() && x0 >= t.getLeft();
     }
 
     private boolean isInsideRadius(float x0, float y0) {
-        float radiusSqrd = Math.max(width * width, height * height);
-        return (x0 - x) * (x0 - x) + (y0 - y) * (y0 - y) < radiusSqrd;
+        Transform t = transform.get();
+        float radiusSquared = Math.max(t.getWidth() * t.getWidth(),
+                t.getHeight() * t.getHeight());
+        float distX = x0 - t.getX();
+        float distY = y0 - t.getY();
+        float distanceSquared = distX * distX + distY * distY;
+        return  distanceSquared < radiusSquared;
     }
 
     protected AssetManager getAssets() {

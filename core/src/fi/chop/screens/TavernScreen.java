@@ -53,7 +53,9 @@ public class TavernScreen extends ChopScreen implements EventListener {
         buyBtn.create("ZCOOL-40.ttf", () -> "Buy a drink");
         buyBtn.load();
         buyBtn.generateTexture();
-        buyBtn.setPosition(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f - buyBtn.getHeight());
+        buyBtn.getTransform().setPosition(
+                getCamera().viewportWidth / 2f,
+                getCamera().viewportHeight / 2f - buyBtn.getTransform().getHeight());
         buyBtn.setTouchHandler(new TextButtonHandler(buyBtn, (btn) -> {
             if (getPlayer().hasEnoughMoney(DRINK_PRICE)) {
                 Gdx.app.log("Tavern", "Bought a drink...");
@@ -79,22 +81,22 @@ public class TavernScreen extends ChopScreen implements EventListener {
         gui.load();
 
         TextObject priceText = new TextObject(getAssets(), getCamera(), getPlayer());
-        priceText.setOrigin(0, 1);
-        priceText.setPosition(100, getCamera().viewportHeight - 200);
+        priceText.getTransform().setOrigin(0, 1);
+        priceText.getTransform().setPosition(100, getCamera().viewportHeight - 200);
         priceText.pad(10, 10);
         priceText.create("ZCOOL-30.ttf", () -> "Price: " + DRINK_PRICE + " gold");
         priceText.load();
 
         TextObject drinksText = new TextObject(getAssets(), getCamera(), getPlayer());
-        drinksText.setOrigin(0, 1);
-        drinksText.setPosition(100, getCamera().viewportHeight - 250);
+        drinksText.getTransform().setOrigin(0, 1);
+        drinksText.getTransform().setPosition(100, getCamera().viewportHeight - 250);
         drinksText.pad(10, 10);
         drinksText.create("ZCOOL-30.ttf", () -> "Drinks bought today: " + getWorld().getDrinkCount());
         drinksText.load();
 
         TextObject probabilityText = new TextObject(getAssets(), getCamera(), getPlayer());
-        probabilityText.setOrigin(0, 1);
-        probabilityText.setPosition(100, getCamera().viewportHeight - 300);
+        probabilityText.getTransform().setOrigin(0, 1);
+        probabilityText.getTransform().setPosition(100, getCamera().viewportHeight - 300);
         probabilityText.pad(10, 10);
         probabilityText.create("ZCOOL-30.ttf", () -> "Chance of increasing popularity: " +
                 Math.max(100 - (getWorld().getDrinkCount() + 1) * 10, 5) + "%");

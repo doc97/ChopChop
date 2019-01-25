@@ -41,7 +41,7 @@ public class GuillotineObject extends GameObject {
         bladeParams = new DrawParameters(blade)
                 .pos(-7, BLADE_Y_OFFSET_PX + bladeYOffset)
                 .scale(0.5f, 0.5f);
-        setSize(bodyParams.width * bodyParams.scaleX, bodyParams.height * bodyParams.scaleY);
+        getTransform().setSize(bodyParams.width, bodyParams.height);
     }
 
     @Override

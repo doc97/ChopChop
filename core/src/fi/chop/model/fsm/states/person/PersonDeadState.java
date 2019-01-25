@@ -28,14 +28,14 @@ public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObjec
     @Override
     public void update(float delta) {
         PersonObject obj = getObject();
-        if (obj.getY() <= obj.getHeight() / 2) {
+        if (obj.getTransform().getY() <= obj.getTransform().getHeight() / 2) {
             velocityY = 0;
-            obj.setY(obj.getHeight() / 2);
+            obj.getTransform().setY(obj.getTransform().getHeight() / 2);
         } else {
             velocityY -= 10;
         }
-        obj.translate(velocityX * delta, velocityY * delta);
-        obj.rotateDeg(rotVelocity * delta);
+        obj.getTransform().translate(velocityX * delta, velocityY * delta);
+        obj.getTransform().rotateDeg(rotVelocity * delta);
 
         if (getObject().isOutsideCameraView())
             obj.die();

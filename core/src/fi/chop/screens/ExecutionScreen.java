@@ -71,31 +71,35 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         TextureObject background = new TextureObject(getAssets(), getCamera(), getPlayer());
         background.setTexture("textures/execution_screen/Background.png");
         background.load();
-        background.setSize(getCamera().viewportWidth, getCamera().viewportHeight);
+        background.getTransform().setSize(getCamera().viewportWidth, getCamera().viewportHeight);
 
         GameObject powerBar = new PowerBarObject(getAssets(), getCamera(), getPlayer());
-        powerBar.setOrigin(0.5f, 0.5f);
-        powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        powerBar.getTransform().setOrigin(0.5f, 0.5f);
+        powerBar.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
         powerBar.load();
 
         GameObject powerMeter = new PowerMeterObject(getAssets(), getCamera(), getPlayer());
-        powerMeter.setOrigin(0, 0.5f);
-        powerMeter.setPosition(powerBar.getX() + powerBar.getWidth() / 2 + 10, powerBar.getY());
+        powerMeter.getTransform().setOrigin(0, 0.5f);
+        powerMeter.getTransform().setPosition(
+                powerBar.getTransform().getX() + powerBar.getTransform().getWidth() / 2 + 10,
+                powerBar.getTransform().getY());
         powerMeter.load();
 
         GameObject guillotine = new GuillotineObject(getAssets(), getCamera(), getPlayer());
-        guillotine.setOrigin(0.5f, 0);
-        guillotine.setPosition(480, 0);
+        guillotine.getTransform().setOrigin(0.5f, 0);
+        guillotine.getTransform().setPosition(480, 0);
         guillotine.load();
 
         GameObject person = new PersonObject(getAssets(), getCamera(), getPlayer());
-        person.setOrigin(0.5f, 0.5f);
-        person.setPosition(guillotine.getX() - 15, guillotine.getY() + 260);
+        person.getTransform().setOrigin(0.5f, 0.5f);
+        person.getTransform().setPosition(
+                guillotine.getTransform().getX() - 15,
+                guillotine.getTransform().getY() + 260);
         person.load();
 
         ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), getPlayer());
-        scroll.setOrigin(0.5f, 0.5f);
-        scroll.setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
+        scroll.getTransform().setOrigin(0.5f, 0.5f);
+        scroll.getTransform().setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
         scroll.load();
         scroll.setExecution(getWorld().getExecution());
 

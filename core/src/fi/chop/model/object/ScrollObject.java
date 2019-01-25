@@ -22,7 +22,7 @@ public class ScrollObject extends GameObject {
 
         Color textColor = new Color(62.5f / 255f, 44.5f / 255f, 15f / 255f, 1);
         scrollText = new TextObject(getAssets(), getCamera(), getPlayer());
-        scrollText.setOrigin(0, 1);
+        scrollText.getTransform().setOrigin(0, 1);
         scrollText.tint(textColor);
     }
 
@@ -32,7 +32,7 @@ public class ScrollObject extends GameObject {
         scrollTexture = atlas.findRegion("scroll-background");
         scrollParams = new DrawParameters(scrollTexture);
 
-        setSize(scrollTexture.getRegionWidth(), scrollTexture.getRegionHeight());
+        getTransform().setSize(scrollTexture.getRegionWidth(), scrollTexture.getRegionHeight());
     }
 
     @Override
@@ -51,14 +51,11 @@ public class ScrollObject extends GameObject {
     }
 
     private void drawText(SpriteBatch batch) {
-        float offset = getWidth() * 0.07f;
-        float leftX = getX() - getOriginX() * getWidth();
-        float drawX = leftX + offset;
+        float offset = getTransform().getWidth() * 0.07f;
+        float drawX = getTransform().getLeft() + offset;
+        float drawY = getTransform().getTop() - offset;
 
-        float topY = getY() + (1 - getOriginY()) * getHeight();
-        float drawY = topY - offset;
-
-        scrollText.setPosition(drawX, drawY);
+        scrollText.getTransform().setPosition(drawX, drawY);
         scrollText.render(batch);
     }
 

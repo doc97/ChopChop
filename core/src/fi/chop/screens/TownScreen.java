@@ -45,8 +45,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addLayer("GUI", new Layer());
 
         TextObject dayText = new TextObject(getAssets(), getCamera(), getPlayer());
-        dayText.setOrigin(0.5f, 1);
-        dayText.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 50);
+        dayText.getTransform().setOrigin(0.5f, 1);
+        dayText.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 50);
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
@@ -54,19 +54,19 @@ public class TownScreen extends ChopScreen implements EventListener {
         castleBtn.create("ZCOOL-40.ttf", () -> "Castle");
         castleBtn.load();
         castleBtn.generateTexture();
-        castleBtn.setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 250);
+        castleBtn.getTransform().setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 250);
         castleBtn.setTouchHandler(new TextButtonHandler(castleBtn, (btn) -> Gdx.app.log("Castle", "Go!")));
         castleBtn.disable();
 
         TextButtonObject tavernBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        tavernBtn.setPosition(300, 250);
+        tavernBtn.getTransform().setPosition(300, 250);
         tavernBtn.setHoverScale(1.1f, 1.1f);
         tavernBtn.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernBtn.load();
         tavernBtn.setTouchHandler(new TextButtonHandler(tavernBtn, (btn) -> setScreen(Screens.TAVERN)));
 
         TextButtonObject guillotineBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        guillotineBtn.setPosition(getCamera().viewportWidth - 350, 450);
+        guillotineBtn.getTransform().setPosition(getCamera().viewportWidth - 350, 450);
         guillotineBtn.setHoverScale(1.1f, 1.1f);
         guillotineBtn.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineBtn.load();

@@ -3,6 +3,7 @@ package fi.chop.model.object.util;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import fi.chop.model.Transform;
 import fi.chop.model.world.Player;
 
 public class TextButtonObject extends TextObject {
@@ -14,17 +15,13 @@ public class TextButtonObject extends TextObject {
         DISABLED, NORMAL, HOVER, PRESSED
     }
 
+    private Transform btnTrans;
     private TextButtonStyle disabledStyle;
     private TextButtonStyle pressedStyle;
     private TextButtonStyle normalStyle;
     private TextButtonStyle hoverStyle;
     private StyleType usedStyle = StyleType.NORMAL;
     private ButtonState state = ButtonState.NORMAL;
-
-    private float origX;
-    private float origY;
-    private float origScaleX = 1;
-    private float origScaleY = 1;
 
     private float hoverScaleX = 1;
     private float hoverScaleY = 1;
@@ -35,7 +32,7 @@ public class TextButtonObject extends TextObject {
 
     public TextButtonObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
-        setOrigin(0.5f, 0.5f);
+        getTransform().setOrigin(0.5f, 0.5f);
         pad(50, 50);
         setTouchable(true);
         disabledStyle = new TextButtonStyle().bgColor(Color.DARK_GRAY).tint(Color.GRAY);
@@ -110,80 +107,49 @@ public class TextButtonObject extends TextObject {
         pressedOffsetY = offsetY;
     }
 
-    @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        if (state == ButtonState.NORMAL) {
-            origX = getX();
-            origY = getY();
-        }
-    }
-
-    @Override
-    public void setX(float x) {
-        super.setX(x);
-        if (state == ButtonState.NORMAL)
-            origX = getX();
-
-    }
-
-    @Override
-    public void setY(float y) {
-        super.setY(y);
-        if (state == ButtonState.NORMAL)
-            origY = getY();
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-        super.setScale(scaleX, scaleY);
-        if (state == ButtonState.NORMAL) {
-            origScaleX = getScaleX();
-            origScaleY = getScaleY();
-        }
-    }
-
-    @Override
-    public void scale(float scaleX, float scaleY) {
-        super.scale(scaleX, scaleY);
-        if (state == ButtonState.NORMAL) {
-            origScaleX = getScaleX();
-            origScaleY = getScaleY();
-        }
-    }
-
     public void normal() {
         if (isDisabled())
             return;
-        setScale(origScaleX, origScaleY);
-        setPosition(origX, origY);
+        Transform trans = btnTrans;
+        if (btnTrans == null)
+            trans = getTransform();
+        getTransform().setScale(trans.getScaleX(), trans.getScaleY());
+        getTransform().setPosition(trans.getX(), trans.getY());
         useStyle(StyleType.NORMAL);
         state = ButtonState.NORMAL;
+        btnTrans = null;
     }
 
     public void hover() {
         if (isDisabled())
             return;
+        if (btnTrans == null)
+            btnTrans = getTransform().cpy();
         state = ButtonState.HOVER;
         useStyle(StyleType.HOVER);
-        setScale(hoverScaleX, hoverScaleY);
-        setPosition(origX, origY);
+        getTransform().setScale(hoverScaleX, hoverScaleY);
+        getTransform().setPosition(btnTrans.getX(), btnTrans.getY());
     }
 
     public void press() {
         if (isDisabled())
             return;
+        if (btnTrans == null)
+            btnTrans = getTransform().cpy();
         state = ButtonState.PRESSED;
         useStyle(StyleType.HOVER);
-        setScale(pressedScaleX, pressedScaleY);
-        setPosition(origX + pressedOffsetX, origY + pressedOffsetY);
+        getTransform().setScale(pressedScaleX, pressedScaleY);
+        getTransform().setPosition(btnTrans.getX() + pressedOffsetX, btnTrans.getY() + pressedOffsetY);
     }
 
     public void disable() {
         state = ButtonState.DISABLED;
         useStyle(StyleType.DISABLED);
-        setScale(origScaleX, origScaleY);
-        setPosition(origX, origY);
+        if (btnTrans != null) {
+            getTransform().setScale(btnTrans.getScaleX(), btnTrans.getScaleY());
+            getTransform().setPosition(btnTrans.getX(), btnTrans.getY());
+            btnTrans = null;
+        }
     }
 
     private boolean isDisabled() {

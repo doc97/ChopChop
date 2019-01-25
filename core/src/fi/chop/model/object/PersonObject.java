@@ -31,7 +31,7 @@ public class PersonObject extends GameObject {
         headSaved = atlas.findRegion("head-saved");
         headAlive = atlas.findRegion("head-alive");
         headDead = atlas.findRegion("head-dead");
-        setSize(headAlive.getRegionWidth(), headAlive.getRegionHeight());
+        getTransform().setSize(headAlive.getRegionWidth(), headAlive.getRegionHeight());
         headParams = new DrawParameters(headAlive);
         state = new PersonStateMachine(this);
     }

@@ -20,7 +20,7 @@ public class PersonSavedState extends ObjectState<PersonStateMachine, PersonObje
 
     @Override
     public void enter() {
-        startX = getObject().getX();
+        startX = getObject().getTransform().getX();
         xOffset = 0;
         time = 0;
     }
@@ -32,8 +32,8 @@ public class PersonSavedState extends ObjectState<PersonStateMachine, PersonObje
     public void update(float delta) {
         time += 5 * delta;
         xOffset = (float) Math.sin(time);
-        getObject().setX(startX + xOffset * MAX_X_OFFSET_PX);
-        getObject().translate(0, VEL_Y_PX * delta);
+        getObject().getTransform().setX(startX + xOffset * MAX_X_OFFSET_PX);
+        getObject().getTransform().translate(0, VEL_Y_PX * delta);
 
         if (getObject().isOutsideCameraView())
             getObject().die();
