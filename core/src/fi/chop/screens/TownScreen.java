@@ -1,6 +1,7 @@
 package fi.chop.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
@@ -11,6 +12,7 @@ import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.gui.GameGUIObject;
+import fi.chop.model.object.util.DialogObject;
 import fi.chop.model.object.util.TextButtonObject;
 import fi.chop.model.object.util.TextObject;
 
@@ -43,6 +45,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Buttons", new Layer());
         getScene().addLayer("Text", new Layer());
         getScene().addLayer("GUI", new Layer());
+        getScene().addLayer("PopUp", new Layer());
 
         TextObject dayText = new TextObject(getAssets(), getCamera(), getPlayer());
         dayText.getTransform().setOrigin(0.5f, 1);
@@ -75,9 +78,26 @@ public class TownScreen extends ChopScreen implements EventListener {
         GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
 
+        DialogObject dialog = new DialogObject(getAssets(), getCamera(), getPlayer());
+        dialog.text("ZCOOL-40.ttf",
+                () -> "Welcome to ChopChop!\n\n" +
+                        "Guillotine: Execute people and earn your pay\n" +
+                        "Tavern: Drink and socialize to raise your popularity\n" +
+                        "Castle: (Coming soon)",
+                Color.BLACK)
+                .btn("ZCOOL-40.ttf", () -> "Ok!", (btn) -> dialog.die())
+                .pad(50, 50)
+                .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
+                .tint(new Color(0xb5e8f2ff))
+                .pack();
+        dialog.getTransform().setPosition(
+                getCamera().viewportWidth / 2 - dialog.getTransform().getWidth() / 2,
+                getCamera().viewportHeight / 2 + dialog.getTransform().getHeight() / 2);
+
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui);
+        getScene().addObjects("PopUp", dialog);
         getScene().addQueued();
     }
 
