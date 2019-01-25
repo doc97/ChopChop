@@ -2,9 +2,8 @@ package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
@@ -14,13 +13,17 @@ import fi.chop.model.world.Player;
 
 public class GuillotineObject extends GameObject {
 
-    public static final int IDLE_Y_OFFSET_PX = 150;
-    public static final int MAX_RAISE_AMOUNT_PX = 150;
+    public static final int IDLE_Y_OFFSET_PX = 170;
+    public static final int BLADE_Y_OFFSET_PX = 170;
+    public static final int MAX_RAISE_AMOUNT_PX = 110;
     public static final int MAX_RAISE_COUNT = 3;
 
     private final GuillotineStateMachine state;
-    private TextureRegion blade;
+    private Texture body;
+    private Texture blade;
+    private DrawParameters bodyParams;
     private DrawParameters bladeParams;
+    private float bladeYOffset;
     private float toRaise;
     private int raiseCount;
 
@@ -31,10 +34,14 @@ public class GuillotineObject extends GameObject {
 
     @Override
     public void load() {
-        TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        blade = atlas.findRegion("blade");
-        bladeParams = new DrawParameters(blade, 0, IDLE_Y_OFFSET_PX);
-        setSize(blade.getRegionWidth(), blade.getRegionHeight());
+        bladeYOffset = IDLE_Y_OFFSET_PX;
+        body = getAssets().get("textures/execution_screen/Guillotine_Body.png", Texture.class);
+        blade = getAssets().get("textures/execution_screen/Guillotine_Blade.png", Texture.class);
+        bodyParams = new DrawParameters(body).scale(0.5f, 0.5f);
+        bladeParams = new DrawParameters(blade)
+                .pos(-7, BLADE_Y_OFFSET_PX + bladeYOffset)
+                .scale(0.5f, 0.5f);
+        setSize(bodyParams.width * bodyParams.scaleX, bodyParams.height * bodyParams.scaleY);
     }
 
     @Override
@@ -45,6 +52,7 @@ public class GuillotineObject extends GameObject {
     @Override
     public void render(SpriteBatch batch) {
         draw(batch, blade, bladeParams);
+        draw(batch, body, bodyParams);
     }
 
     @Override
@@ -56,10 +64,6 @@ public class GuillotineObject extends GameObject {
             raiseBlade((float) data.get());
     }
 
-    public GuillotineStates getState() {
-        return state.getCurrent();
-    }
-
     private void raiseBlade(float amount) {
         amount = Math.min(Math.max(amount, 0), 1);
         toRaise = amount * MAX_RAISE_AMOUNT_PX;
@@ -68,11 +72,12 @@ public class GuillotineObject extends GameObject {
     }
 
     public void addBladeYOffset(float amount) {
-        bladeParams.y = Math.max(bladeParams.y + amount, 0);
+        bladeYOffset = Math.max(bladeYOffset + amount, 0);
+        bladeParams.y = BLADE_Y_OFFSET_PX + bladeYOffset;
     }
 
     public float getBladeYOffset() {
-        return bladeParams.y;
+        return bladeYOffset;
     }
 
     public void setToRaise(float amount) {

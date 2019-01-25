@@ -1,0 +1,58 @@
+package fi.chop.model.object;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fi.chop.engine.DrawParameters;
+import fi.chop.model.world.Player;
+
+public class TextureObject extends GameObject {
+
+    private String assetName;
+    private Texture texture;
+    private DrawParameters parameters;
+
+    public TextureObject(AssetManager assets, OrthographicCamera camera, Player player) {
+        super(assets, camera, player);
+    }
+
+    public void setTexture(String assetName) {
+        this.assetName = assetName;
+    }
+
+    @Override
+    public void load() {
+        texture = getAssets().get(assetName, Texture.class);
+        parameters = new DrawParameters(texture);
+    }
+
+    @Override
+    public void update(float delta) { }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        draw(batch, texture, parameters);
+    }
+
+    @Override
+    public void dispose() { }
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        parameters.size(width, height);
+    }
+
+    @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
+        parameters.width = width;
+    }
+
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
+        parameters.height = height;
+    }
+}

@@ -1,6 +1,8 @@
 package fi.chop.screens;
 
+import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -41,11 +43,20 @@ public class LoadingScreen extends ChopScreen {
         getAssets().load("ZCOOL-40.ttf", BitmapFont.class, zcool40Params);
         getAssets().finishLoading();
 
+        // Default TextureFilter
+        TextureLoader.TextureParameter textureParams = new TextureLoader.TextureParameter();
+        textureParams.genMipMaps = true;
+        textureParams.minFilter = Texture.TextureFilter.MipMapLinearNearest;
+        textureParams.magFilter = Texture.TextureFilter.Nearest;
+
         // Queue other assets to be loaded asynchronously
         getAssets().load("ZCOOL-30.ttf", BitmapFont.class, zcool30Params);
         getAssets().load("ZCOOL-60.ttf", BitmapFont.class, zcool60Params);
         getAssets().load("Dance-30.ttf", BitmapFont.class, dance30Params);
         getAssets().load("textures/packed/Chop.atlas", TextureAtlas.class);
+        getAssets().load("textures/execution_screen/Background.png", Texture.class, textureParams);
+        getAssets().load("textures/execution_screen/Guillotine_Body.png", Texture.class, textureParams);
+        getAssets().load("textures/execution_screen/Guillotine_Blade.png", Texture.class, textureParams);
 
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
         progressText = new FontRenderer(font);

@@ -68,6 +68,11 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         getScene().addLayer("Heads", new Layer());
         getScene().addLayer("GUI", new Layer());
 
+        TextureObject background = new TextureObject(getAssets(), getCamera(), getPlayer());
+        background.setTexture("textures/execution_screen/Background.png");
+        background.load();
+        background.setSize(getCamera().viewportWidth, getCamera().viewportHeight);
+
         GameObject powerBar = new PowerBarObject(getAssets(), getCamera(), getPlayer());
         powerBar.setOrigin(0.5f, 0.5f);
         powerBar.setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
@@ -80,12 +85,12 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         GameObject guillotine = new GuillotineObject(getAssets(), getCamera(), getPlayer());
         guillotine.setOrigin(0.5f, 0);
-        guillotine.setPosition(getCamera().viewportWidth / 4, 100);
+        guillotine.setPosition(480, 0);
         guillotine.load();
 
         GameObject person = new PersonObject(getAssets(), getCamera(), getPlayer());
         person.setOrigin(0.5f, 0.5f);
-        person.setPosition(guillotine.getX(), guillotine.getY() + 125);
+        person.setPosition(guillotine.getX() - 15, guillotine.getY() + 260);
         person.load();
 
         ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), getPlayer());
@@ -101,6 +106,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(guillotine, Events.EVT_GUILLOTINE_RAISE);
         Chop.events.addListener(person, Events.ACTION_MERCY, Events.EVT_PERSON_KILLED);
 
+        getScene().addObjects("Background", background);
         getScene().addObjects("Heads", person);
         getScene().addObjects("Guillotine", guillotine);
         getScene().addObjects("GUI", gui, powerBar, powerMeter, scroll);
