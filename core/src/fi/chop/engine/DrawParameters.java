@@ -11,8 +11,8 @@ public class DrawParameters {
     public float height;
     public float originX;
     public float originY;
-    public float scaleX;
-    public float scaleY;
+    public float scaleX = 1;
+    public float scaleY = 1;
     public double rotationDeg;
     public int srcX;
     public int srcY;
