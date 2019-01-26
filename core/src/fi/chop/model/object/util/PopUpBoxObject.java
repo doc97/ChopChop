@@ -11,13 +11,15 @@ import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class PopUpBoxObject extends GameObject {
 
     private TextObject text;
-    private TextButtonObject btn;
+    private List<TextButtonObject> buttons;
     private TextureRegion background;
     private DrawParameters backgroundParams;
 
@@ -27,6 +29,7 @@ public class PopUpBoxObject extends GameObject {
 
     public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
+        buttons = new ArrayList<>();
         getTransform().setOrigin(0, 1);
     }
 
@@ -40,7 +43,7 @@ public class PopUpBoxObject extends GameObject {
             text.load();
             text.generateTexture();
         }
-        if (btn != null) {
+        for (TextButtonObject btn : buttons) {
             btn.load();
             btn.generateTexture();
         }
@@ -71,12 +74,11 @@ public class PopUpBoxObject extends GameObject {
     }
 
     public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick) {
-        if (btn != null)
-            btn.dispose();
-        btn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject btn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         btn.create(fontName, supplier == null ? () -> "" : supplier);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         btn.getTransform().setParent(getTransform());
+        buttons.add(btn);
         return this;
     }
 
@@ -87,21 +89,45 @@ public class PopUpBoxObject extends GameObject {
 
     public void pack() {
         load();
-        float width = getTransform().getWidth();
-        float height = getTransform().getHeight();
-        if (text != null) {
-            width = Math.max(width, text.getTransform().getWidth());
-            height = Math.max(height, text.getTransform().getHeight());
-        }
-        if (btn != null) {
-            width = Math.max(width, btn.getTransform().getWidth());
-            height += btn.getTransform().getHeight();
+        float width = calculateWidth();
+        float height = calculateHeight();
+
+        for (int i = 0; i < buttons.size(); i++) {
             // btn origin = (0.5f, 0.5f)
-            btn.getTransform().setPosition(width / 2, -height + btn.getTransform().getHeight() / 2);
+            buttons.get(i).getTransform().setPosition(
+                    (i + 1) * width / (buttons.size() + 1),
+                    -height + buttons.get(i).getTransform().getHeight() / 2);
         }
 
         getTransform().setSize(width + paddingX, height + paddingY);
         backgroundParams.size(width + paddingX, height + paddingY).pos(-paddingX / 2, paddingY / 2);
+    }
+
+    private float calculateWidth() {
+        float width = getTransform().getWidth();
+        if (text != null)
+            width = Math.max(width, text.getTransform().getWidth());
+
+        float btnWidth = 0;
+        for (TextButtonObject btn : buttons)
+            btnWidth += btn.getTransform().getWidth();
+        width = Math.max(width, btnWidth);
+
+        return width;
+    }
+
+    private float calculateHeight() {
+        float height = getTransform().getHeight();
+        float textHeight = 0;
+        if (text != null)
+            textHeight = text.getTransform().getHeight();
+
+        float btnMaxHeight = 0;
+        for (TextButtonObject btn : buttons)
+            btnMaxHeight = Math.max(btnMaxHeight, btn.getTransform().getHeight());
+        height = Math.max(height, textHeight + btnMaxHeight);
+
+        return height;
     }
 
     @Override
@@ -121,11 +147,16 @@ public class PopUpBoxObject extends GameObject {
     public void die() {
         super.die();
         text.die();
-        btn.die();
+        for (TextButtonObject btn : buttons)
+            btn.die();
     }
 
     @Override
     public GameObject[] getChildren() {
-        return new GameObject[] { text, btn };
+        GameObject[] children = new GameObject[buttons.size() + 1];
+        children[0] = text;
+        for (int i = 0; i < buttons.size(); i++)
+            children[i + 1] = buttons.get(i);
+        return children;
     }
 }

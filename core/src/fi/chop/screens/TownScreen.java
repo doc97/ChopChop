@@ -85,7 +85,7 @@ public class TownScreen extends ChopScreen implements EventListener {
                         "Tavern: Drink and socialize to raise your popularity\n" +
                         "Castle: (Coming soon)",
                 Color.BLACK)
-                .btn("ZCOOL-40.ttf", () -> "Ok!", (btn) -> popUp.die())
+                .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
                 .pad(50, 50)
                 .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
                 .tint(new Color(0xb5e8f2ff))
