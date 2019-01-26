@@ -22,7 +22,6 @@ public class ScrollObject extends GameObject {
 
         Color textColor = new Color(62.5f / 255f, 44.5f / 255f, 15f / 255f, 1);
         scrollText = new TextObject(getAssets(), getCamera(), getPlayer());
-        scrollText.getTransform().setOrigin(0, 1);
         scrollText.tint(textColor);
     }
 
@@ -33,35 +32,33 @@ public class ScrollObject extends GameObject {
         scrollParams = new DrawParameters(scrollTexture);
 
         getTransform().setSize(scrollTexture.getRegionWidth(), scrollTexture.getRegionHeight());
+        scrollText.getTransform().setParent(getTransform());
+        scrollText.getTransform().setOrigin(0, 1);
+        scrollText.getTransform().setPosition(
+                -getTransform().getWidth() / 2 + 32,
+                getTransform().getHeight() / 2 - 32);
     }
 
     @Override
-    public void update(float delta) {
-        scrollText.update(delta);
-    }
+    public void update(float delta) { }
 
     @Override
     public void render(SpriteBatch batch) {
-        drawBackground(batch);
-        drawText(batch);
-    }
-
-    private void drawBackground(SpriteBatch batch) {
         draw(batch, scrollTexture, scrollParams);
     }
 
-    private void drawText(SpriteBatch batch) {
-        float offset = getTransform().getWidth() * 0.07f;
-        float drawX = getTransform().getLeft() + offset;
-        float drawY = getTransform().getTop() - offset;
+    @Override
+    public void dispose() { }
 
-        scrollText.getTransform().setPosition(drawX, drawY);
-        scrollText.render(batch);
+    @Override
+    public void die() {
+        super.die();
+        scrollText.die();
     }
 
     @Override
-    public void dispose() {
-        scrollText.dispose();
+    public GameObject[] getChildren() {
+        return new GameObject[] { scrollText };
     }
 
     public void setExecution(Execution execution) {
