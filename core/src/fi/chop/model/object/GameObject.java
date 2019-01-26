@@ -11,7 +11,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
-import fi.chop.model.Transform;
+import fi.chop.model.auxillary.Transform;
 import fi.chop.model.world.Player;
 
 public abstract class GameObject implements EventListener, Disposable {

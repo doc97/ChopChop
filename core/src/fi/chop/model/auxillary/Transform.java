@@ -1,4 +1,4 @@
-package fi.chop.model;
+package fi.chop.model.auxillary;
 
 public class Transform {
 

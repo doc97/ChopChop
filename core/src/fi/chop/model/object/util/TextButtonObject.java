@@ -3,7 +3,7 @@ package fi.chop.model.object.util;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import fi.chop.model.Transform;
+import fi.chop.model.auxillary.Transform;
 import fi.chop.model.world.Player;
 
 public class TextButtonObject extends TextObject {

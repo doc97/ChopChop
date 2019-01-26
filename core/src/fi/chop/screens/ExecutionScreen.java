@@ -15,6 +15,7 @@ import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
 import fi.chop.model.object.gui.GameGUIObject;
+import fi.chop.model.object.util.TextureObject;
 import fi.chop.timer.GameTimer;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
