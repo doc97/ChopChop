@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.input.TextButtonHandler;
+import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
 
@@ -30,7 +31,6 @@ public class PopUpBoxObject extends GameObject {
     public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
         buttons = new ArrayList<>();
-        getTransform().setOrigin(0, 1);
     }
 
     @Override
@@ -70,6 +70,7 @@ public class PopUpBoxObject extends GameObject {
         text.pad(10, 10);
         text.getTransform().setParent(getTransform());
         text.getTransform().setOrigin(0, 1);
+        text.setAlign(Align.TOP_LEFT);
         return this;
     }
 
@@ -78,6 +79,7 @@ public class PopUpBoxObject extends GameObject {
         btn.create(fontName, supplier == null ? () -> "" : supplier);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         btn.getTransform().setParent(getTransform());
+        btn.setAlign(Align.BOTTOM_LEFT);
         buttons.add(btn);
         return this;
     }
@@ -96,7 +98,7 @@ public class PopUpBoxObject extends GameObject {
             // btn origin = (0.5f, 0.5f)
             buttons.get(i).getTransform().setPosition(
                     (i + 1) * width / (buttons.size() + 1),
-                    -height + buttons.get(i).getTransform().getHeight() / 2);
+                    buttons.get(i).getTransform().getHeight());
         }
 
         getTransform().setSize(width + paddingX, height + paddingY);

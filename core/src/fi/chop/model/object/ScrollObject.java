@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
+import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.util.TextObject;
 import fi.chop.model.world.Execution;
 import fi.chop.model.world.Player;
@@ -34,9 +35,8 @@ public class ScrollObject extends GameObject {
         getTransform().setSize(scrollTexture.getRegionWidth(), scrollTexture.getRegionHeight());
         scrollText.getTransform().setParent(getTransform());
         scrollText.getTransform().setOrigin(0, 1);
-        scrollText.getTransform().setPosition(
-                -getTransform().getWidth() / 2 + 32,
-                getTransform().getHeight() / 2 - 32);
+        scrollText.getTransform().setPosition(32, -32);
+        scrollText.setAlign(Align.TOP_LEFT);
     }
 
     @Override

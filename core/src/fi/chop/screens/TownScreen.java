@@ -90,9 +90,8 @@ public class TownScreen extends ChopScreen implements EventListener {
                 .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
                 .tint(new Color(0xb5e8f2ff))
                 .pack();
-        popUp.getTransform().setPosition(
-                getCamera().viewportWidth / 2 - popUp.getTransform().getWidth() / 2,
-                getCamera().viewportHeight / 2 + popUp.getTransform().getHeight() / 2);
+        popUp.getTransform().setOrigin(0.5f, 0.5f);
+        popUp.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
 
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
