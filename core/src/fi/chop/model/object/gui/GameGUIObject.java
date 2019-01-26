@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.Chop;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
+import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.util.TextObject;
 import fi.chop.model.world.Player;
@@ -22,21 +23,29 @@ public class GameGUIObject extends GameObject {
 
     @Override
     public void load() {
+        getTransform().setSize(getCamera().viewportWidth, getCamera().viewportHeight);
+
         money = new TextObject(getAssets(), getCamera(), getPlayer());
+        money.getTransform().setParent(getTransform());
         money.getTransform().setOrigin(0, 1);
-        money.getTransform().setPosition(50, getCamera().viewportHeight - 50);
+        money.getTransform().setPosition(50, -50);
+        money.setAlign(Align.TOP_LEFT);
         money.pad(10, 10);
         money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney() + " gold");
         money.load();
 
         popularity = new PopularityMeterObject(getAssets(), getCamera(), getPlayer());
+        popularity.getTransform().setParent(getTransform());
         popularity.getTransform().setOrigin(1, 1);
-        popularity.getTransform().setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 50);
+        popularity.getTransform().setPosition(-50, -50);
+        popularity.setAlign(Align.TOP_RIGHT);
         popularity.load();
 
         reputation = new ReputationMeterObject(getAssets(), getCamera(), getPlayer());
+        reputation.getTransform().setParent(getTransform());
         reputation.getTransform().setOrigin(1, 1);
-        reputation.getTransform().setPosition(getCamera().viewportWidth - 50, getCamera().viewportHeight - 125);
+        reputation.getTransform().setPosition(-50, popularity.getTransform().getBottom() - 15);
+        reputation.setAlign(Align.TOP_RIGHT);
         reputation.load();
 
         Chop.events.addListener(popularity, Events.EVT_POPULARITY_CHANGED);
@@ -49,26 +58,24 @@ public class GameGUIObject extends GameObject {
     }
 
     @Override
-    public void update(float delta) {
-        money.update(delta);
-        popularity.update(delta);
-        reputation.update(delta);
+    public void update(float delta) { }
+
+    @Override
+    public void render(SpriteBatch batch) { }
+
+    @Override
+    public void dispose() { }
+
+    @Override
+    public void die() {
+        super.die();
+        money.die();
+        popularity.die();
+        reputation.die();
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        money.render(batch);
-        popularity.render(batch);
-        reputation.render(batch);
-    }
-
-    @Override
-    public void dispose() {
-        Chop.events.removeListener(money);
-        Chop.events.removeListener(popularity);
-        Chop.events.removeListener(reputation);
-        money.dispose();
-        popularity.dispose();
-        reputation.dispose();
+    public GameObject[] getChildren() {
+        return new GameObject[] { money, popularity, reputation };
     }
 }

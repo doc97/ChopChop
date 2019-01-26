@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.ValueMeter;
+import fi.chop.model.auxillary.Transform;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
@@ -36,8 +37,8 @@ public abstract class ValueMeterObject extends GameObject {
     private final TextOriginY textOriginY;
     private final float textOriginXOffset;
     private final float textOriginYOffset;
-    private final float textSpacingX;
-    private final float textSpacingY;
+    private final float textPaddingX;
+    private final float textPaddingY;
     private TextureRegion background;
     private TextureRegion fill;
     private DrawParameters backgroundParams;
@@ -47,7 +48,7 @@ public abstract class ValueMeterObject extends GameObject {
     protected ValueMeterObject(AssetManager assets, OrthographicCamera camera, Player player,
                                FillDirection direction, TextOriginX textOriginX, TextOriginY textOriginY,
                                float textOriginXOffset, float textOriginYOffset,
-                               float textSpacingX, float textSpacingY,
+                               float textPaddingX, float textPaddingY,
                                String backgroundAssetName, String fillAssetName, String fontName) {
         super(assets, camera, player);
         this.direction = direction;
@@ -55,8 +56,8 @@ public abstract class ValueMeterObject extends GameObject {
         this.textOriginY = textOriginY;
         this.textOriginXOffset = textOriginXOffset;
         this.textOriginYOffset = textOriginYOffset;
-        this.textSpacingX = textSpacingX;
-        this.textSpacingY = textSpacingY;
+        this.textPaddingX = textPaddingX;
+        this.textPaddingY = textPaddingY;
         this.backgroundAssetName = backgroundAssetName;
         this.fillAssetName = fillAssetName;
         this.fontName = fontName;
@@ -79,7 +80,8 @@ public abstract class ValueMeterObject extends GameObject {
         fillParams.srcWidth = fill.getRegionWidth();
         fillParams.srcHeight = fill.getRegionHeight();
 
-        getTransform().setSize(background.getRegionWidth(), background.getRegionHeight());
+        getTransform().setSize(background.getRegionWidth() + 2 * textPaddingX,
+                background.getRegionHeight() + labelText.getLineHeight() + 2 * textPaddingY);
     }
 
     @Override
@@ -136,16 +138,18 @@ public abstract class ValueMeterObject extends GameObject {
             return;
 
         labelText.text(getLabel());
-        float drawX = getTransform().getX() + textSpacingX;
-        float drawY = getTransform().getY() - textSpacingY;
+        Transform t = getTransform().cpy();
+        getAlign().apply(t.parent(), t);
+        float drawX = t.getX() + textPaddingX;
+        float drawY = t.getY() - textPaddingY;
 
         if (textOriginX == TextOriginX.RIGHT)
-            drawX = getTransform().getX() - labelText.width() - textSpacingX;
+            drawX = t.getX() - labelText.width() - textPaddingX;
         if (textOriginY == TextOriginY.BOTTOM)
-            drawY = getTransform().getY() + labelText.getLineHeight() + textSpacingY;
+            drawY = t.getY() + labelText.getLineHeight() + textPaddingY;
 
-        drawX += (-getTransform().getOriginX() + textOriginXOffset) * getTransform().getWidth();
-        drawY += (-getTransform().getOriginY() + textOriginYOffset) * getTransform().getHeight();
+        drawX += (-t.getOriginX() + textOriginXOffset) * t.getWidth();
+        drawY += (-t.getOriginY() + textOriginYOffset) * t.getHeight();
 
         labelText.pos(drawX, drawY).draw(batch);
     }
