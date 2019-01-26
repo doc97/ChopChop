@@ -14,6 +14,7 @@ import fi.chop.model.world.Player;
 public class GameGUIObject extends GameObject {
 
     private TextObject money;
+    private PerkObject perks;
     private PopularityMeterObject popularity;
     private ReputationMeterObject reputation;
 
@@ -33,6 +34,13 @@ public class GameGUIObject extends GameObject {
         money.pad(10, 10);
         money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney() + " gold");
         money.load();
+
+        perks = new PerkObject(getAssets(), getCamera(), getPlayer());
+        perks.getTransform().setParent(getTransform());
+        perks.getTransform().setOrigin(0, 1);
+        perks.getTransform().setPosition(50, -100);//money.getTransform().getBottom() - 15);
+        perks.setAlign(Align.TOP_LEFT);
+        perks.load();
 
         popularity = new PopularityMeterObject(getAssets(), getCamera(), getPlayer());
         popularity.getTransform().setParent(getTransform());
@@ -70,12 +78,13 @@ public class GameGUIObject extends GameObject {
     public void die() {
         super.die();
         money.die();
+        perks.die();
         popularity.die();
         reputation.die();
     }
 
     @Override
     public GameObject[] getChildren() {
-        return new GameObject[] { money, popularity, reputation };
+        return new GameObject[] { money, perks, popularity, reputation };
     }
 }

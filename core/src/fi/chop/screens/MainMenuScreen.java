@@ -10,6 +10,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.MainMenuScreenInput;
+import fi.chop.model.world.PopularityPerk;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
 
@@ -57,6 +58,8 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         if (event == Events.ACTION_INTERACT) {
             getWorld().nextDay();
+            getPlayer().addPerks(PopularityPerk.TURNING_A_BLIND_EYE, PopularityPerk.MEANINGFUL_WORK,
+                    PopularityPerk.GIFT_OF_THE_PEOPLE);
             setScreen(Screens.TOWN);
         } else if (event == Events.ACTION_EXIT) {
             Gdx.app.exit();
