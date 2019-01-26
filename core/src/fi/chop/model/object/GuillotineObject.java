@@ -39,7 +39,7 @@ public class GuillotineObject extends GameObject {
         blade = getAssets().get("textures/execution_screen/Guillotine_Blade.png", Texture.class);
         bodyParams = new DrawParameters(body).scale(0.5f, 0.5f);
         bladeParams = new DrawParameters(blade)
-                .pos(-7, BLADE_Y_OFFSET_PX + bladeYOffset)
+                .pos(-15, BLADE_Y_OFFSET_PX + bladeYOffset)
                 .scale(0.5f, 0.5f);
         getTransform().setSize(bodyParams.width, bodyParams.height);
     }
