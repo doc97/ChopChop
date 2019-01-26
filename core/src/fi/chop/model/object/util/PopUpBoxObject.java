@@ -14,7 +14,7 @@ import fi.chop.model.world.Player;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DialogObject extends GameObject {
+public class PopUpBoxObject extends GameObject {
 
     private TextObject text;
     private TextButtonObject btn;
@@ -25,7 +25,7 @@ public class DialogObject extends GameObject {
     private float paddingY;
     private Color tint;
 
-    public DialogObject(AssetManager assets, OrthographicCamera camera, Player player) {
+    public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
         getTransform().setOrigin(0, 1);
     }
@@ -46,18 +46,18 @@ public class DialogObject extends GameObject {
         }
     }
 
-    public DialogObject pad(float paddingX, float paddingY) {
+    public PopUpBoxObject pad(float paddingX, float paddingY) {
         this.paddingX = paddingX;
         this.paddingY = paddingY;
         return this;
     }
 
-    public DialogObject size(float width, float height) {
+    public PopUpBoxObject size(float width, float height) {
         getTransform().setSize(width, height);
         return this;
     }
 
-    public DialogObject text(String fontName, Supplier<String> supplier, Color tint) {
+    public PopUpBoxObject text(String fontName, Supplier<String> supplier, Color tint) {
         if (text != null)
             text.dispose();
         text = new TextObject(getAssets(), getCamera(), getPlayer());
@@ -70,7 +70,7 @@ public class DialogObject extends GameObject {
         return this;
     }
 
-    public DialogObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick) {
+    public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick) {
         if (btn != null)
             btn.dispose();
         btn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
@@ -80,7 +80,7 @@ public class DialogObject extends GameObject {
         return this;
     }
 
-    public DialogObject tint(Color tint) {
+    public PopUpBoxObject tint(Color tint) {
         this.tint = tint;
         return this;
     }
