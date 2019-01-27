@@ -38,4 +38,8 @@ public class TextureObject extends GameObject {
 
     @Override
     public void dispose() { }
+
+    public DrawParameters getParameters() {
+        return parameters;
+    }
 }

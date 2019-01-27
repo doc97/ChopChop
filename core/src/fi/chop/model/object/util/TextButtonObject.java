@@ -33,7 +33,7 @@ public class TextButtonObject extends TextObject {
     public TextButtonObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
         getTransform().setOrigin(0.5f, 0.5f);
-        pad(50, 50);
+        pad(25, 25, 25, 25);
         setTouchable(true);
         disabledStyle = new TextButtonStyle().bgColor(Color.DARK_GRAY).tint(Color.GRAY);
         pressedStyle = new TextButtonStyle().bgColor(Color.FIREBRICK).tint(Color.YELLOW);

@@ -10,6 +10,7 @@ import fi.chop.engine.DrawParameters;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
+import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.world.Player;
 
 import java.util.ArrayList;
@@ -17,16 +18,13 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class PopUpBoxObject extends GameObject {
+public class PopUpBoxObject extends GUIObject {
 
+    private Color tint;
     private TextObject text;
     private List<TextButtonObject> buttons;
     private TextureRegion background;
     private DrawParameters backgroundParams;
-
-    private float paddingX;
-    private float paddingY;
-    private Color tint;
 
     public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
@@ -41,18 +39,12 @@ public class PopUpBoxObject extends GameObject {
 
         if (text != null) {
             text.load();
-            text.generateTexture();
+            text.pack();
         }
         for (TextButtonObject btn : buttons) {
             btn.load();
-            btn.generateTexture();
+            btn.pack();
         }
-    }
-
-    public PopUpBoxObject pad(float paddingX, float paddingY) {
-        this.paddingX = paddingX;
-        this.paddingY = paddingY;
-        return this;
     }
 
     public PopUpBoxObject size(float width, float height) {
@@ -67,10 +59,10 @@ public class PopUpBoxObject extends GameObject {
         text.create(fontName, supplier == null ? () -> "" : supplier);
         text.load();
         text.tint(tint);
-        text.pad(10, 10);
+        text.pad(5, 5, 5, 5);
         text.getTransform().setParent(getTransform());
         text.getTransform().setOrigin(0, 1);
-        text.setAlign(Align.TOP_LEFT);
+        text.getTransform().setAlign(Align.TOP_LEFT);
         return this;
     }
 
@@ -79,7 +71,7 @@ public class PopUpBoxObject extends GameObject {
         btn.create(fontName, supplier == null ? () -> "" : supplier);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         btn.getTransform().setParent(getTransform());
-        btn.setAlign(Align.BOTTOM_LEFT);
+        btn.getTransform().setAlign(Align.BOTTOM_LEFT);
         buttons.add(btn);
         return this;
     }
@@ -89,20 +81,28 @@ public class PopUpBoxObject extends GameObject {
         return this;
     }
 
+    public PopUpBoxObject pad(float padTop, float padLeft, float padRight, float padBottom) {
+        super.pad(padTop, padLeft, padRight, padBottom);
+        return this;
+    }
+
     public void pack() {
         load();
         float width = calculateWidth();
         float height = calculateHeight();
 
+        text.getTransform().setPosition(getPadLeft(), -getPadTop());
         for (int i = 0; i < buttons.size(); i++) {
             // btn origin = (0.5f, 0.5f)
             buttons.get(i).getTransform().setPosition(
-                    (i + 1) * width / (buttons.size() + 1),
-                    buttons.get(i).getTransform().getHeight());
+                    (i + 1) * width / (buttons.size() + 1) + getPadLeft(),
+                    buttons.get(i).getTransform().getHeight() + getPadBottom());
         }
 
-        getTransform().setSize(width + paddingX, height + paddingY);
-        backgroundParams.size(width + paddingX, height + paddingY).pos(-paddingX / 2, paddingY / 2);
+        float paddingX = getPadLeft() + getPadRight();
+        float paddingY = getPadTop() + getPadBottom();
+        getTransform().setSize(width + paddingX,  height + paddingY);
+        backgroundParams.size(width + paddingX,  height + paddingY);
     }
 
     private float calculateWidth() {
@@ -115,6 +115,7 @@ public class PopUpBoxObject extends GameObject {
             btnWidth += btn.getTransform().getWidth();
         width = Math.max(width, btnWidth);
 
+        width += getPadLeft() + getPadRight();
         return width;
     }
 
@@ -129,6 +130,7 @@ public class PopUpBoxObject extends GameObject {
             btnMaxHeight = Math.max(btnMaxHeight, btn.getTransform().getHeight());
         height = Math.max(height, textHeight + btnMaxHeight);
 
+        height += getPadTop() + getPadBottom();
         return height;
     }
 

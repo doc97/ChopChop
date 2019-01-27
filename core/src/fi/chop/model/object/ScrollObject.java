@@ -36,7 +36,7 @@ public class ScrollObject extends GameObject {
         scrollText.getTransform().setParent(getTransform());
         scrollText.getTransform().setOrigin(0, 1);
         scrollText.getTransform().setPosition(32, -32);
-        scrollText.setAlign(Align.TOP_LEFT);
+        scrollText.getTransform().setAlign(Align.TOP_LEFT);
     }
 
     @Override

@@ -50,4 +50,12 @@ public class Align {
 
         return delta;
     }
+
+    public Vertical getVAlign() {
+        return vAlign;
+    }
+
+    public Horizontal getHAlign() {
+        return hAlign;
+    }
 }

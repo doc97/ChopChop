@@ -22,10 +22,19 @@ public class Scene {
     public void addObjects(String layerName, GameObject... objects) {
         if (!names.contains(layerName))
             throw new IllegalArgumentException("No layer with name: " + layerName);
-        for (GameObject obj : objects) {
-            layers.get(layerName).add(obj);
-            layers.get(layerName).add(obj.getChildren());
-        }
+
+        List<GameObject> allObjects = new ArrayList<>(objects.length);
+        for (GameObject obj : objects)
+            allObjects.addAll(getChildObjects(obj));
+        layers.get(layerName).add(allObjects.toArray(new GameObject[0]));
+    }
+
+    private List<GameObject> getChildObjects(GameObject obj) {
+        List<GameObject> objects = new ArrayList<>(obj.getChildren().length + 1);
+        objects.add(obj);
+        for (GameObject child : obj.getChildren())
+            objects.addAll(getChildObjects(child));
+        return objects;
     }
 
     public void addQueued() {

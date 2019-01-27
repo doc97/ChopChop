@@ -9,7 +9,7 @@ import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TavernScreenInput;
 import fi.chop.input.TextButtonHandler;
-import fi.chop.model.object.GameObject;
+import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.util.TextButtonObject;
 import fi.chop.model.object.util.TextObject;
@@ -52,7 +52,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
         buyBtn.setPressedOffset(0, -8);
         buyBtn.create("ZCOOL-40.ttf", () -> "Buy a drink");
         buyBtn.load();
-        buyBtn.generateTexture();
+        buyBtn.pack();
         buyBtn.getTransform().setPosition(
                 getCamera().viewportWidth / 2f,
                 getCamera().viewportHeight / 2f - buyBtn.getTransform().getHeight());
@@ -77,27 +77,28 @@ public class TavernScreen extends ChopScreen implements EventListener {
         if (!getPlayer().hasEnoughMoney(DRINK_PRICE))
             buyBtn.disable();
 
-        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
+        gui.pack();
 
         TextObject priceText = new TextObject(getAssets(), getCamera(), getPlayer());
         priceText.getTransform().setOrigin(0, 1);
         priceText.getTransform().setPosition(100, getCamera().viewportHeight - 200);
-        priceText.pad(10, 10);
+        priceText.pad(5, 5, 5, 5);
         priceText.create("ZCOOL-30.ttf", () -> "Price: " + DRINK_PRICE + " gold");
         priceText.load();
 
         TextObject drinksText = new TextObject(getAssets(), getCamera(), getPlayer());
         drinksText.getTransform().setOrigin(0, 1);
         drinksText.getTransform().setPosition(100, getCamera().viewportHeight - 250);
-        drinksText.pad(10, 10);
+        drinksText.pad(5, 5, 5, 5);
         drinksText.create("ZCOOL-30.ttf", () -> "Drinks bought today: " + getWorld().getDrinkCount());
         drinksText.load();
 
         TextObject probabilityText = new TextObject(getAssets(), getCamera(), getPlayer());
         probabilityText.getTransform().setOrigin(0, 1);
         probabilityText.getTransform().setPosition(100, getCamera().viewportHeight - 300);
-        probabilityText.pad(10, 10);
+        probabilityText.pad(5, 5, 5, 5);
         probabilityText.create("ZCOOL-30.ttf", () -> "Chance of increasing popularity: " +
                 Math.max(100 - (getWorld().getDrinkCount() + 1) * 10, 5) + "%");
         probabilityText.load();

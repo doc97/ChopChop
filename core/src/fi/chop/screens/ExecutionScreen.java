@@ -14,6 +14,7 @@ import fi.chop.input.ExecutionScreenInput;
 import fi.chop.model.fsm.states.guillotine.GuillotineStates;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
+import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.util.TextureObject;
 import fi.chop.model.world.PopularityPerk;
@@ -80,12 +81,13 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         powerBar.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
         powerBar.load();
 
-        GameObject powerMeter = new PowerMeterObject(getAssets(), getCamera(), getPlayer());
+        PowerMeterObject powerMeter = new PowerMeterObject(getAssets(), getCamera(), getPlayer());
         powerMeter.getTransform().setOrigin(0, 0.5f);
         powerMeter.getTransform().setPosition(
                 powerBar.getTransform().getX() + powerBar.getTransform().getWidth() / 2 + 10,
                 powerBar.getTransform().getY());
         powerMeter.load();
+        powerMeter.pack();
 
         GameObject guillotine = new GuillotineObject(getAssets(), getCamera(), getPlayer());
         guillotine.getTransform().setOrigin(0.5f, 0);
@@ -105,8 +107,9 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         scroll.load();
         scroll.setExecution(getWorld().getExecution());
 
-        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
+        gui.pack();
 
         Chop.events.addListener(powerMeter, Events.EVT_GUILLOTINE_RAISE, Events.EVT_GUILLOTINE_PREPARED);
         Chop.events.addListener(guillotine, Events.EVT_GUILLOTINE_RAISE);

@@ -2,6 +2,7 @@ package fi.chop.model.auxillary;
 
 public class Transform {
 
+    private Align align = Align.CENTER;
     private Transform parent;
     private float x;
     private float y;
@@ -17,13 +18,24 @@ public class Transform {
         this.parent = parent;
     }
 
-    public Transform get() {
+    public void setAlign(Align align) {
+        this.align = align;
+    }
+
+    public Transform getGlobal() {
         if (parent == null)
             return this;
 
-        Transform parentTransform = parent.get();
+        Transform parentTransform = parent.getGlobal();
         Transform result = cpy();
         result.translate(parentTransform.getX(), parentTransform.getY());
+        align.apply(parentTransform, result);
+        return result;
+    }
+
+    public Transform getLocal() {
+        Transform result = cpy();
+        align.apply(parent, result);
         return result;
     }
 

@@ -10,7 +10,7 @@ import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
-import fi.chop.model.object.GameObject;
+import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.util.PopUpBoxObject;
 import fi.chop.model.object.util.TextButtonObject;
@@ -56,7 +56,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         TextButtonObject castleBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         castleBtn.create("ZCOOL-40.ttf", () -> "Castle");
         castleBtn.load();
-        castleBtn.generateTexture();
+        castleBtn.pack();
         castleBtn.getTransform().setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 250);
         castleBtn.setTouchHandler(new TextButtonHandler(castleBtn, (btn) -> Gdx.app.log("Castle", "Go!")));
         castleBtn.disable();
@@ -75,8 +75,9 @@ public class TownScreen extends ChopScreen implements EventListener {
         guillotineBtn.load();
         guillotineBtn.setTouchHandler(new TextButtonHandler(guillotineBtn, (btn) -> setScreen(Screens.EXECUTION)));
 
-        GameObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
         gui.load();
+        gui.pack();
 
         PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getPlayer());
         popUp.text("ZCOOL-40.ttf",
@@ -86,7 +87,7 @@ public class TownScreen extends ChopScreen implements EventListener {
                         "Castle: (Coming soon)",
                 Color.BLACK)
                 .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
-                .pad(50, 50)
+                .pad(25, 25, 25, 25)
                 .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
                 .tint(new Color(0xb5e8f2ff))
                 .pack();

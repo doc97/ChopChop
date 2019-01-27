@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
+import fi.chop.model.auxillary.Align;
 import fi.chop.model.fsm.machines.PowerMeterStateMachine;
 import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.util.ValueMeterObject;
@@ -16,14 +17,15 @@ public class PowerMeterObject extends ValueMeterObject {
     private boolean ready;
 
     public PowerMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player, FillDirection.UP, TextOriginX.LEFT, TextOriginY.BOTTOM,
-                1, 0, 10, 0,
+        super(assets, camera, player, FillDirection.UP, Align.BOTTOM_RIGHT, Align.BOTTOM_LEFT,
+                10, 0,
                 "powermeter-background", "powermeter-fill", "ZCOOL-40.ttf");
         state = new PowerMeterStateMachine(this);
     }
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         state.update(delta);
     }
 

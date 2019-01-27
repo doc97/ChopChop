@@ -11,13 +11,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import fi.chop.engine.DrawParameters;
-import fi.chop.model.object.GameObject;
+import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 
 import java.util.function.Supplier;
 
-public class TextObject extends GameObject {
+public class TextObject extends GUIObject {
+
+    private static final int AUTO_PAD_X = 10;
+    private static final int AUTO_PAD_Y = 10;
 
     private String fontName;
     private Supplier<String> textConstructor;
@@ -30,10 +33,6 @@ public class TextObject extends GameObject {
     private TextureRegion fboRegion;
     private DrawParameters params;
 
-    private float paddingX;
-    private float paddingY;
-    private boolean dirty;
-
     public TextObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
         batch = new SpriteBatch();
@@ -41,31 +40,29 @@ public class TextObject extends GameObject {
         style = new TextButtonStyle();
     }
 
+    @Override
+    public void pack() {
+        generateTexture();
+    }
+
     public void create(String fontName, Supplier<String> textConstructor) {
         this.fontName = fontName;
         this.textConstructor = textConstructor;
     }
 
-    public void pad(float paddingX, float paddingY) {
-        this.paddingX = Math.max(paddingX, 0);
-        this.paddingY = Math.max(paddingY, 0);
-        dirty = true;
-    }
-
-    public void generateTexture() {
+    private void generateTexture() {
         if (fbo != null)
             fbo.dispose();
         createTexture(renderer);
         getTransform().setSize(fboRegion.getRegionWidth(), fboRegion.getRegionHeight());
         params = new DrawParameters(fboRegion);
-        dirty = false;
     }
 
     private void createTexture(FontRenderer textRenderer) {
         int width = Math.round(textRenderer.width());
         int height = Math.round(textRenderer.height());
-        int totalWidth = Math.round(width + paddingX);
-        int totalHeight = Math.round(height + paddingY);
+        int totalWidth = Math.round(width + AUTO_PAD_X + getPadLeft() + getPadRight());
+        int totalHeight = Math.round(height + AUTO_PAD_Y + getPadTop() + getPadBottom());
 
         cam.setToOrtho(false, totalWidth, totalHeight);
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, totalWidth, totalHeight, false);
@@ -103,7 +100,7 @@ public class TextObject extends GameObject {
         BitmapFont font = getAssets().get(fontName, BitmapFont.class);
         renderer = new FontRenderer(font);
         renderer.text(textConstructor.get());
-        dirty = true;
+        invalidate();
     }
 
     @Override
@@ -113,12 +110,11 @@ public class TextObject extends GameObject {
 
         String newText = textConstructor.get();
         if (!newText.equals(renderer.str())) {
-            dirty = true;
+            invalidate();
             renderer.edit(newText);
         }
 
-        if (dirty)
-            generateTexture();
+        super.update(delta);
     }
 
     @Override
@@ -134,21 +130,21 @@ public class TextObject extends GameObject {
 
     public void tint(Color tint) {
         style.tint(tint);
-        dirty = true;
+        invalidate();
     }
 
     public void bgColor(Color bgColor) {
         style.bgColor(bgColor);
-        dirty = true;
+        invalidate();
     }
 
     public void bgTexture(TextureRegion bgTexture) {
         style.bgTexture(bgTexture);
-        dirty = true;
+        invalidate();
     }
 
     public void style(TextButtonStyle style) {
         this.style.set(style);
-        dirty = true;
+        invalidate();
     }
 }

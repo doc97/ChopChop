@@ -9,9 +9,10 @@ import fi.chop.event.Events;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.util.TextObject;
+import fi.chop.model.object.util.ValueMeterObject;
 import fi.chop.model.world.Player;
 
-public class GameGUIObject extends GameObject {
+public class GameGUIObject extends GUIObject {
 
     private TextObject money;
     private PerkObject perks;
@@ -23,38 +24,38 @@ public class GameGUIObject extends GameObject {
     }
 
     @Override
-    public void load() {
-        getTransform().setSize(getCamera().viewportWidth, getCamera().viewportHeight);
+    public void pack() {
+        perks.getTransform().setPosition(0, money.getTransform().getBottom() - 15);
+        reputation.getTransform().setPosition(0, popularity.getTransform().getBottom() - 15);
 
+        getTransform().setSize(getCamera().viewportWidth, getCamera().viewportHeight);
+        money.getTransform().translate(getPadLeft(), -getPadTop());
+        perks.getTransform().translate(getPadLeft(), -getPadTop());
+        popularity.getTransform().translate(-getPadRight(), -getPadTop());
+        reputation.getTransform().translate(-getPadRight(), -getPadTop());
+    }
+
+    @Override
+    public void load() {
         money = new TextObject(getAssets(), getCamera(), getPlayer());
         money.getTransform().setParent(getTransform());
         money.getTransform().setOrigin(0, 1);
-        money.getTransform().setPosition(50, -50);
-        money.setAlign(Align.TOP_LEFT);
-        money.pad(10, 10);
+        money.getTransform().setAlign(Align.TOP_LEFT);
+        money.pad(5, 5, 5, 5);
         money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney() + " gold");
         money.load();
 
         perks = new PerkObject(getAssets(), getCamera(), getPlayer());
         perks.getTransform().setParent(getTransform());
         perks.getTransform().setOrigin(0, 1);
-        perks.getTransform().setPosition(50, -100);//money.getTransform().getBottom() - 15);
-        perks.setAlign(Align.TOP_LEFT);
+        perks.getTransform().setAlign(Align.TOP_LEFT);
         perks.load();
 
         popularity = new PopularityMeterObject(getAssets(), getCamera(), getPlayer());
-        popularity.getTransform().setParent(getTransform());
-        popularity.getTransform().setOrigin(1, 1);
-        popularity.getTransform().setPosition(-50, -50);
-        popularity.setAlign(Align.TOP_RIGHT);
-        popularity.load();
+        initValueMeter(popularity);
 
         reputation = new ReputationMeterObject(getAssets(), getCamera(), getPlayer());
-        reputation.getTransform().setParent(getTransform());
-        reputation.getTransform().setOrigin(1, 1);
-        reputation.getTransform().setPosition(-50, popularity.getTransform().getBottom() - 15);
-        reputation.setAlign(Align.TOP_RIGHT);
-        reputation.load();
+        initValueMeter(reputation);
 
         Chop.events.addListener(popularity, Events.EVT_POPULARITY_CHANGED);
         Chop.events.addListener(reputation, Events.EVT_REPUTATION_CHANGED, Events.EVT_REPUTATION_LVL_CHANGED);
@@ -63,6 +64,14 @@ public class GameGUIObject extends GameObject {
         Chop.events.notify(Events.EVT_POPULARITY_CHANGED, new EventData<>(getPlayer().getPopularity()));
         Chop.events.notify(Events.EVT_REPUTATION_CHANGED, new EventData<>(getPlayer().getReputation()));
         Chop.events.notify(Events.EVT_REPUTATION_LVL_CHANGED, new EventData<>(getPlayer().getReputationLevel()));
+    }
+
+    private void initValueMeter(ValueMeterObject obj) {
+        obj.getTransform().setParent(getTransform());
+        obj.getTransform().setOrigin(1, 1);
+        obj.getTransform().setAlign(Align.TOP_RIGHT);
+        obj.load();
+        obj.pack();
     }
 
     @Override

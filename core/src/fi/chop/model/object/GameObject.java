@@ -11,7 +11,6 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
-import fi.chop.model.auxillary.Align;
 import fi.chop.model.auxillary.Transform;
 import fi.chop.model.world.Player;
 
@@ -21,7 +20,6 @@ public abstract class GameObject implements EventListener, Disposable {
     private boolean touchable;
     private boolean dead;
 
-    private Align align = Align.CENTER;
     private Transform transform;
     private TouchHandler touchHandler;
 
@@ -44,7 +42,7 @@ public abstract class GameObject implements EventListener, Disposable {
     protected void draw(SpriteBatch batch, TextureRegion region, DrawParameters params) {
         if (params == null)
             params = new DrawParameters(region);
-        Transform t = getAbsoluteTransform();
+        Transform t = transform.getGlobal();
         batch.draw(region,
                 t.getX() - (t.getOriginX() + params.originX) * params.width + params.x,
                 t.getY() - (t.getOriginY() + params.originY) * params.height + params.y,
@@ -59,7 +57,7 @@ public abstract class GameObject implements EventListener, Disposable {
     protected void draw(SpriteBatch batch, Texture texture, DrawParameters params) {
         if (params == null)
             params = new DrawParameters(texture);
-        Transform t = getAbsoluteTransform();
+        Transform t = transform.getGlobal();
         batch.draw(texture,
                 t.getX() - (t.getOriginX() + params.originX) * params.width + params.x,
                 t.getY() - (t.getOriginY() + params.originY) * params.height + params.y,
@@ -79,14 +77,6 @@ public abstract class GameObject implements EventListener, Disposable {
 
     public GameObject[] getChildren() {
         return new GameObject[0];
-    }
-
-    public void setAlign(Align align) {
-        this.align = align;
-    }
-
-    public Align getAlign() {
-        return align;
     }
 
     public Transform getTransform() {
@@ -147,7 +137,7 @@ public abstract class GameObject implements EventListener, Disposable {
         float camLeft = camX - camW / 2;
         float camRight = camX + camW / 2;
         float camBottom = camY - camH / 2;
-        Transform t = getAbsoluteTransform();
+        Transform t = transform.getGlobal();
         return t.getTop() < camBottom ||
                 t.getLeft() > camRight ||
                 t.getRight() < camLeft ||
@@ -157,24 +147,18 @@ public abstract class GameObject implements EventListener, Disposable {
     public boolean isXYInside(float x0, float y0) {
         if (!isInsideRadius(x0, y0))
             return false;
-        Transform t = getAbsoluteTransform();
+        Transform t = transform.getGlobal();
         return y0 <= t.getTop() && y0 >= t.getBottom() && x0 <= t.getRight() && x0 >= t.getLeft();
     }
 
     private boolean isInsideRadius(float x0, float y0) {
-        Transform t = getAbsoluteTransform();
+        Transform t = transform.getGlobal();
         float radiusSquared = Math.max(t.getWidth() * t.getWidth(),
                 t.getHeight() * t.getHeight());
         float distX = x0 - t.getX();
         float distY = y0 - t.getY();
         float distanceSquared = distX * distX + distY * distY;
         return  distanceSquared < radiusSquared;
-    }
-
-    private Transform getAbsoluteTransform() {
-        Transform t = transform.get();
-        align.apply(t.parent(), t);
-        return t;
     }
 
     protected AssetManager getAssets() {
