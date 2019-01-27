@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.PowerBar;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.PopularityPerk;
 
 public class PowerBarObject extends GameObject {
 
@@ -19,8 +20,12 @@ public class PowerBarObject extends GameObject {
 
     public PowerBarObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
+        float duration = 0.75f;
+        if (player.hasPerk(PopularityPerk.MEANINGFUL_WORK))
+            duration = 1.5f;
+
         bar = new PowerBar();
-        bar.setDurationSec(0.75f);
+        bar.setDurationSec(duration);
         bar.randomize();
     }
 

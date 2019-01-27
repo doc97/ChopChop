@@ -21,10 +21,6 @@ import fi.chop.timer.GameTimer;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Random;
-
 public class ExecutionScreen extends ChopScreen implements EventListener {
 
     private static final float FADEOUT_START_DELAY_SEC = 1.5f;
@@ -184,23 +180,30 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
     }
 
     private void updatePlayerStats(boolean wasCorrect, boolean wasKill) {
-        getPlayer().addPopularity(wasCorrect ? POPULARITY_DELTA : -POPULARITY_DELTA);
+        boolean ignoreWrong = getPlayer().hasPerk(PopularityPerk.TURNING_A_BLIND_EYE);
+        getPlayer().addPopularity(wasCorrect ? POPULARITY_DELTA : ignoreWrong ? 0 : -POPULARITY_DELTA);
         getPlayer().addReputation(wasKill ? REPUTATION_DELTA : -REPUTATION_DELTA);
 
+        int payMultiplier = 1;
+        if (wasCorrect && getPlayer().hasPerk(PopularityPerk.GIFT_OF_THE_PEOPLE))
+            payMultiplier = 2;
+
         if (wasKill)
-            paySalary();
+            paySalary(payMultiplier);
         else
-            payBribe();
+            payBribe(payMultiplier);
     }
 
-    private void paySalary() {
+    private void paySalary(int multiplier) {
         int baseIncome = getWorld().getExecution().getSalary();
         int skillIncome = (int) (MathUtil.smoothStartN(powerUsed, 3) * baseIncome);
-        getPlayer().addMoney(baseIncome + skillIncome);
+        int totalIncome = multiplier * (baseIncome + skillIncome);
+        getPlayer().addMoney(totalIncome);
     }
 
-    private void payBribe() {
-        getPlayer().addMoney(getWorld().getExecution().getBribe());
+    private void payBribe(int multiplier) {
+        int totalIncome = multiplier * getWorld().getExecution().getBribe();
+        getPlayer().addMoney(totalIncome);
     }
 
     @Override
