@@ -57,9 +57,8 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
     @Override
     public void handle(Events event, EventData data) {
         if (event == Events.ACTION_INTERACT) {
+            getPlayer().randomizePopularityPerks();
             getWorld().nextDay();
-            getPlayer().addPerks(PopularityPerk.TURNING_A_BLIND_EYE, PopularityPerk.MEANINGFUL_WORK,
-                    PopularityPerk.GIFT_OF_THE_PEOPLE);
             setScreen(Screens.TOWN);
         } else if (event == Events.ACTION_EXIT) {
             Gdx.app.exit();

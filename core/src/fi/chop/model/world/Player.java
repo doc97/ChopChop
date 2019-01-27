@@ -2,12 +2,9 @@ package fi.chop.model.world;
 
 import fi.chop.Chop;
 import fi.chop.event.EventData;
-import fi.chop.event.EventSystem;
 import fi.chop.event.Events;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 public class Player {
 
@@ -25,12 +22,46 @@ public class Player {
         reputationLevel = MIN_REPUTATION_LEVEL;
     }
 
+    public void randomizePopularityPerks() {
+        removeAllPerks();
+
+        Random random = new Random();
+        int perkCount = 0;
+
+        /* Chance of perk count
+         * 50-100% popularity ->
+         *      50%-75% chance of 1 perk
+         *      25-50% chance of 2 perks
+         *      0-25% chance of 3 perks
+         */
+        float perkChance = Math.max((getPopularity() - 0.5f) / 0.5f * 0.75f, 0);
+        float randomVal = random.nextFloat();
+        for (int n = 1; n <= PopularityPerk.values().length; n++) {
+            if (randomVal < perkChance / n)
+                perkCount++;
+            else
+                break;
+        }
+        EnumSet<PopularityPerk> perkSet = EnumSet.allOf(PopularityPerk.class);
+        for (int i = 0; i < perkCount; i++) {
+            int index = random.nextInt(perkSet.size());
+            Iterator<PopularityPerk> it = perkSet.iterator();
+            for (int j = 0; j < index; j++) it.next();
+            addPerks(it.next());
+            it.remove();
+        }
+    }
+
     public void addPerks(PopularityPerk... perks) {
         this.perks.addAll(Arrays.asList(perks));
     }
 
     public void removePerks(PopularityPerk... perks) {
         this.perks.removeAll(Arrays.asList(perks));
+    }
+
+    public void removeAllPerks() {
+        perks.clear();
     }
 
     public boolean hasPerk(PopularityPerk perk) {

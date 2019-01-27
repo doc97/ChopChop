@@ -16,9 +16,14 @@ import fi.chop.model.fsm.states.powermeter.PowerMeterStates;
 import fi.chop.model.object.*;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.util.TextureObject;
+import fi.chop.model.world.PopularityPerk;
 import fi.chop.timer.GameTimer;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
+
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Random;
 
 public class ExecutionScreen extends ChopScreen implements EventListener {
 
@@ -163,6 +168,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
             isNotExiting = false;
             fadeOut = new ColorFade(Color.WHITE, Color.BLACK, 2.0f, (t) -> MathUtil.smoothStartN(t, 2))
                     .onFinish(() -> Chop.timer.addAction(1.0f, () -> {
+                        getPlayer().randomizePopularityPerks();
                         getWorld().nextDay();
                         setScreen(Screens.TOWN);
                     }));
