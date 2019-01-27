@@ -14,7 +14,7 @@ public class ReputationMeterObject extends ValueMeterObject {
 
     public ReputationMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player, FillDirection.LEFT, Align.TOP_RIGHT, Align.BOTTOM_RIGHT,
-                0, 0,
+                1, 1, 0, 0, 1, 0,
                 "meter-background", "meter-fill", "ZCOOL-30.ttf");
     }
 

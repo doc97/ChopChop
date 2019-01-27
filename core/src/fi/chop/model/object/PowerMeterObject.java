@@ -18,7 +18,7 @@ public class PowerMeterObject extends ValueMeterObject {
 
     public PowerMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player, FillDirection.UP, Align.BOTTOM_RIGHT, Align.BOTTOM_LEFT,
-                10, 0,
+                1, 0, 10, 0, 0, 0,
                 "powermeter-background", "powermeter-fill", "ZCOOL-40.ttf");
         state = new PowerMeterStateMachine(this);
     }

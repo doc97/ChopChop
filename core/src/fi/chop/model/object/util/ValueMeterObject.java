@@ -19,11 +19,14 @@ public abstract class ValueMeterObject extends GUIObject {
     private final String containerAssetName;
     private final String fillAssetName;
     private final String fontName;
-
     private final ValueMeter meter;
     private final FillDirection direction;
+    private final float textOriginX;
+    private final float textOriginY;
     private final float textPaddingX;
     private final float textPaddingY;
+    private final float meterOriginX;
+    private final float meterOriginY;
     private final Align textAlign;
     private final Align meterAlign;
     private TextureRegionObject meterContainer;
@@ -32,14 +35,19 @@ public abstract class ValueMeterObject extends GUIObject {
 
     protected ValueMeterObject(AssetManager assets, OrthographicCamera camera, Player player,
                                FillDirection direction, Align textAlign, Align meterAlign,
-                               float textPaddingX, float textPaddingY,
+                               float textOriginX, float textOriginY, float textPaddingX, float textPaddingY,
+                               float meterOriginX, float meterOriginY,
                                String containerAssetName, String fillAssetName, String fontName) {
         super(assets, camera, player);
         this.direction = direction;
         this.textAlign = textAlign;
         this.meterAlign = meterAlign;
+        this.textOriginX = textOriginX;
+        this.textOriginY = textOriginY;
         this.textPaddingX = textPaddingX;
         this.textPaddingY = textPaddingY;
+        this.meterOriginX = meterOriginX;
+        this.meterOriginY = meterOriginY;
         this.containerAssetName = containerAssetName;
         this.fillAssetName = fillAssetName;
         this.fontName = fontName;
@@ -52,13 +60,17 @@ public abstract class ValueMeterObject extends GUIObject {
         float textHeight = labelText.getTransform().getHeight();
         float meterWidth = meterContainer.getTransform().getWidth();
         float meterHeight = meterContainer.getTransform().getHeight();
-        float width = meterWidth + textWidth;
-        float height = meterHeight + textHeight;
+        float width = Math.max(meterWidth, textWidth);
+        float height = Math.max(meterHeight, textHeight);
 
-        if (textAlign.getHAlign() == meterAlign.getHAlign())
-            width = Math.max(meterWidth, textWidth);
-        if (textAlign.getVAlign() == meterAlign.getVAlign())
-            height = Math.max(meterHeight, textHeight);
+        if (textAlign.getHAlign() == Align.Horizontal.LEFT && meterAlign.getHAlign() == Align.Horizontal.RIGHT ||
+                textAlign.getHAlign() == Align.Horizontal.RIGHT && meterAlign.getHAlign() == Align.Horizontal.LEFT)
+            width = meterWidth + textWidth;
+
+        if (textAlign.getVAlign() == Align.Vertical.TOP && meterAlign.getVAlign() == Align.Vertical.BOTTOM ||
+                textAlign.getVAlign() == Align.Vertical.BOTTOM && meterAlign.getVAlign() == Align.Vertical.TOP)
+            height = meterHeight + textHeight;
+
         getTransform().setSize(width, height);
     }
 
@@ -77,7 +89,7 @@ public abstract class ValueMeterObject extends GUIObject {
         labelText.pack();
         labelText.getTransform().setParent(getTransform());
         labelText.getTransform().setAlign(textAlign);
-        setOriginBasedOnAlign(labelText, textAlign);
+        labelText.getTransform().setOrigin(textOriginX, textOriginY);
     }
 
     private void initRegionObject(TextureRegionObject obj, String regionName) {
@@ -85,17 +97,7 @@ public abstract class ValueMeterObject extends GUIObject {
         obj.load();
         obj.getTransform().setParent(getTransform());
         obj.getTransform().setAlign(meterAlign);
-        setOriginBasedOnAlign(obj, meterAlign);
-    }
-
-    private void setOriginBasedOnAlign(GameObject obj, Align align) {
-        float ox = 0;
-        float oy = 0;
-        if (align.getHAlign() == Align.Horizontal.RIGHT)
-            ox = 1;
-        if (align.getVAlign() == Align.Vertical.TOP)
-            oy = 1;
-        obj.getTransform().setOrigin(ox, oy);
+        obj.getTransform().setOrigin(meterOriginX, meterOriginY);
     }
 
     @Override
