@@ -9,14 +9,12 @@ public class WorldState {
 
     public void reset() {
         day = 0;
-        taxes = 0;
+        taxes = 100;
         drinkCount = 0;
         execution = null;
     }
 
     public void nextDay() {
-        if (day % 7 == 0)
-            taxes += 100;
         day++;
         drinkCount = 0;
         execution = ExecutionFactory.create();
@@ -24,6 +22,10 @@ public class WorldState {
 
     public int getDay() {
         return day;
+    }
+
+    public void increaseTaxes() {
+        taxes += 100;
     }
 
     public int getTaxes() {

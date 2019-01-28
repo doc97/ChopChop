@@ -24,8 +24,12 @@ public class TownScreen extends ChopScreen implements EventListener {
         initializeScreen();
         initializeScene();
 
-        if (getWorld().getDay() % 7 == 0)
+        if (getWorld().getDay() % 7 == 0) {
             getPlayer().addMoney(-getWorld().getTaxes());
+            getWorld().increaseTaxes();
+            if (getPlayer().getMoney() < 0)
+                Gdx.app.exit();
+        }
     }
 
     private void registerEventListener() {
