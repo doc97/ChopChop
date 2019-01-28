@@ -10,8 +10,7 @@ buildscript {
         google()
     }
     dependencies {
-        
-
+        classpath "edu.sc.seis.gradle:launch4j:2.4.4"
     }
 }
 
