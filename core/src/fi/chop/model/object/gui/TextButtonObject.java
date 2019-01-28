@@ -1,4 +1,4 @@
-package fi.chop.model.object.util;
+package fi.chop.model.object.gui;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;

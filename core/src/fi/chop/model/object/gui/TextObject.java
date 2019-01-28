@@ -1,4 +1,4 @@
-package fi.chop.model.object.util;
+package fi.chop.model.object.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Align;
 import fi.chop.engine.DrawParameters;
-import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.world.Player;
 import fi.chop.util.FontRenderer;
 

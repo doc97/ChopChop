@@ -8,6 +8,7 @@ import fi.chop.model.ValueMeter;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.object.gui.GUIObject;
+import fi.chop.model.object.gui.TextObject;
 import fi.chop.model.world.Player;
 
 public abstract class ValueMeterObject extends GUIObject {

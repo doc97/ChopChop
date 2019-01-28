@@ -1,4 +1,4 @@
-package fi.chop.model.object.util;
+package fi.chop.model.object.gui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

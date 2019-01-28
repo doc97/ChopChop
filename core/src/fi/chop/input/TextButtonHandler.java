@@ -1,6 +1,6 @@
 package fi.chop.input;
 
-import fi.chop.model.object.util.TextButtonObject;
+import fi.chop.model.object.gui.TextButtonObject;
 
 import java.util.function.Consumer;
 

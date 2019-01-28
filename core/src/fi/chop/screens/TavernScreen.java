@@ -11,8 +11,8 @@ import fi.chop.input.TavernScreenInput;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
-import fi.chop.model.object.util.TextButtonObject;
-import fi.chop.model.object.util.TextObject;
+import fi.chop.model.object.gui.TextButtonObject;
+import fi.chop.model.object.gui.TextObject;
 
 import java.util.Random;
 

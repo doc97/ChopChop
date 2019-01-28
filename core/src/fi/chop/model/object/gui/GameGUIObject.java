@@ -8,7 +8,6 @@ import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
-import fi.chop.model.object.util.TextObject;
 import fi.chop.model.object.util.ValueMeterObject;
 import fi.chop.model.world.Player;
 

@@ -12,9 +12,9 @@ import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
-import fi.chop.model.object.util.PopUpBoxObject;
-import fi.chop.model.object.util.TextButtonObject;
-import fi.chop.model.object.util.TextObject;
+import fi.chop.model.object.gui.PopUpBoxObject;
+import fi.chop.model.object.gui.TextButtonObject;
+import fi.chop.model.object.gui.TextObject;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
