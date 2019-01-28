@@ -52,11 +52,12 @@ public class PopUpBoxObject extends GUIObject {
         return this;
     }
 
-    public PopUpBoxObject text(String fontName, Supplier<String> supplier, Color tint) {
+    public PopUpBoxObject text(String fontName, Supplier<String> supplier, Color tint,
+                               float widthPx, int hAlign, boolean wrap) {
         if (text != null)
             text.dispose();
         text = new TextObject(getAssets(), getCamera(), getPlayer());
-        text.create(fontName, supplier == null ? () -> "" : supplier);
+        text.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
         text.load();
         text.tint(tint);
         text.getTransform().setParent(getTransform());
@@ -65,14 +66,23 @@ public class PopUpBoxObject extends GUIObject {
         return this;
     }
 
-    public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick) {
+    public PopUpBoxObject text(String fontName, Supplier<String> supplier, Color tint) {
+        return text(fontName, supplier, tint, 0, com.badlogic.gdx.utils.Align.left, false);
+    }
+
+    public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick,
+                              float widthPx, int hAlign, boolean wrap) {
         TextButtonObject btn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
-        btn.create(fontName, supplier == null ? () -> "" : supplier);
+        btn.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         btn.getTransform().setParent(getTransform());
         btn.getTransform().setAlign(Align.BOTTOM_LEFT);
         buttons.add(btn);
         return this;
+    }
+
+    public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick) {
+        return btn(fontName, supplier, onClick, 0, com.badlogic.gdx.utils.Align.left, false);
     }
 
     public PopUpBoxObject tint(Color tint) {

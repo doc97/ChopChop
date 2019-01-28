@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.utils.Align;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.world.Player;
@@ -22,6 +23,9 @@ public class TextObject extends GUIObject {
     private static final int AUTO_PAD_X = 10;
     private static final int AUTO_PAD_Y = 10;
 
+    private boolean wrap;
+    private float widthPx;
+    private int hAlign;
     private String fontName;
     private Supplier<String> textConstructor;
     private FontRenderer renderer;
@@ -46,8 +50,15 @@ public class TextObject extends GUIObject {
     }
 
     public void create(String fontName, Supplier<String> textConstructor) {
+        create(fontName, textConstructor, 0, Align.left, false);
+    }
+
+    public void create(String fontName, Supplier<String> textConstructor, float widthPx, int hAlign, boolean wrap) {
         this.fontName = fontName;
         this.textConstructor = textConstructor;
+        this.widthPx = widthPx;
+        this.hAlign = hAlign;
+        this.wrap = wrap;
     }
 
     private void generateTexture() {
@@ -99,7 +110,7 @@ public class TextObject extends GUIObject {
     public void load() {
         BitmapFont font = getAssets().get(fontName, BitmapFont.class);
         renderer = new FontRenderer(font);
-        renderer.text(textConstructor.get());
+        renderer.text(textConstructor.get(), widthPx, hAlign, wrap);
         invalidate();
     }
 
