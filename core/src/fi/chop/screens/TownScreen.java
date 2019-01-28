@@ -29,7 +29,7 @@ public class TownScreen extends ChopScreen implements EventListener {
     }
 
     private void registerEventListener() {
-        Chop.events.addListener(this, Events.ACTION_BACK, Events.ACTION_INTERACT);
+        Chop.events.addListener(this, Events.ACTION_BACK, Events.EVT_NEW_GAME);
     }
 
     private void initializeScreen() {
@@ -92,26 +92,9 @@ public class TownScreen extends ChopScreen implements EventListener {
         dialog.getTransform().setPosition(getCamera().viewportWidth / 2, 50);
         Chop.events.addListener(dialog, Events.ACTION_INTERACT);
 
-        PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getPlayer());
-        popUp.text("ZCOOL-40.ttf",
-                () -> "Welcome to ChopChop!\n\n" +
-                        "Guillotine: Execute people and earn your pay\n" +
-                        "Tavern: Drink and socialize to raise your popularity\n" +
-                        "Castle: (Coming soon)",
-                Color.BLACK)
-                .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
-                .pad(25, 25, 25, 25)
-                .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
-                .tint(new Color(0xb5e8f2ff));
-        popUp.load();
-        popUp.pack();
-        popUp.getTransform().setOrigin(0.5f, 0.5f);
-        popUp.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
-
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui, dialog);
-        getScene().addObjects("PopUp", popUp);
         getScene().addQueued();
     }
 
@@ -130,6 +113,27 @@ public class TownScreen extends ChopScreen implements EventListener {
         if (event == Events.ACTION_BACK) {
             getWorld().reset();
             setScreen(Screens.MAIN_MENU);
+        } else if (event == Events.EVT_NEW_GAME) {
+            showWelcomePopUp();
         }
+    }
+
+    private void showWelcomePopUp() {
+        PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getPlayer());
+        popUp.text("ZCOOL-40.ttf",
+                () -> "Welcome to ChopChop!\n\n" +
+                        "Guillotine: Execute people and earn your pay\n" +
+                        "Tavern: Drink and socialize to raise your popularity\n" +
+                        "Castle: (Coming soon)",
+                Color.BLACK)
+                .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
+                .pad(25, 25, 25, 25)
+                .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
+                .tint(new Color(0xb5e8f2ff));
+        popUp.load();
+        popUp.pack();
+        popUp.getTransform().setOrigin(0.5f, 0.5f);
+        popUp.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        getScene().addObjects("PopUp", popUp);
     }
 }

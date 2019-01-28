@@ -60,6 +60,7 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
             getPlayer().randomizePopularityPerks();
             getWorld().nextDay();
             setScreen(Screens.TOWN);
+            Chop.events.notify(Events.EVT_NEW_GAME);
         } else if (event == Events.ACTION_EXIT) {
             Gdx.app.exit();
         }
