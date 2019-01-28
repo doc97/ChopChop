@@ -23,7 +23,6 @@ public class DialogBoxObject extends GUIObject {
     private float startDelaySec;
     private float charDelaySec;
     private float widthPx;
-    private boolean hasStarted;
     private Color backgroundTint;
     private Color textTint;
     private String fontName;
@@ -70,16 +69,6 @@ public class DialogBoxObject extends GUIObject {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
-        if (!hasStarted) {
-            hasStarted = true;
-            charsToShow = 0;
-            Chop.timer.addAction(startDelaySec + charDelaySec, () -> { charsToShow++; nextLetter(); });
-        }
-    }
-
-    @Override
     public void render(SpriteBatch batch) {
         batch.setColor(backgroundTint);
         draw(batch, background, backgroundParams);
@@ -117,6 +106,12 @@ public class DialogBoxObject extends GUIObject {
                 onFinish.run();
             }
         }
+    }
+
+    @Override
+    public void onSceneAdd() {
+        charsToShow = 0;
+        Chop.timer.addAction(startDelaySec + charDelaySec, () -> { charsToShow++; nextLetter(); });
     }
 
     public DialogBoxObject width(float widthPx) {

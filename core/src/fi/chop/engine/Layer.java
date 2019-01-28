@@ -31,6 +31,7 @@ public class Layer {
                 Chop.events.removeListener(obj);
                 obj.dispose();
                 it.remove();
+                obj.onSceneRemove();
             }
         }
     }
@@ -100,6 +101,7 @@ public class Layer {
         for (GameObject obj : toAdd) {
             obj.setID(nextId++);
             objects.add(obj);
+            obj.onSceneAdd();
         }
         toAdd.clear();
     }

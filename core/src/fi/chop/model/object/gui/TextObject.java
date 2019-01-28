@@ -116,7 +116,7 @@ public class TextObject extends GUIObject {
     @Override
     public void update(float delta) {
         if (renderer == null || textConstructor == null)
-            return;
+            throw new IllegalStateException("create() and load() must be called before update()!");
 
         String newText = textConstructor.get();
         if (!newText.equals(renderer.str())) {
