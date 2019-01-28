@@ -10,11 +10,7 @@ import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
-import fi.chop.model.object.gui.GUIObject;
-import fi.chop.model.object.gui.GameGUIObject;
-import fi.chop.model.object.gui.PopUpBoxObject;
-import fi.chop.model.object.gui.TextButtonObject;
-import fi.chop.model.object.gui.TextObject;
+import fi.chop.model.object.gui.*;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -79,13 +75,30 @@ public class TownScreen extends ChopScreen implements EventListener {
         gui.load();
         gui.pack();
 
+        DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getPlayer());
+        dialog.text("ZCOOL-40.ttf",
+                () -> "Hello! My name is Zachary and I will guide you through the first few steps of " +
+                        "ChopChop. We'll start with the (3) locations that can be accessed from this " +
+                        "screen; Castle, Tavern and Guillotine.",
+                Color.BLACK)
+                .speed(0.5f, 0.025f)
+                .width(getCamera().viewportWidth * 3 / 4f)
+                .pad(25, 25, 25, 25)
+                .tint(new Color(0xb5b5b5ff))
+                .onFinish(() -> Gdx.app.log("Dialog", "Dismissed."));
+        dialog.load();
+        dialog.pack();
+        dialog.getTransform().setOrigin(0.5f, 0.0f);
+        dialog.getTransform().setPosition(getCamera().viewportWidth / 2, 50);
+        Chop.events.addListener(dialog, Events.ACTION_INTERACT);
+
         PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getPlayer());
         popUp.text("ZCOOL-40.ttf",
                 () -> "Welcome to ChopChop!\n\n" +
                         "Guillotine: Execute people and earn your pay\n" +
                         "Tavern: Drink and socialize to raise your popularity\n" +
-                        "Castle: (Coming soon)"
-                ,Color.BLACK)
+                        "Castle: (Coming soon)",
+                Color.BLACK)
                 .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
                 .pad(25, 25, 25, 25)
                 .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
@@ -97,7 +110,7 @@ public class TownScreen extends ChopScreen implements EventListener {
 
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
-        getScene().addObjects("GUI", gui);
+        getScene().addObjects("GUI", gui, dialog);
         getScene().addObjects("PopUp", popUp);
         getScene().addQueued();
     }
@@ -117,8 +130,6 @@ public class TownScreen extends ChopScreen implements EventListener {
         if (event == Events.ACTION_BACK) {
             getWorld().reset();
             setScreen(Screens.MAIN_MENU);
-        } else if (event == Events.ACTION_INTERACT) {
-            setScreen(Screens.EXECUTION);
         }
     }
 }
