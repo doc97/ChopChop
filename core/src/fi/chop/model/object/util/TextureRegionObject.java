@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public class TextureRegionObject extends GameObject {
 
@@ -16,8 +17,8 @@ public class TextureRegionObject extends GameObject {
     private TextureRegion region;
     private DrawParameters parameters;
 
-    public TextureRegionObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public TextureRegionObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
     }
 
     public void setRegion(String atlasName, String regionName) {

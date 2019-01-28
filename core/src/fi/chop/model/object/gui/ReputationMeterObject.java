@@ -7,13 +7,14 @@ import fi.chop.event.Events;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.util.ValueMeterObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public class ReputationMeterObject extends ValueMeterObject {
 
     private int repLevel = 1;
 
-    public ReputationMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player, FillDirection.LEFT, Align.TOP_RIGHT, Align.BOTTOM_RIGHT,
+    public ReputationMeterObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player, FillDirection.LEFT, Align.TOP_RIGHT, Align.BOTTOM_RIGHT,
                 1, 1, 0, 0, 1, 0,
                 "meter-background", "meter-fill", "ZCOOL-30.ttf");
     }

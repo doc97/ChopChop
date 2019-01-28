@@ -11,6 +11,7 @@ import fi.chop.input.TextButtonHandler;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class PopUpBoxObject extends GUIObject {
     private TextureRegion background;
     private DrawParameters backgroundParams;
 
-    public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
         tint = new Color(Color.WHITE);
         buttons = new ArrayList<>();
     }
@@ -102,7 +103,7 @@ public class PopUpBoxObject extends GUIObject {
                                float widthPx, int hAlign, boolean wrap) {
         if (text != null)
             text.dispose();
-        text = new TextObject(getAssets(), getCamera(), getPlayer());
+        text = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         text.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
         text.tint(tint);
         text.getTransform().setParent(getTransform());
@@ -117,7 +118,7 @@ public class PopUpBoxObject extends GUIObject {
 
     public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick,
                               float widthPx, int hAlign, boolean wrap) {
-        TextButtonObject btn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject btn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
         btn.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         btn.getTransform().setParent(getTransform());

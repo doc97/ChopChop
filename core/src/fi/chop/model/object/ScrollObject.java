@@ -11,6 +11,7 @@ import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.gui.TextObject;
 import fi.chop.model.world.Execution;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public class ScrollObject extends GameObject {
 
@@ -18,11 +19,11 @@ public class ScrollObject extends GameObject {
     private DrawParameters scrollParams;
     private TextObject scrollText;
 
-    public ScrollObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public ScrollObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
 
         Color textColor = new Color(62.5f / 255f, 44.5f / 255f, 15f / 255f, 1);
-        scrollText = new TextObject(getAssets(), getCamera(), getPlayer());
+        scrollText = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         scrollText.tint(textColor);
     }
 

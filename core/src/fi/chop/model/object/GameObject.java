@@ -13,6 +13,7 @@ import fi.chop.event.Events;
 import fi.chop.input.TouchHandler;
 import fi.chop.model.auxillary.Transform;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public abstract class GameObject implements EventListener, Disposable {
 
@@ -25,11 +26,13 @@ public abstract class GameObject implements EventListener, Disposable {
 
     private final AssetManager assets;
     private final OrthographicCamera camera;
+    private final WorldState world;
     private final Player player;
 
-    protected GameObject(AssetManager assets, OrthographicCamera camera, Player player) {
+    protected GameObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
         this.assets = assets;
         this.camera = camera;
+        this.world = world;
         this.player = player;
         transform = new Transform();
         touchHandler = new TouchHandler<>(this);
@@ -171,6 +174,10 @@ public abstract class GameObject implements EventListener, Disposable {
 
     protected OrthographicCamera getCamera() {
         return camera;
+    }
+
+    protected WorldState getWorld() {
+        return world;
     }
 
     protected Player getPlayer() {

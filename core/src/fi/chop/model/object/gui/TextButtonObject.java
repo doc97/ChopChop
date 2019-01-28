@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.model.auxillary.Transform;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public class TextButtonObject extends TextObject {
 
@@ -30,8 +31,8 @@ public class TextButtonObject extends TextObject {
     private float pressedOffsetX;
     private float pressedOffsetY;
 
-    public TextButtonObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public TextButtonObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
         getTransform().setOrigin(0.5f, 0.5f);
         pad(25, 25, 25, 25);
         setTouchable(true);

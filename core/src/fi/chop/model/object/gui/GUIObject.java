@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public abstract class GUIObject extends GameObject {
 
@@ -13,8 +14,8 @@ public abstract class GUIObject extends GameObject {
     private float padBottom;
     private boolean invalid;
 
-    protected GUIObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    protected GUIObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
     }
 
     public abstract void pack();

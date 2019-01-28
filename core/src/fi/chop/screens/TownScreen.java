@@ -47,20 +47,15 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addLayer("GUI", new Layer());
         getScene().addLayer("PopUp", new Layer());
 
-        TextObject dayText = new TextObject(getAssets(), getCamera(), getPlayer());
+        TextObject dayText = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         dayText.getTransform().setOrigin(0.5f, 1);
         dayText.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 30);
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
-        TextObject taxText = new TextObject(getAssets(), getCamera(), getPlayer());
-        taxText.create("ZCOOL-30.ttf", () ->
-                getWorld().getDaysUntilTaxation() + " days until taxation " + "(" + getWorld().getTaxes() + " gold)");
-        taxText.load();
-        taxText.getTransform().setOrigin(0, 1);
-        taxText.getTransform().setPosition(75, getCamera().viewportHeight - 100);
 
-        TextButtonObject castleBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
+
+        TextButtonObject castleBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
         castleBtn.create("ZCOOL-40.ttf", () -> "Castle");
         castleBtn.load();
         castleBtn.pack();
@@ -68,25 +63,25 @@ public class TownScreen extends ChopScreen implements EventListener {
         castleBtn.setTouchHandler(new TextButtonHandler(castleBtn, (btn) -> Gdx.app.log("Castle", "Go!")));
         castleBtn.disable();
 
-        TextButtonObject tavernBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject tavernBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
         tavernBtn.getTransform().setPosition(300, 250);
         tavernBtn.setHoverScale(1.1f, 1.1f);
         tavernBtn.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernBtn.load();
         tavernBtn.setTouchHandler(new TextButtonHandler(tavernBtn, (btn) -> setScreen(Screens.TAVERN)));
 
-        TextButtonObject guillotineBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
+        TextButtonObject guillotineBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
         guillotineBtn.getTransform().setPosition(getCamera().viewportWidth - 350, 450);
         guillotineBtn.setHoverScale(1.1f, 1.1f);
         guillotineBtn.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineBtn.load();
         guillotineBtn.setTouchHandler(new TextButtonHandler(guillotineBtn, (btn) -> setScreen(Screens.EXECUTION)));
 
-        GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getPlayer());
+        GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getWorld(), getPlayer());
         gui.load();
         gui.pack();
 
-        DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getPlayer());
+        DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
         dialog.text("ZCOOL-40.ttf",
                 () -> "Hello! My name is Zachary and I will guide you through the first few steps of " +
                         "ChopChop. We'll start with the (3) locations that can be accessed from this " +
@@ -104,7 +99,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(dialog, Events.ACTION_INTERACT);
 
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
-        getScene().addObjects("Text", taxText, dayText);
+        getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui, dialog);
         getScene().addQueued();
     }
@@ -130,7 +125,7 @@ public class TownScreen extends ChopScreen implements EventListener {
     }
 
     private void showWelcomePopUp() {
-        PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getPlayer());
+        PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
         popUp.text("ZCOOL-40.ttf",
                 () -> "Welcome to ChopChop!\n\n" +
                         "Guillotine: Execute people and earn your pay\n" +

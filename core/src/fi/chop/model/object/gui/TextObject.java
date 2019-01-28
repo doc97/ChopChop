@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Align;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 import fi.chop.util.FontRenderer;
 
 import java.util.function.Supplier;
@@ -36,8 +37,8 @@ public class TextObject extends GUIObject {
     private TextureRegion fboRegion;
     private DrawParameters params;
 
-    public TextObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public TextObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
         batch = new SpriteBatch();
         cam = new OrthographicCamera(0, 0);
         style = new TextButtonStyle();

@@ -14,6 +14,7 @@ import fi.chop.functional.Procedure;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 import java.util.function.Supplier;
 
@@ -32,8 +33,8 @@ public class DialogBoxObject extends GUIObject {
     private DrawParameters backgroundParams;
     private Procedure onFinish;
 
-    public DialogBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public DialogBoxObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
         backgroundTint = new Color(Color.WHITE);
         onFinish = () -> {};
     }
@@ -124,7 +125,7 @@ public class DialogBoxObject extends GUIObject {
         this.textSupplier = textSupplier;
         this.textTint = textTint;
         charsToShow = textSupplier.get().length();
-        text = new TextObject(getAssets(), getCamera(), getPlayer());
+        text = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         return this;
     }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fi.chop.engine.DrawParameters;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public class TextureObject extends GameObject {
 
@@ -14,8 +15,8 @@ public class TextureObject extends GameObject {
     private Texture texture;
     private DrawParameters parameters;
 
-    public TextureObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public TextureObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
     }
 
     public void setTexture(String assetName) {

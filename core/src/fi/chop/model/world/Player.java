@@ -30,18 +30,20 @@ public class Player {
 
         /* Chance of perk count
          * 50-100% popularity ->
-         *      50%-75% chance of 1 perk
-         *      25-50% chance of 2 perks
-         *      0-25% chance of 3 perks
+         *      60%-90% chance of 1 perk
+         *      30-60% chance of 2 perks
+         *      0-30% chance of 3 perks
          */
-        float perkChance = Math.max((getPopularity() - 0.5f) / 0.5f * 0.75f, 0);
         float randomVal = random.nextFloat();
-        for (int n = 1; n <= PopularityPerk.values().length; n++) {
-            if (randomVal < perkChance / n)
+        float perkChance = Math.max((getPopularity() - 0.5f) / 0.5f * 0.9f, 0);
+        int maxPerkCount = PopularityPerk.values().length;
+        float chanceStep = perkChance / maxPerkCount;
+        for (int n = 1; n <= maxPerkCount; n++) {
+            float threshold = n * chanceStep;
+            if (randomVal < threshold)
                 perkCount++;
-            else
-                break;
         }
+
         EnumSet<PopularityPerk> perkSet = EnumSet.allOf(PopularityPerk.class);
         for (int i = 0; i < perkCount; i++) {
             int index = random.nextInt(perkSet.size());

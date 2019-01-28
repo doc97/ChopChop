@@ -7,11 +7,12 @@ import fi.chop.event.Events;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.util.ValueMeterObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public class PopularityMeterObject extends ValueMeterObject {
 
-    public PopularityMeterObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player, FillDirection.LEFT, Align.TOP_RIGHT, Align.BOTTOM_RIGHT,
+    public PopularityMeterObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player, FillDirection.LEFT, Align.TOP_RIGHT, Align.BOTTOM_RIGHT,
                 1, 1, 0, 0, 1, 0,
                 "meter-background", "meter-fill", "ZCOOL-30.ttf");
     }

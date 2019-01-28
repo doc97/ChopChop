@@ -9,6 +9,7 @@ import fi.chop.engine.DrawParameters;
 import fi.chop.model.PowerBar;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.PopularityPerk;
+import fi.chop.model.world.WorldState;
 
 public class PowerBarObject extends GameObject {
 
@@ -18,8 +19,8 @@ public class PowerBarObject extends GameObject {
     private DrawParameters backgroundParams;
     private DrawParameters markerParams;
 
-    public PowerBarObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public PowerBarObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
         float duration = 0.75f;
         if (player.hasPerk(PopularityPerk.MEANINGFUL_WORK))
             duration = 1.5f;

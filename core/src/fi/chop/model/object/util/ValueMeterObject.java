@@ -10,6 +10,7 @@ import fi.chop.model.object.GameObject;
 import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.TextObject;
 import fi.chop.model.world.Player;
+import fi.chop.model.world.WorldState;
 
 public abstract class ValueMeterObject extends GUIObject {
 
@@ -34,12 +35,12 @@ public abstract class ValueMeterObject extends GUIObject {
     private TextureRegionObject meterFill;
     private TextObject labelText;
 
-    protected ValueMeterObject(AssetManager assets, OrthographicCamera camera, Player player,
+    protected ValueMeterObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player,
                                FillDirection direction, Align textAlign, Align meterAlign,
                                float textOriginX, float textOriginY, float textPaddingX, float textPaddingY,
                                float meterOriginX, float meterOriginY,
                                String containerAssetName, String fillAssetName, String fontName) {
-        super(assets, camera, player);
+        super(assets, camera, world, player);
         this.direction = direction;
         this.textAlign = textAlign;
         this.meterAlign = meterAlign;
@@ -77,13 +78,13 @@ public abstract class ValueMeterObject extends GUIObject {
 
     @Override
     public void load() {
-        meterContainer = new TextureRegionObject(getAssets(), getCamera(), getPlayer());
+        meterContainer = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
         initRegionObject(meterContainer, containerAssetName);
 
-        meterFill = new TextureRegionObject(getAssets(), getCamera(), getPlayer());
+        meterFill = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
         initRegionObject(meterFill, fillAssetName);
 
-        labelText = new TextObject(getAssets(), getCamera(), getPlayer());
+        labelText = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         labelText.create(fontName, this::getLabel);
         labelText.pad(textPaddingY, textPaddingX, textPaddingX, textPaddingY);
         labelText.load();

@@ -9,6 +9,7 @@ import fi.chop.engine.DrawParameters;
 import fi.chop.model.object.GameObject;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.PopularityPerk;
+import fi.chop.model.world.WorldState;
 
 public class PerkObject extends GameObject {
 
@@ -21,8 +22,8 @@ public class PerkObject extends GameObject {
     private DrawParameters giftParams;
     private DrawParameters heartParams;
 
-    public PerkObject(AssetManager assets, OrthographicCamera camera, Player player) {
-        super(assets, camera, player);
+    public PerkObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
+        super(assets, camera, world, player);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class PerkObject extends GameObject {
         heartParams = new DrawParameters(heart);
 
         getTransform().setSize(
-                eyeParams.width + giftParams.width + heartParams.width+ 2 * SPACING_X_PX,
+                eyeParams.width + giftParams.width + heartParams.width + 2 * SPACING_X_PX,
                 Math.max(Math.max(eyeParams.height, giftParams.height), heartParams.height));
     }
 
@@ -50,12 +51,12 @@ public class PerkObject extends GameObject {
         if (getPlayer().hasPerk(PopularityPerk.TURNING_A_BLIND_EYE)) {
             eyeParams.x = offset;
             draw(batch, eye, eyeParams);
-            offset += eyeParams.width + SPACING_X_PX;
+            offset -= eyeParams.width + SPACING_X_PX;
         }
         if (getPlayer().hasPerk(PopularityPerk.GIFT_OF_THE_PEOPLE)) {
             giftParams.x = offset;
             draw(batch, gift, giftParams);
-            offset += giftParams.width + SPACING_X_PX;
+            offset -= giftParams.width + SPACING_X_PX;
         }
         if (getPlayer().hasPerk(PopularityPerk.MEANINGFUL_WORK)) {
             heartParams.x = offset;
