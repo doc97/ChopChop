@@ -27,13 +27,33 @@ public class PopUpBoxObject extends GUIObject {
 
     public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
+        tint = new Color(Color.WHITE);
         buttons = new ArrayList<>();
+    }
+
+    @Override
+    public void pack() {
+        float width = calculateWidth();
+        float height = calculateHeight();
+
+        text.getTransform().setPosition(getPadLeft(), -getPadTop());
+        for (int i = 0; i < buttons.size(); i++) {
+            // btn origin = (0.5f, 0.5f)
+            buttons.get(i).getTransform().setPosition(
+                    (i + 1) * width / (buttons.size() + 1) + getPadLeft(),
+                    buttons.get(i).getTransform().getHeight() / 2f + getPadBottom());
+        }
+
+        float paddingX = getPadLeft() + getPadRight();
+        float paddingY = getPadTop() + getPadBottom();
+        getTransform().setSize(width + paddingX,  height + paddingY);
+        backgroundParams.size(width + paddingX,  height + paddingY);
     }
 
     @Override
     public void load() {
         TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        background = atlas.findRegion("meter-fill");
+        background = atlas.findRegion("pixel-white");
         backgroundParams = new DrawParameters();
 
         if (text != null) {
@@ -44,6 +64,33 @@ public class PopUpBoxObject extends GUIObject {
             btn.load();
             btn.pack();
         }
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        batch.setColor(tint);
+        draw(batch, background, backgroundParams);
+        batch.setColor(Color.WHITE);
+    }
+
+    @Override
+    public void dispose() { }
+
+    @Override
+    public void die() {
+        super.die();
+        text.die();
+        for (TextButtonObject btn : buttons)
+            btn.die();
+    }
+
+    @Override
+    public GameObject[] getChildren() {
+        GameObject[] children = new GameObject[buttons.size() + 1];
+        children[0] = text;
+        for (int i = 0; i < buttons.size(); i++)
+            children[i + 1] = buttons.get(i);
+        return children;
     }
 
     public PopUpBoxObject size(float width, float height) {
@@ -57,7 +104,6 @@ public class PopUpBoxObject extends GUIObject {
             text.dispose();
         text = new TextObject(getAssets(), getCamera(), getPlayer());
         text.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
-        text.load();
         text.tint(tint);
         text.getTransform().setParent(getTransform());
         text.getTransform().setOrigin(0, 1);
@@ -94,25 +140,6 @@ public class PopUpBoxObject extends GUIObject {
         return this;
     }
 
-    public void pack() {
-        load();
-        float width = calculateWidth();
-        float height = calculateHeight();
-
-        text.getTransform().setPosition(getPadLeft(), -getPadTop());
-        for (int i = 0; i < buttons.size(); i++) {
-            // btn origin = (0.5f, 0.5f)
-            buttons.get(i).getTransform().setPosition(
-                    (i + 1) * width / (buttons.size() + 1) + getPadLeft(),
-                    buttons.get(i).getTransform().getHeight() / 2f + getPadBottom());
-        }
-
-        float paddingX = getPadLeft() + getPadRight();
-        float paddingY = getPadTop() + getPadBottom();
-        getTransform().setSize(width + paddingX,  height + paddingY);
-        backgroundParams.size(width + paddingX,  height + paddingY);
-    }
-
     private float calculateWidth() {
         float width = getTransform().getWidth();
         if (text != null)
@@ -140,35 +167,5 @@ public class PopUpBoxObject extends GUIObject {
 
         height += getPadTop() + getPadBottom();
         return height;
-    }
-
-    @Override
-    public void update(float delta) { }
-
-    @Override
-    public void render(SpriteBatch batch) {
-        batch.setColor(tint);
-        draw(batch, background, backgroundParams);
-        batch.setColor(Color.WHITE);
-    }
-
-    @Override
-    public void dispose() { }
-
-    @Override
-    public void die() {
-        super.die();
-        text.die();
-        for (TextButtonObject btn : buttons)
-            btn.die();
-    }
-
-    @Override
-    public GameObject[] getChildren() {
-        GameObject[] children = new GameObject[buttons.size() + 1];
-        children[0] = text;
-        for (int i = 0; i < buttons.size(); i++)
-            children[i + 1] = buttons.get(i);
-        return children;
     }
 }

@@ -89,8 +89,9 @@ public class TownScreen extends ChopScreen implements EventListener {
                 .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
                 .pad(25, 25, 25, 25)
                 .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
-                .tint(new Color(0xb5e8f2ff))
-                .pack();
+                .tint(new Color(0xb5e8f2ff));
+        popUp.load();
+        popUp.pack();
         popUp.getTransform().setOrigin(0.5f, 0.5f);
         popUp.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
 
