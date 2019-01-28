@@ -127,7 +127,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
                 Events.ACTION_BACK, Events.ACTION_INTERACT,
                 Events.EVT_GUILLOTINE_PREPARED, Events.EVT_GUILLOTINE_RESTORED,
                 Events.EVT_PERSON_SAVED, Events.EVT_PERSON_KILLED,
-                Events.EVT_GUILLOTINE_STATE_CHANGED, Events.EVT_POWERMETER_STATE_CHANGED
+                Events.EVT_GUILLOTINE_STATE_CHANGED, Events.EVT_POWER_METER_STATE_CHANGED
                 );
     }
 
@@ -224,7 +224,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
             case EVT_GUILLOTINE_STATE_CHANGED:
                 isGuillotineIdle = data.get() == GuillotineStates.IDLE;
                 break;
-            case EVT_POWERMETER_STATE_CHANGED:
+            case EVT_POWER_METER_STATE_CHANGED:
                 isPowerMeterIdle = data.get() == PowerMeterStates.IDLE;
                 break;
             case EVT_GUILLOTINE_PREPARED:

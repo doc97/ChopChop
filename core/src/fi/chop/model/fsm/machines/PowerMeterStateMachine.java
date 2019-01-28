@@ -19,6 +19,6 @@ public class PowerMeterStateMachine extends ObjectStateMachine<PowerMeterStates,
     @Override
     public void setCurrent(PowerMeterStates key) {
         super.setCurrent(key);
-        Chop.events.notify(Events.EVT_POWERMETER_STATE_CHANGED, new EventData<>(key));
+        Chop.events.notify(Events.EVT_POWER_METER_STATE_CHANGED, new EventData<>(key));
     }
 }
