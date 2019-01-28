@@ -83,25 +83,25 @@ public class TavernScreen extends ChopScreen implements EventListener {
 
         TextObject priceText = new TextObject(getAssets(), getCamera(), getPlayer());
         priceText.getTransform().setOrigin(0, 1);
-        priceText.getTransform().setPosition(100, getCamera().viewportHeight - 200);
-        priceText.pad(5, 5, 5, 5);
+        priceText.getTransform().setPosition(60, getCamera().viewportHeight - 100);
         priceText.create("ZCOOL-30.ttf", () -> "Price: " + DRINK_PRICE + " gold");
         priceText.load();
+        priceText.pack();
 
         TextObject drinksText = new TextObject(getAssets(), getCamera(), getPlayer());
         drinksText.getTransform().setOrigin(0, 1);
-        drinksText.getTransform().setPosition(100, getCamera().viewportHeight - 250);
-        drinksText.pad(5, 5, 5, 5);
+        drinksText.getTransform().setPosition(60, priceText.getTransform().getBottom() - 15);
         drinksText.create("ZCOOL-30.ttf", () -> "Drinks bought today: " + getWorld().getDrinkCount());
         drinksText.load();
+        drinksText.pack();
 
         TextObject probabilityText = new TextObject(getAssets(), getCamera(), getPlayer());
         probabilityText.getTransform().setOrigin(0, 1);
-        probabilityText.getTransform().setPosition(100, getCamera().viewportHeight - 300);
-        probabilityText.pad(5, 5, 5, 5);
+        probabilityText.getTransform().setPosition(60, drinksText.getTransform().getBottom() - 15);
         probabilityText.create("ZCOOL-30.ttf", () -> "Chance of increasing popularity: " +
                 Math.max(100 - (getWorld().getDrinkCount() + 1) * 10, 5) + "%");
         probabilityText.load();
+        probabilityText.pack();
 
         getScene().addObjects("Buttons", priceText, buyBtn, probabilityText);
         getScene().addObjects("GUI", gui, drinksText);

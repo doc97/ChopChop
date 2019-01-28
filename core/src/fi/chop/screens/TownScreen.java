@@ -49,7 +49,7 @@ public class TownScreen extends ChopScreen implements EventListener {
 
         TextObject dayText = new TextObject(getAssets(), getCamera(), getPlayer());
         dayText.getTransform().setOrigin(0.5f, 1);
-        dayText.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 50);
+        dayText.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 30);
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 

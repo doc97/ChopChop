@@ -158,7 +158,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         timeText
                 .text("Time left: " + String.format("%.0f", Chop.timer.getTimeLeft(timer)))
                 .center(getCamera(), true, false)
-                .y(getCamera().viewportHeight - 10)
+                .y(getCamera().viewportHeight - 30)
                 .draw(batch);
     }
 

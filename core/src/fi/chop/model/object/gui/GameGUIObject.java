@@ -21,6 +21,7 @@ public class GameGUIObject extends GUIObject {
 
     public GameGUIObject(AssetManager assets, OrthographicCamera camera, Player player) {
         super(assets, camera, player);
+        pad(30, 30, 30, 30);
     }
 
     @Override
@@ -41,7 +42,6 @@ public class GameGUIObject extends GUIObject {
         money.getTransform().setParent(getTransform());
         money.getTransform().setOrigin(0, 1);
         money.getTransform().setAlign(Align.TOP_LEFT);
-        money.pad(5, 5, 5, 5);
         money.create("ZCOOL-40.ttf", () -> "Money: " + getPlayer().getMoney() + " gold");
         money.load();
 

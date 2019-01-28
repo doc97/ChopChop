@@ -59,7 +59,6 @@ public class PopUpBoxObject extends GUIObject {
         text.create(fontName, supplier == null ? () -> "" : supplier);
         text.load();
         text.tint(tint);
-        text.pad(5, 5, 5, 5);
         text.getTransform().setParent(getTransform());
         text.getTransform().setOrigin(0, 1);
         text.getTransform().setAlign(Align.TOP_LEFT);
@@ -96,7 +95,7 @@ public class PopUpBoxObject extends GUIObject {
             // btn origin = (0.5f, 0.5f)
             buttons.get(i).getTransform().setPosition(
                     (i + 1) * width / (buttons.size() + 1) + getPadLeft(),
-                    buttons.get(i).getTransform().getHeight() + getPadBottom());
+                    buttons.get(i).getTransform().getHeight() / 2f + getPadBottom());
         }
 
         float paddingX = getPadLeft() + getPadRight();
