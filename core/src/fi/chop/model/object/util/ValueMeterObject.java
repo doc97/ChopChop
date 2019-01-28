@@ -58,6 +58,7 @@ public abstract class ValueMeterObject extends GUIObject {
 
     @Override
     public void pack() {
+        labelText.pack();
         float textWidth = labelText.getTransform().getWidth();
         float textHeight = labelText.getTransform().getHeight();
         float meterWidth = meterContainer.getTransform().getWidth();
@@ -88,7 +89,6 @@ public abstract class ValueMeterObject extends GUIObject {
         labelText.create(fontName, this::getLabel);
         labelText.pad(textPaddingY, textPaddingX, textPaddingX, textPaddingY);
         labelText.load();
-        labelText.pack();
         labelText.getTransform().setParent(getTransform());
         labelText.getTransform().setAlign(textAlign);
         labelText.getTransform().setOrigin(textOriginX, textOriginY);
@@ -169,12 +169,12 @@ public abstract class ValueMeterObject extends GUIObject {
 
     public void addMeterValue(float value) {
         meter.add(value);
-        pack();
+        invalidate();
     }
 
     public void setMeterValue(float value) {
         meter.set(value);
-        pack();
+        invalidate();
     }
 
     public float getMeterFillPercentage() {
