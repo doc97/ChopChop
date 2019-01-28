@@ -30,6 +30,10 @@ public class WorldState {
         return taxes;
     }
 
+    public int getDaysUntilTaxation() {
+        return 7 - day % 7;
+    }
+
     public void incrementDrinkCount() {
         drinkCount++;
     }

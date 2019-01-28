@@ -49,6 +49,13 @@ public class TownScreen extends ChopScreen implements EventListener {
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
+        TextObject taxText = new TextObject(getAssets(), getCamera(), getPlayer());
+        taxText.create("ZCOOL-30.ttf", () ->
+                getWorld().getDaysUntilTaxation() + " days until taxation " + "(" + getWorld().getTaxes() + " gold)");
+        taxText.load();
+        taxText.getTransform().setOrigin(0, 1);
+        taxText.getTransform().setPosition(75, getCamera().viewportHeight - 100);
+
         TextButtonObject castleBtn = new TextButtonObject(getAssets(), getCamera(), getPlayer());
         castleBtn.create("ZCOOL-40.ttf", () -> "Castle");
         castleBtn.load();
@@ -93,7 +100,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(dialog, Events.ACTION_INTERACT);
 
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
-        getScene().addObjects("Text", dayText);
+        getScene().addObjects("Text", taxText, dayText);
         getScene().addObjects("GUI", gui, dialog);
         getScene().addQueued();
     }
