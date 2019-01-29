@@ -53,8 +53,6 @@ public class TownScreen extends ChopScreen implements EventListener {
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
-
-
         TextButtonObject castleBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
         castleBtn.create("ZCOOL-40.ttf", () -> "Castle");
         castleBtn.load();
@@ -82,14 +80,14 @@ public class TownScreen extends ChopScreen implements EventListener {
         gui.pack();
 
         DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        dialog.text("ZCOOL-40.ttf",
+        dialog.avatar("textures/packed/Chop.atlas", "avatar-empty")
+                .text("ZCOOL-40.ttf",
                 () -> "Hello! My name is Zachary and I will guide you through the first few steps of " +
                         "ChopChop. We'll start with the (3) locations that can be accessed from this " +
                         "screen; Castle, Tavern and Guillotine.",
                 Color.BLACK)
                 .speed(0.5f, 0.025f)
-                .width(getCamera().viewportWidth * 3 / 4f)
-                .pad(25, 25, 25, 25)
+                .textWidth(getCamera().viewportWidth * 3 / 4f)
                 .tint(new Color(0xb5b5b5ff))
                 .onFinish(() -> Gdx.app.log("Dialog", "Dismissed."));
         dialog.load();

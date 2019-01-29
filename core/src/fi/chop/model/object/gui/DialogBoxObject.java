@@ -4,15 +4,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fi.chop.Chop;
-import fi.chop.engine.DrawParameters;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
 import fi.chop.functional.Procedure;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
+import fi.chop.model.object.util.TextureRegionObject;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
 
@@ -26,11 +24,13 @@ public class DialogBoxObject extends GUIObject {
     private float widthPx;
     private Color backgroundTint;
     private Color textTint;
+    private String avatarAssetName;
+    private String atlasAssetName;
     private String fontName;
     private Supplier<String> textSupplier;
     private TextObject text;
-    private TextureRegion background;
-    private DrawParameters backgroundParams;
+    private TextureRegionObject avatar;
+    private TextureRegionObject background;
     private Procedure onFinish;
 
     public DialogBoxObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
@@ -44,37 +44,54 @@ public class DialogBoxObject extends GUIObject {
         if (text == null)
             throw new IllegalStateException("A text must be specified before calling load()");
         text.pack();
-        text.getTransform().setPosition(getPadLeft(), -getPadTop());
 
-        float width = text.getTransform().getWidth() + getPadLeft() + getPadRight();
-        float height = text.getTransform().getHeight() + getPadTop() + getPadBottom();
-        getTransform().setSize(width, height);
-        backgroundParams.size(width, height);
+        float textWidth = text.getTransform().getWidth();
+        float textHeight = text.getTransform().getHeight();
+        float avatarSize = textHeight;
+        float totalHeight = textHeight + getPadTop() + getPadBottom();
+        float totalWidth = textWidth + avatarSize + getPadLeft() + getPadRight();
+        background.getParameters().size(textWidth + getPadRight(), textHeight + getPadTop() + getPadBottom());
+        background.getTransform().setPosition(getPadLeft(), 0);
+        background.getTransform().setSize(textWidth + getPadRight(), textHeight + getPadTop() + getPadBottom());
+        avatar.getParameters().size(avatarSize, avatarSize);
+        avatar.getTransform().setPosition(getPadLeft(), - getPadTop());
+        text.getTransform().setPosition(-textWidth - getPadRight(), -getPadTop());
+        getTransform().setSize(totalWidth, totalHeight);
     }
 
     @Override
     public void load() {
         if (text == null)
-            throw new IllegalStateException("A text must be specified before calling load()");
+            throw new IllegalStateException("text() must be called before load()");
+        if (atlasAssetName == null)
+            throw new IllegalStateException("avatar() must be called before load()");
 
-        TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        background = atlas.findRegion("pixel-white");
-        backgroundParams = new DrawParameters();
+        background = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        background.setRegion("textures/packed/Chop.atlas", "pixel-white");
+        background.load();
+        background.getTransform().setParent(getTransform());
+        background.getTransform().setAlign(Align.TOP_RIGHT);
+        background.getTransform().setOrigin(1, 1);
+        background.setTint(backgroundTint);
+
+        avatar = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        avatar.setRegion(atlasAssetName, avatarAssetName);
+        avatar.load();
+        avatar.getTransform().setParent(getTransform());
+        avatar.getTransform().setAlign(Align.TOP_LEFT);
+        avatar.getTransform().setOrigin(0, 1);
 
         text.create(fontName, this::getCurrentText, widthPx, com.badlogic.gdx.utils.Align.left, true);
         text.load();
         text.tint(textTint);
+        text.pad(25, 25, 25, 25);
         text.getTransform().setParent(getTransform());
+        text.getTransform().setAlign(Align.TOP_RIGHT);
         text.getTransform().setOrigin(0, 1);
-        text.getTransform().setAlign(Align.TOP_LEFT);
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        batch.setColor(backgroundTint);
-        draw(batch, background, backgroundParams);
-        batch.setColor(Color.WHITE);
-    }
+    public void render(SpriteBatch batch) { }
 
     @Override
     public void dispose() { }
@@ -82,12 +99,14 @@ public class DialogBoxObject extends GUIObject {
     @Override
     public void die() {
         super.die();
+        background.die();
+        avatar.die();
         text.die();
     }
 
     @Override
     public GameObject[] getChildren() {
-        return new GameObject[] { text };
+        return new GameObject[] { background, avatar, text };
     }
 
     @Override
@@ -115,8 +134,14 @@ public class DialogBoxObject extends GUIObject {
         Chop.timer.addAction(startDelaySec + charDelaySec, () -> { charsToShow++; nextLetter(); });
     }
 
-    public DialogBoxObject width(float widthPx) {
+    public DialogBoxObject textWidth(float widthPx) {
         this.widthPx = widthPx;
+        return this;
+    }
+
+    public DialogBoxObject avatar(String atlasAssetName, String avatarAssetName) {
+        this.atlasAssetName = atlasAssetName;
+        this.avatarAssetName = avatarAssetName;
         return this;
     }
 
