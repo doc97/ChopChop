@@ -1,6 +1,7 @@
 package fi.chop.model.object;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,8 @@ public abstract class GameObject implements EventListener, Disposable {
     private boolean touchable;
     private boolean dead;
 
+    private Color tint;
+    private Color oldColor;
     private Transform transform;
     private TouchHandler touchHandler;
 
@@ -34,6 +37,7 @@ public abstract class GameObject implements EventListener, Disposable {
         this.camera = camera;
         this.world = world;
         this.player = player;
+        tint = new Color(Color.WHITE);
         transform = new Transform();
         touchHandler = new TouchHandler<>(this);
     }
@@ -46,6 +50,8 @@ public abstract class GameObject implements EventListener, Disposable {
         if (params == null)
             params = new DrawParameters(region);
         Transform t = transform.getGlobal();
+
+        saveAndSetTint(batch);
         batch.draw(region,
                 t.getX() - (t.getOriginX() + params.originX) * params.width + params.x,
                 t.getY() - (t.getOriginY() + params.originY) * params.height + params.y,
@@ -55,12 +61,15 @@ public abstract class GameObject implements EventListener, Disposable {
                 t.getScaleX() * params.scaleX, t.getScaleX() * params.scaleY,
                 (float) (t.getRotationDeg() + params.rotationDeg)
         );
+        restoreTint(batch);
     }
 
     protected void draw(SpriteBatch batch, Texture texture, DrawParameters params) {
         if (params == null)
             params = new DrawParameters(texture);
         Transform t = transform.getGlobal();
+
+        saveAndSetTint(batch);
         batch.draw(texture,
                 t.getX() - (t.getOriginX() + params.originX) * params.width + params.x,
                 t.getY() - (t.getOriginY() + params.originY) * params.height + params.y,
@@ -73,6 +82,16 @@ public abstract class GameObject implements EventListener, Disposable {
                 params.srcWidth, params.srcHeight,
                 params.flipX, params.flipY
         );
+        restoreTint(batch);
+    }
+
+    private void saveAndSetTint(SpriteBatch batch) {
+        oldColor = batch.getColor();
+        batch.setColor(oldColor.cpy().mul(tint));
+    }
+
+    private void restoreTint(SpriteBatch batch) {
+        batch.setColor(oldColor);
     }
 
     @Override
@@ -88,6 +107,14 @@ public abstract class GameObject implements EventListener, Disposable {
 
     public Transform getTransform() {
         return transform;
+    }
+
+    public void setTint(Color tint) {
+        this.tint = tint == null ? new Color(Color.WHITE) : tint;
+    }
+
+    public Color getTint() {
+        return tint;
     }
 
     public void invalidateID() {
