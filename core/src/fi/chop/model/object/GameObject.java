@@ -38,6 +38,7 @@ public abstract class GameObject implements EventListener, Disposable {
         this.world = world;
         this.player = player;
         tint = new Color(Color.WHITE);
+        oldColor = new Color(Color.WHITE);
         transform = new Transform();
         touchHandler = new TouchHandler<>(this);
     }
@@ -86,7 +87,7 @@ public abstract class GameObject implements EventListener, Disposable {
     }
 
     private void saveAndSetTint(SpriteBatch batch) {
-        oldColor = batch.getColor();
+        oldColor.set(batch.getColor());
         batch.setColor(oldColor.cpy().mul(tint));
     }
 
