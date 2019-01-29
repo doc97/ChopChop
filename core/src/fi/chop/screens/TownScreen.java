@@ -23,13 +23,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         registerEventListener();
         initializeScreen();
         initializeScene();
-
-        if (getWorld().getDay() % 7 == 0) {
-            getPlayer().addMoney(-getWorld().getTaxes());
-            getWorld().increaseTaxes();
-            if (getPlayer().getMoney() < 0)
-                Gdx.app.exit();
-        }
+        checkTaxes();
+        checkBribe();
     }
 
     private void registerEventListener() {
@@ -38,6 +33,37 @@ public class TownScreen extends ChopScreen implements EventListener {
 
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new TownScreenInput(this, getInputMap()));
+    }
+
+    private void checkTaxes() {
+        if (getWorld().getDay() % 7 == 0) {
+            getPlayer().addMoney(-getWorld().getTaxes());
+            getWorld().increaseTaxes();
+            if (getPlayer().getMoney() < 0)
+                Gdx.app.exit();
+        }
+    }
+
+    private void checkBribe() {
+        if (getWorld().getExecution().getBribe() > 0) {
+            DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
+            dialog.avatar("textures/packed/Chop.atlas", "avatar-empty")
+                    .text("ZCOOL-40.ttf",
+                    () -> "Please! Don't kill my child... I beg of you. I will see that you are well compensated. " +
+                            "I know you will make the right choice.",
+                    Color.BLACK)
+                    .speed(0.5f, 0.025f)
+                    .textWidth(getCamera().viewportWidth * 3 / 4f)
+                    .tint(new Color(0xb5b5b5ff))
+                    .onFinish(() -> Gdx.app.log("Dialog", "Dismissed."));
+            dialog.load();
+            dialog.pack();
+            dialog.getTransform().setOrigin(0.5f, 0.0f);
+            dialog.getTransform().setPosition(getCamera().viewportWidth / 2, 50);
+            Chop.events.addListener(dialog, Events.ACTION_INTERACT);
+
+            getScene().addObjects("GUI", dialog);
+        }
     }
 
     private void initializeScene() {
@@ -79,26 +105,9 @@ public class TownScreen extends ChopScreen implements EventListener {
         gui.load();
         gui.pack();
 
-        DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        dialog.avatar("textures/packed/Chop.atlas", "avatar-empty")
-                .text("ZCOOL-40.ttf",
-                () -> "Hello! My name is Zachary and I will guide you through the first few steps of " +
-                        "ChopChop. We'll start with the (3) locations that can be accessed from this " +
-                        "screen; Castle, Tavern and Guillotine.",
-                Color.BLACK)
-                .speed(0.5f, 0.025f)
-                .textWidth(getCamera().viewportWidth * 3 / 4f)
-                .tint(new Color(0xb5b5b5ff))
-                .onFinish(() -> Gdx.app.log("Dialog", "Dismissed."));
-        dialog.load();
-        dialog.pack();
-        dialog.getTransform().setOrigin(0.5f, 0.0f);
-        dialog.getTransform().setPosition(getCamera().viewportWidth / 2, 50);
-        Chop.events.addListener(dialog, Events.ACTION_INTERACT);
-
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
-        getScene().addObjects("GUI", gui, dialog);
+        getScene().addObjects("GUI", gui);
         getScene().addQueued();
     }
 
