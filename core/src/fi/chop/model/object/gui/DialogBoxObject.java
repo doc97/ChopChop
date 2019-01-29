@@ -47,15 +47,17 @@ public class DialogBoxObject extends GUIObject {
 
         float textWidth = text.getTransform().getWidth();
         float textHeight = text.getTransform().getHeight();
-        float avatarSize = textHeight;
+        float avatarSize = avatar != null ? textHeight : 0;
         float totalHeight = textHeight + getPadTop() + getPadBottom();
-        float totalWidth = textWidth + avatarSize + getPadLeft() + getPadRight();
+        float totalWidth = textWidth + getPadLeft() + getPadRight() + avatarSize;
         background.getParameters().size(textWidth + getPadRight(), textHeight + getPadTop() + getPadBottom());
         background.getTransform().setPosition(getPadLeft(), 0);
         background.getTransform().setSize(textWidth + getPadRight(), textHeight + getPadTop() + getPadBottom());
-        avatar.getParameters().size(avatarSize, avatarSize);
-        avatar.getTransform().setPosition(getPadLeft(), - getPadTop());
         text.getTransform().setPosition(-textWidth - getPadRight(), -getPadTop());
+        if (avatar != null) {
+            avatar.getParameters().size(avatarSize, avatarSize);
+            avatar.getTransform().setPosition(getPadLeft(), -getPadTop());
+        }
         getTransform().setSize(totalWidth, totalHeight);
     }
 
@@ -63,8 +65,6 @@ public class DialogBoxObject extends GUIObject {
     public void load() {
         if (text == null)
             throw new IllegalStateException("text() must be called before load()");
-        if (atlasAssetName == null)
-            throw new IllegalStateException("avatar() must be called before load()");
 
         background = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
         background.setRegion("textures/packed/Chop.atlas", "pixel-white");
@@ -74,12 +74,14 @@ public class DialogBoxObject extends GUIObject {
         background.getTransform().setOrigin(1, 1);
         background.setTint(backgroundTint);
 
-        avatar = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        avatar.setRegion(atlasAssetName, avatarAssetName);
-        avatar.load();
-        avatar.getTransform().setParent(getTransform());
-        avatar.getTransform().setAlign(Align.TOP_LEFT);
-        avatar.getTransform().setOrigin(0, 1);
+        if (avatarAssetName != null) {
+            avatar = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
+            avatar.setRegion(atlasAssetName, avatarAssetName);
+            avatar.load();
+            avatar.getTransform().setParent(getTransform());
+            avatar.getTransform().setAlign(Align.TOP_LEFT);
+            avatar.getTransform().setOrigin(0, 1);
+        }
 
         text.create(fontName, this::getCurrentText, widthPx, com.badlogic.gdx.utils.Align.left, true);
         text.load();
@@ -100,8 +102,9 @@ public class DialogBoxObject extends GUIObject {
     public void die() {
         super.die();
         background.die();
-        avatar.die();
         text.die();
+        if (avatar != null)
+            avatar.die();
     }
 
     @Override

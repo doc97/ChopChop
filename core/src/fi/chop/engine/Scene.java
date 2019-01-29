@@ -30,6 +30,8 @@ public class Scene {
     }
 
     private List<GameObject> getChildObjects(GameObject obj) {
+        if (obj == null)
+            return new ArrayList<>(0);
         List<GameObject> objects = new ArrayList<>(obj.getChildren().length + 1);
         objects.add(obj);
         for (GameObject child : obj.getChildren())
