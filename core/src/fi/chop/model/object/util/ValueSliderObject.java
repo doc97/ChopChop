@@ -2,7 +2,6 @@ package fi.chop.model.object.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -42,6 +41,7 @@ public class ValueSliderObject extends GUIObject {
     @Override
     public void pack() {
         valueText.pack();
+        valueText.getTransform().setPosition(5, 0);
 
         float totalWidth = background.getTransform().getScaledWidth() + valueText.getMaxWidth();
         float totalHeight = Math.max(background.getTransform().getScaledHeight(),
@@ -58,7 +58,6 @@ public class ValueSliderObject extends GUIObject {
         valueText = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         valueText.create(fontName, valueTextConstructor, longestValueText);
         valueText.load();
-        valueText.bgColor(Color.RED);
         valueText.getTransform().setParent(getTransform());
         valueText.getTransform().setAlign(Align.RIGHT_CENTER);
         valueText.getTransform().setOrigin(1, 0.5f);

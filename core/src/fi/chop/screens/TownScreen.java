@@ -107,13 +107,13 @@ public class TownScreen extends ChopScreen implements EventListener {
         gui.pack();
 
         ValueSliderObject slider = new ValueSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        slider.init("textures/packed/Chop.atlas", "meter-background", "head-dead",
+        slider.init("textures/packed/Chop.atlas", "meter-background", "knob",
                 "ZCOOL-40.ttf", () -> String.format("%.0f", slider.getValue() * 100) + "%",
                 () -> "100%");
         slider.load();
         slider.pack();
         slider.getTransform().setOrigin(0.5f, 0.5f);
-        slider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+        slider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 3);
 
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
