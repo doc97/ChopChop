@@ -11,6 +11,7 @@ import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.gui.*;
+import fi.chop.model.object.util.ValueSliderObject;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -105,9 +106,17 @@ public class TownScreen extends ChopScreen implements EventListener {
         gui.load();
         gui.pack();
 
+        ValueSliderObject slider = new ValueSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        slider.load();
+        slider.pack();
+        slider.resizeToFitChildren();
+        slider.getTransform().setOrigin(0.5f, 0.5f);
+        slider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 2);
+
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui);
+        getScene().addObjects("PopUp", slider);
         getScene().addQueued();
     }
 

@@ -18,6 +18,10 @@ public class Transform {
         this.parent = parent;
     }
 
+    public Transform getParent() {
+        return parent;
+    }
+
     public void setAlign(Align align) {
         this.align = align;
     }
