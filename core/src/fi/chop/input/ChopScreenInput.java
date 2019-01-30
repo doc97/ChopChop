@@ -19,14 +19,12 @@ public class ChopScreenInput extends InputAdapter {
         this.inputMap = inputMap;
     }
 
-    private boolean triggerIfInside(int screenX, int screenY, int pointer, int button, Trigger trigger) {
+    private boolean triggerForTouchables(int screenX, int screenY, int pointer, int button, Trigger trigger) {
         Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
 
-        List<GameObject> objects = screen.getScene().findAll((o) -> true);
+        List<GameObject> objects = screen.getScene().findAll(GameObject::isTouchable);
         Collections.reverse(objects); // findAll returns them in the order: bottom to up
         for (GameObject obj : objects) {
-            if (!obj.isTouchable())
-                continue;
             if (trigger.call(obj, worldPos3D.x, worldPos3D.y, pointer, button))
                 return true;
         }
@@ -35,25 +33,25 @@ public class ChopScreenInput extends InputAdapter {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return triggerIfInside(screenX, screenY, pointer, button,
+        return triggerForTouchables(screenX, screenY, pointer, button,
                 (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchUp(wx, wy, p, btn));
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return triggerIfInside(screenX, screenY, pointer, button,
+        return triggerForTouchables(screenX, screenY, pointer, button,
                 (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchDown(wx, wy, p, btn));
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return triggerIfInside(screenX, screenY, pointer, -1,
+        return triggerForTouchables(screenX, screenY, pointer, -1,
                 (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerTouchDragged(wx, wy, p));
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return triggerIfInside(screenX, screenY, -1, -1,
+        return triggerForTouchables(screenX, screenY, -1, -1,
                 (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerMouseMoved(wx, wy));
     }
 
