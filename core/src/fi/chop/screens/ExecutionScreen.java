@@ -103,7 +103,7 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
 
         ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), getWorld(), getPlayer());
         scroll.getTransform().setOrigin(0.5f, 0.5f);
-        scroll.getTransform().setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2);
+        scroll.getTransform().setPosition(getCamera().viewportWidth * 4 / 5, getCamera().viewportHeight / 2 - 50);
         scroll.load();
         scroll.setExecution(getWorld().getExecution());
 
