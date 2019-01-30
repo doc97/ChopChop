@@ -64,6 +64,15 @@ public class ValueSliderObject extends GUIObject {
 
         background = loadTextureRegionObject(atlasName, backgroundName);
         background.getTransform().setOrigin(0, 0.5f);
+        background.setTouchable(true);
+        background.setTouchHandler(new TouchHandler<TextureRegionObject>(background) {
+            @Override
+            public boolean touchDown(TextureRegionObject object, float worldX, float worldY, int pointer, int button) {
+                isDragging = true;
+                return true;
+            }
+        });
+
         knob = loadTextureRegionObject(atlasName, knobName);
         knob.getTransform().setOrigin(0.5f, 0.5f);
         knob.getTransform().setX(knob.getTransform().getScaledWidth() / 2);
