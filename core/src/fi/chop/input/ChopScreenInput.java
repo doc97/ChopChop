@@ -2,7 +2,10 @@ package fi.chop.input;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector3;
+import fi.chop.Chop;
 import fi.chop.engine.InputMap;
+import fi.chop.event.EventData;
+import fi.chop.event.Events;
 import fi.chop.model.object.GameObject;
 import fi.chop.screens.ChopScreen;
 
@@ -51,8 +54,18 @@ public class ChopScreenInput extends InputAdapter {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return triggerForTouchables(screenX, screenY, -1, -1,
+        boolean retVal = triggerForTouchables(screenX, screenY, -1, -1,
                 (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerMouseMoved(wx, wy));
+
+        Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
+        List<GameObject> objects = screen.getScene().findAll(
+                (o) -> o.hasTooltip() && o.isXYInside(worldPos3D.x, worldPos3D.y));
+        Collections.reverse(objects); // findAll returns them in the order: bottom to up
+        for (GameObject obj : objects) {
+            Chop.events.notify(Events.MSG_TOOLTIP, new EventData<>(obj.getTooltip()));
+            retVal = true;
+        }
+        return retVal;
     }
 
     protected InputMap getInputMap() {

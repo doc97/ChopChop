@@ -19,11 +19,13 @@ import fi.chop.model.world.WorldState;
 public abstract class GameObject implements EventListener, Disposable {
 
     private int id = -1;
+    private boolean hasTooltip;
     private boolean touchable;
     private boolean dead;
 
     private Color tint;
     private Color oldColor;
+    private String tooltip;
     private Transform transform;
     private TouchHandler touchHandler;
 
@@ -163,6 +165,20 @@ public abstract class GameObject implements EventListener, Disposable {
 
     public boolean isTouchable() {
         return touchable;
+    }
+
+    public boolean hasTooltip() {
+        return hasTooltip;
+    }
+
+    public void setTooltip(String tooltip) {
+        hasTooltip = tooltip != null && !tooltip.isEmpty();
+        if (hasTooltip)
+            this.tooltip = tooltip;
+    }
+
+    public String getTooltip() {
+        return tooltip;
     }
 
     public void die() {
