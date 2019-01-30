@@ -28,6 +28,7 @@ public class TextObject extends GUIObject {
     private int hAlign;
     private String fontName;
     private Supplier<String> textConstructor;
+    private Supplier<String> longestText;
     private FontRenderer renderer;
     private TextButtonStyle style;
 
@@ -50,12 +51,18 @@ public class TextObject extends GUIObject {
     }
 
     public void create(String fontName, Supplier<String> textConstructor) {
-        create(fontName, textConstructor, 0, Align.left, false);
+        create(fontName, textConstructor, textConstructor, 0, Align.left, false);
     }
 
-    public void create(String fontName, Supplier<String> textConstructor, float widthPx, int hAlign, boolean wrap) {
+    public void create(String fontName, Supplier<String> textConstructor, Supplier<String> longestText) {
+        create(fontName, textConstructor, longestText, 0, Align.left, false);
+    }
+
+    public void create(String fontName, Supplier<String> textConstructor, Supplier<String> longestText,
+                       float widthPx, int hAlign, boolean wrap) {
         this.fontName = fontName;
         this.textConstructor = textConstructor;
+        this.longestText = longestText;
         this.widthPx = widthPx;
         this.hAlign = hAlign;
         this.wrap = wrap;
@@ -157,5 +164,12 @@ public class TextObject extends GUIObject {
     public void style(TextButtonStyle style) {
         this.style.set(style);
         invalidate();
+    }
+
+    public float getMaxWidth() {
+        renderer.edit(longestText.get());
+        float width = renderer.width() + AUTO_PAD_X + getPadLeft() + getPadRight();
+        renderer.edit(textConstructor.get());
+        return width;
     }
 }

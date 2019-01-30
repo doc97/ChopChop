@@ -45,7 +45,7 @@ public class DialogBoxObject extends GUIObject {
             throw new IllegalStateException("A text must be specified before calling load()");
         text.pack();
 
-        float textWidth = text.getTransform().getWidth();
+        float textWidth = text.getMaxWidth();
         float textHeight = text.getTransform().getHeight();
         float avatarSize = avatar != null ? textHeight : 0;
         float totalHeight = textHeight + getPadTop() + getPadBottom();
@@ -83,7 +83,7 @@ public class DialogBoxObject extends GUIObject {
             avatar.getTransform().setOrigin(0, 1);
         }
 
-        text.create(fontName, this::getCurrentText, widthPx, com.badlogic.gdx.utils.Align.left, true);
+        text.create(fontName, this::getCurrentText, textSupplier, widthPx, com.badlogic.gdx.utils.Align.left, true);
         text.load();
         text.tint(textTint);
         text.pad(25, 25, 25, 25);

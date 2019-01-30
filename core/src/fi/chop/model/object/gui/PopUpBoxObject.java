@@ -103,8 +103,9 @@ public class PopUpBoxObject extends GUIObject {
                                float widthPx, int hAlign, boolean wrap) {
         if (text != null)
             text.dispose();
+        supplier = supplier == null ? () -> "" : supplier;
         text = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        text.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
+        text.create(fontName, supplier, supplier, widthPx, hAlign, wrap);
         text.tint(tint);
         text.getTransform().setParent(getTransform());
         text.getTransform().setOrigin(0, 1);
@@ -118,8 +119,9 @@ public class PopUpBoxObject extends GUIObject {
 
     public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick,
                               float widthPx, int hAlign, boolean wrap) {
+        supplier = supplier == null ? () -> "" : supplier;
         TextButtonObject btn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        btn.create(fontName, supplier == null ? () -> "" : supplier, widthPx, hAlign, wrap);
+        btn.create(fontName, supplier, supplier, widthPx, hAlign, wrap);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         btn.getTransform().setParent(getTransform());
         btn.getTransform().setAlign(Align.BOTTOM_LEFT);

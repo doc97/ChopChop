@@ -10,6 +10,14 @@ public class MathUtil {
         return (1 - t) * a + t * b;
     }
 
+    public static double unlerp(double a, double b, double x) {
+        return (x - a) / (b - a);
+    }
+
+    public static float unlerp(float a, float b, float x) {
+        return (x - a) / (b - a);
+    }
+
     public static double smoothStartN(double x, int n) {
         double res = 1;
         for (int i = 0; i < n; i++)
