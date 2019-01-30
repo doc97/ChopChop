@@ -30,18 +30,21 @@ public class TouchHandler<T extends GameObject> {
     }
 
     public boolean registerMouseMoved(float worldX, float worldY) {
+        boolean retVal = false;
         if (object.isXYInside(worldX, worldY)) {
             if (!over) {
                 over = true;
-                return enter(object, worldX, worldY);
+                retVal = enter(object, worldX, worldY);
             }
         } else {
             if (over) {
                 over = false;
-                return exit(object, worldX, worldY);
+                retVal = exit(object, worldX, worldY);
             }
         }
-        return false;
+
+        retVal = moved(object, worldX, worldY) || retVal;
+        return retVal;
     }
 
     // Implement these yourself
@@ -62,6 +65,10 @@ public class TouchHandler<T extends GameObject> {
     }
 
     public boolean exit(T object, float worldX, float worldY) {
+        return false;
+    }
+
+    public boolean moved(T object, float worldX, float worldY) {
         return false;
     }
 }
