@@ -15,12 +15,14 @@ public class ExecutionFactory {
             new Victim("John Smith", SocialStatus.MIDDLE_CLASS),
             new Victim("Amanda Bloom", SocialStatus.MIDDLE_CLASS),
             new Victim("Jack Matthews", SocialStatus.NOBILITY),
-            new Victim("Ryan Silver", SocialStatus.ROYALTY)
+            new Victim("Ryan Silver", SocialStatus.ROYALTY),
+            new Victim("Monsieur d'Artagnan", SocialStatus.NOBILITY)
     };
 
     private static final String[] allCharges = {
             "Murder of another human",
-            "Plotting against the revolution"
+            "Plotting against the revolution",
+            "Stealing food from community storage"
     };
 
     public static Execution create() {
