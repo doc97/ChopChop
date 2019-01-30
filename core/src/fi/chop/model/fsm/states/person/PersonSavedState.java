@@ -40,7 +40,5 @@ public class PersonSavedState extends ObjectState<PersonStateMachine, PersonObje
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        getObject().drawSavedHead(batch);
-    }
+    public void render(SpriteBatch batch) { }
 }

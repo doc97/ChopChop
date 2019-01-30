@@ -21,7 +21,5 @@ public class PersonIdleState extends ObjectState<PersonStateMachine, PersonObjec
     public void update(float delta) { }
 
     @Override
-    public void render(SpriteBatch batch) {
-        getObject().drawAliveHead(batch);
-    }
+    public void render(SpriteBatch batch) { }
 }

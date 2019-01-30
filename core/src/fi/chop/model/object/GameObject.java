@@ -102,8 +102,20 @@ public abstract class GameObject implements EventListener, Disposable {
 
     public void onSceneRemove() { }
 
+    public void resizeToFitChildren() {
+        getTransform().resizeToFitChildren(getChildTransforms());
+    }
+
     public GameObject[] getChildren() {
         return new GameObject[0];
+    }
+
+    public Transform[] getChildTransforms() {
+        GameObject[] children = getChildren();
+        Transform[] childTransforms = new Transform[children.length];
+        for (int i = 0; i < children.length; i++)
+            childTransforms[i] = children[i].getTransform();
+        return childTransforms;
     }
 
     public Transform getTransform() {

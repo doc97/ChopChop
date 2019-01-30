@@ -95,11 +95,13 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         guillotine.load();
 
         GameObject person = new PersonObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        person.load();
         person.getTransform().setOrigin(0.5f, 0.5f);
+        person.getTransform().setScale(0.25f, 0.25f);
+        person.resizeToFitChildren();
         person.getTransform().setPosition(
                 guillotine.getTransform().getX() - 15,
                 guillotine.getTransform().getY() + 260);
-        person.load();
 
         ScrollObject scroll = new ScrollObject(getAssets(), getCamera(), getWorld(), getPlayer());
         scroll.getTransform().setOrigin(0.5f, 0.5f);

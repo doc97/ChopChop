@@ -28,9 +28,9 @@ public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObjec
     @Override
     public void update(float delta) {
         PersonObject obj = getObject();
-        if (obj.getTransform().getY() <= obj.getTransform().getHeight() / 2) {
+        if (obj.getTransform().getGlobal().getBottom() <= 0) {
             velocityY = 0;
-            obj.getTransform().setY(obj.getTransform().getHeight() / 2);
+            obj.getTransform().setBottom(0);
         } else {
             velocityY -= 10;
         }
@@ -42,7 +42,5 @@ public class PersonDeadState extends ObjectState<PersonStateMachine, PersonObjec
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        getObject().drawDeadHead(batch);
-    }
+    public void render(SpriteBatch batch) { }
 }

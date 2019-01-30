@@ -28,6 +28,8 @@ public class Transform {
 
         Transform parentTransform = parent.getGlobal();
         Transform result = cpy();
+        result.scale(parent.getScaleX(), parent.getScaleY());
+        result.rotateDeg(parent.getRotationDeg());
         result.translate(parentTransform.getX(), parentTransform.getY());
         align.apply(parentTransform, result);
         return result;
@@ -86,7 +88,28 @@ public class Transform {
         setRotationRad(getRotationRad() + delta);
     }
 
-        public void setPosition(float x, float y) {
+    public void resizeToFitChildren(Transform... childTransforms) {
+        if (childTransforms.length == 0)
+            return;
+        float minX = Float.MAX_VALUE;
+        float minY = Float.MAX_VALUE;
+        float maxX = Float.MIN_VALUE;
+        float maxY = Float.MIN_VALUE;
+        for (Transform child : childTransforms) {
+            Transform local = child.getLocal();
+            float top = local.getTop();
+            float left = local.getLeft();
+            float right = local.getRight();
+            float bottom = local.getBottom();
+            if (top > maxY) maxY = top;
+            if (left < minX) minX = left;
+            if (right > maxX) maxX = right;
+            if (bottom < minY) minY = bottom;
+        }
+        setSize(maxX - minX, maxY - minY);
+}
+
+    public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -120,12 +143,20 @@ public class Transform {
         return width;
     }
 
+    public float getScaledWidth() {
+        return width * scaleX;
+    }
+
     public void setHeight(float height) {
         this.height = height;
     }
 
     public float getHeight() {
         return height;
+    }
+
+    public float getScaledHeight() {
+        return height * scaleY;
     }
 
     public void setScale(float scaleX, float scaleY) {
@@ -188,19 +219,35 @@ public class Transform {
         return rotDeg;
     }
 
+    public void setTop(float top) {
+        y = top - (1 - originY) * getScaledHeight();
+    }
+
     public float getTop() {
-        return y + (1 - originY) * height;
+        return y + (1 - originY) * getScaledHeight();
+    }
+
+    public void setLeft(float left) {
+        x = left + originX * getScaledWidth();
     }
 
     public float getLeft() {
-        return x - originX * width;
+        return x - originX * getScaledWidth();
+    }
+
+    public void setRight(float right) {
+        x = right - (1 - originX) * getScaledWidth();
     }
 
     public float getRight() {
-        return x + (1 - originX) * width;
+        return x + (1 - originX) * getScaledWidth();
+    }
+
+    public void setBottom(float bottom) {
+        y = bottom + originX * getScaledHeight();
     }
 
     public float getBottom() {
-        return y - originY * height;
+        return y - originY * getScaledHeight();
     }
 }
