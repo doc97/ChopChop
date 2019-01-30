@@ -26,6 +26,9 @@ public class Layer {
 
         for (Iterator<GameObject> it = objects.iterator(); it.hasNext();) {
             GameObject obj = it.next();
+            if (!obj.isEnabled(GameObject.Toggles.UPDATE))
+                continue;
+
             obj.update(delta);
             if (obj.isDead()) {
                 Chop.events.removeListener(obj);
@@ -37,8 +40,10 @@ public class Layer {
     }
 
     public void render(SpriteBatch batch) {
-        for (GameObject obj : objects)
-            obj.render(batch);
+        for (GameObject obj : objects) {
+            if (obj.isEnabled(GameObject.Toggles.RENDER))
+                obj.render(batch);
+        }
     }
 
     public GameObject findOne(Predicate<GameObject> predicate) {

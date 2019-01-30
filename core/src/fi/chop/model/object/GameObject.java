@@ -16,7 +16,14 @@ import fi.chop.model.auxillary.Transform;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+
 public abstract class GameObject implements EventListener, Disposable {
+
+    public enum Toggles {
+        UPDATE, RENDER
+    }
 
     private int id = -1;
     private boolean hasTooltip;
@@ -28,6 +35,7 @@ public abstract class GameObject implements EventListener, Disposable {
     private String tooltip;
     private Transform transform;
     private TouchHandler touchHandler;
+    private EnumSet<Toggles> enabled;
 
     private final AssetManager assets;
     private final OrthographicCamera camera;
@@ -43,6 +51,7 @@ public abstract class GameObject implements EventListener, Disposable {
         oldColor = new Color(Color.WHITE);
         transform = new Transform();
         touchHandler = new TouchHandler<>(this);
+        enabled = EnumSet.allOf(Toggles.class);
     }
 
     public abstract void load();
@@ -187,6 +196,18 @@ public abstract class GameObject implements EventListener, Disposable {
 
     public boolean isDead() {
         return dead;
+    }
+
+    public void toggleOn(Toggles... toggles) {
+        enabled.addAll(Arrays.asList(toggles));
+    }
+
+    public void toggleOff(Toggles... toggles) {
+        enabled.removeAll(Arrays.asList(toggles));
+    }
+
+    public boolean isEnabled(Toggles toggle) {
+        return enabled.contains(toggle);
     }
 
     public boolean isOutsideCameraView() {
