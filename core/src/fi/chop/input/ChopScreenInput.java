@@ -16,22 +16,11 @@ public class ChopScreenInput extends InputAdapter {
 
     private final InputMap inputMap;
     private final ChopScreen screen;
+    private boolean tooltipActive;
 
     public ChopScreenInput(ChopScreen screen, InputMap inputMap) {
         this.screen = screen;
         this.inputMap = inputMap;
-    }
-
-    private boolean triggerForTouchables(int screenX, int screenY, int pointer, int button, Trigger trigger) {
-        Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
-
-        List<GameObject> objects = screen.getScene().findAll(GameObject::isTouchable);
-        Collections.reverse(objects); // findAll returns them in the order: bottom to up
-        for (GameObject obj : objects) {
-            if (trigger.call(obj, worldPos3D.x, worldPos3D.y, pointer, button))
-                return true;
-        }
-        return false;
     }
 
     @Override
@@ -56,16 +45,7 @@ public class ChopScreenInput extends InputAdapter {
     public boolean mouseMoved(int screenX, int screenY) {
         boolean retVal = triggerForTouchables(screenX, screenY, -1, -1,
                 (obj, wx, wy, p, btn) -> obj.getTouchHandler().registerMouseMoved(wx, wy));
-
-        Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
-        List<GameObject> objects = screen.getScene().findAll(
-                (o) -> o.hasTooltip() && o.isXYInside(worldPos3D.x, worldPos3D.y));
-        Collections.reverse(objects); // findAll returns them in the order: bottom to up
-        for (GameObject obj : objects) {
-            Chop.events.notify(Events.MSG_TOOLTIP, new EventData<>(obj.getTooltip()));
-            retVal = true;
-        }
-        return retVal;
+        return updateTooltip(screenX, screenY) || retVal;
     }
 
     protected InputMap getInputMap() {
@@ -74,6 +54,37 @@ public class ChopScreenInput extends InputAdapter {
 
     protected ChopScreen getScreen() {
         return screen;
+    }
+
+    private boolean triggerForTouchables(int screenX, int screenY, int pointer, int button, Trigger trigger) {
+        Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
+
+        List<GameObject> objects = screen.getScene().findAll(GameObject::isTouchable);
+        Collections.reverse(objects); // findAll returns them in the order: bottom to up
+        for (GameObject obj : objects) {
+            if (trigger.call(obj, worldPos3D.x, worldPos3D.y, pointer, button))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean updateTooltip(int screenX, int screenY) {
+        Vector3 worldPos3D = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
+        List<GameObject> objects = screen.getScene().findAll(
+                (o) -> o.hasTooltip() && o.isXYInside(worldPos3D.x, worldPos3D.y));
+
+        if (objects.isEmpty()) {
+            if (tooltipActive)
+                Chop.events.notify(Events.MSG_REMOVE_TOOLTIP);
+            tooltipActive = false;
+            return false;
+        }
+
+        // findAll returns them in the order: bottom to up
+        GameObject topObject = objects.get(objects.size() - 1);
+        Chop.events.notify(Events.MSG_ADD_TOOLTIP, new EventData<>(topObject.getTooltip()));
+        tooltipActive = true;
+        return true;
     }
 
     private interface Trigger {
