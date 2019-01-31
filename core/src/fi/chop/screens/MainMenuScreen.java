@@ -91,7 +91,10 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
         btn.load();
         btn.setStyle(TextButtonObject.StyleType.NORMAL, new TextButtonStyle());
         btn.setStyle(TextButtonObject.StyleType.HOVER, new TextButtonStyle().tint(Color.GOLDENROD));
-        btn.setHoverScale(1.1f, 1.1f);
+        btn.setStyle(TextButtonObject.StyleType.PRESSED, new TextButtonStyle().tint(Color.GOLDENROD));
+        btn.setHoverOffset(20, 0);
+        btn.setPressedOffset(20, 0);
+        btn.setPressedScale(0.95f, 0.95f);
         btn.setTouchHandler(new TextButtonHandler(btn, onClick));
         return btn;
     }

@@ -26,6 +26,8 @@ public class TextButtonObject extends TextObject {
 
     private float hoverScaleX = 1;
     private float hoverScaleY = 1;
+    private float hoverOffsetX;
+    private float hoverOffsetY;
     private float pressedScaleX = 1;
     private float pressedScaleY = 1;
     private float pressedOffsetX;
@@ -98,6 +100,11 @@ public class TextButtonObject extends TextObject {
         hoverScaleY = scaleY;
     }
 
+    public void setHoverOffset(float offsetX, float offsetY) {
+        hoverOffsetX = offsetX;
+        hoverOffsetY = offsetY;
+    }
+
     public void setPressedScale(float scaleX, float scaleY) {
         pressedScaleX = scaleX;
         pressedScaleY = scaleY;
@@ -122,25 +129,11 @@ public class TextButtonObject extends TextObject {
     }
 
     public void hover() {
-        if (isDisabled())
-            return;
-        if (btnTrans == null)
-            btnTrans = getTransform().cpy();
-        state = ButtonState.HOVER;
-        useStyle(StyleType.HOVER);
-        getTransform().setScale(hoverScaleX, hoverScaleY);
-        getTransform().setPosition(btnTrans.getX(), btnTrans.getY());
+        activate(ButtonState.HOVER, StyleType.HOVER, hoverScaleX, hoverScaleY, hoverOffsetX, hoverOffsetY);
     }
 
     public void press() {
-        if (isDisabled())
-            return;
-        if (btnTrans == null)
-            btnTrans = getTransform().cpy();
-        state = ButtonState.PRESSED;
-        useStyle(StyleType.HOVER);
-        getTransform().setScale(pressedScaleX, pressedScaleY);
-        getTransform().setPosition(btnTrans.getX() + pressedOffsetX, btnTrans.getY() + pressedOffsetY);
+        activate(ButtonState.PRESSED, StyleType.PRESSED, pressedScaleX, pressedScaleY, pressedOffsetX, pressedOffsetY);
     }
 
     public void disable() {
@@ -151,6 +144,17 @@ public class TextButtonObject extends TextObject {
             getTransform().setPosition(btnTrans.getX(), btnTrans.getY());
             btnTrans = null;
         }
+    }
+
+    private void activate(ButtonState state, StyleType type, float scaleX, float scaleY, float offsetX, float offsetY) {
+        if (isDisabled())
+            return;
+        if (btnTrans == null)
+            btnTrans = getTransform().cpy();
+        this.state = state;
+        useStyle(type);
+        getTransform().setScale(scaleX, scaleY);
+        getTransform().setPosition(btnTrans.getX() + offsetX, btnTrans.getY() + offsetY);
     }
 
     private boolean isDisabled() {
