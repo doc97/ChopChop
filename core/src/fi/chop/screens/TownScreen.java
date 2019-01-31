@@ -11,7 +11,6 @@ import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.gui.*;
-import fi.chop.model.object.util.ValueSliderObject;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -106,15 +105,6 @@ public class TownScreen extends ChopScreen implements EventListener {
         gui.load();
         gui.pack();
 
-        ValueSliderObject slider = new ValueSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        slider.init("textures/packed/Chop.atlas", "meter-background", "knob",
-                "ZCOOL-40.ttf", () -> String.format("%.0f", slider.getValue() * 100) + "%",
-                () -> "100%");
-        slider.load();
-        slider.pack();
-        slider.getTransform().setOrigin(0.5f, 0.5f);
-        slider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 3);
-
         TooltipObject tooltip = new TooltipObject(getAssets(), getCamera(), getWorld(), getPlayer());
         tooltip.pad(5, 5, 5, 5);
         tooltip.load();
@@ -124,7 +114,7 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui);
-        getScene().addObjects("PopUp", slider, tooltip);
+        getScene().addObjects("PopUp", tooltip);
         getScene().addQueued();
     }
 

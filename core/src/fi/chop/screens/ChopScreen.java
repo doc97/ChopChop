@@ -79,6 +79,9 @@ public abstract class ChopScreen extends ScreenAdapter {
             case MAIN_MENU:
                 game.setScreen(new MainMenuScreen(game));
                 break;
+            case SETTINGS:
+                game.setScreen(new SettingsScreen(game));
+                break;
         }
     }
 

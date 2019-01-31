@@ -48,7 +48,7 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
         );
 
         TextButtonObject settingsBtn = initButton("Roboto-60.ttf", "Settings",
-                (btn) -> Gdx.app.log("MainMenu", "Settings!"));
+                (btn) -> setScreen(Screens.SETTINGS));
         settingsBtn.pack();
         settingsBtn.getTransform().setPosition(
                 x + settingsBtn.getTransform().getWidth() / 2,
