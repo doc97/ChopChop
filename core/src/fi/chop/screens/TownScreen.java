@@ -115,10 +115,16 @@ public class TownScreen extends ChopScreen implements EventListener {
         slider.getTransform().setOrigin(0.5f, 0.5f);
         slider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 3);
 
+        TooltipObject tooltip = new TooltipObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        tooltip.pad(5, 5, 5, 5);
+        tooltip.load();
+        tooltip.pack();
+        Chop.events.addListener(tooltip, Events.MSG_ADD_TOOLTIP, Events.MSG_REMOVE_TOOLTIP);
+
         getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui);
-        getScene().addObjects("PopUp", slider);
+        getScene().addObjects("PopUp", slider, tooltip);
         getScene().addQueued();
     }
 

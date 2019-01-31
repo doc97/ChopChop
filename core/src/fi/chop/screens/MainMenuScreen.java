@@ -58,6 +58,7 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         if (event == Events.ACTION_INTERACT) {
             getPlayer().randomizePopularityPerks();
+            getPlayer().addPerks(PopularityPerk.values());
             getWorld().nextDay();
             setScreen(Screens.TOWN);
             Chop.events.notify(Events.EVT_NEW_GAME);
