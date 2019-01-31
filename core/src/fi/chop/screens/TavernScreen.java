@@ -7,7 +7,7 @@ import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.TavernScreenInput;
+import fi.chop.input.BasicScreenInput;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
@@ -39,7 +39,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
     }
 
     private void initializeScreen() {
-        Gdx.input.setInputProcessor(new TavernScreenInput(this, getInputMap()));
+        Gdx.input.setInputProcessor(new BasicScreenInput(this, getInputMap()));
         random = new Random();
     }
 

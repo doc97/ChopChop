@@ -5,9 +5,9 @@ import fi.chop.engine.InputMap;
 import fi.chop.event.Events;
 import fi.chop.screens.ChopScreen;
 
-public class TavernScreenInput extends ChopScreenInput {
+public class BasicScreenInput extends ChopScreenInput {
 
-    public TavernScreenInput(ChopScreen screen, InputMap inputMap) {
+    public BasicScreenInput(ChopScreen screen, InputMap inputMap) {
         super(screen, inputMap);
     }
 

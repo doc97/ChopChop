@@ -8,7 +8,7 @@ import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.MainMenuScreenInput;
+import fi.chop.input.BasicScreenInput;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.object.gui.TextButtonObject;
 import fi.chop.model.object.gui.TextButtonStyle;
@@ -25,8 +25,8 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new MainMenuScreenInput(this, getInputMap()));
-        Chop.events.addListener(this, Events.ACTION_EXIT);
+        Gdx.input.setInputProcessor(new BasicScreenInput(this, getInputMap()));
+        Chop.events.addListener(this, Events.ACTION_BACK);
 
         getWorld().reset();
 
@@ -81,7 +81,7 @@ public class MainMenuScreen extends ChopScreen implements EventListener {
 
     @Override
     public void handle(Events event, EventData data) {
-        if (event == Events.ACTION_EXIT)
+        if (event == Events.ACTION_BACK)
             Gdx.app.exit();
     }
 
