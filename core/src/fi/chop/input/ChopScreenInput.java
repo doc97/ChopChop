@@ -6,6 +6,8 @@ import fi.chop.Chop;
 import fi.chop.engine.InputMap;
 import fi.chop.event.EventData;
 import fi.chop.event.Events;
+import fi.chop.event.TooltipData;
+import fi.chop.model.auxillary.Transform;
 import fi.chop.model.object.GameObject;
 import fi.chop.screens.ChopScreen;
 
@@ -82,7 +84,12 @@ public class ChopScreenInput extends InputAdapter {
 
         // findAll returns them in the order: bottom to up
         GameObject topObject = objects.get(objects.size() - 1);
-        Chop.events.notify(Events.MSG_ADD_TOOLTIP, new EventData<>(topObject.getTooltip()));
+        Transform globalTransform = topObject.getTransform().getGlobal();
+        TooltipData data = new TooltipData();
+        data.tooltip = topObject.getTooltip();
+        data.x = globalTransform.getCenterX();
+        data.y = globalTransform.getBottom();
+        Chop.events.notify(Events.MSG_ADD_TOOLTIP, new EventData<>(data));
         tooltipActive = true;
         return true;
     }

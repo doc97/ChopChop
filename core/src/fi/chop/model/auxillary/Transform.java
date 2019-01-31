@@ -254,4 +254,12 @@ public class Transform {
     public float getBottom() {
         return y - originY * getScaledHeight();
     }
+
+    public float getCenterX() {
+        return x + (0.5f - originX) * getScaledWidth();
+    }
+
+    public float getCenterY() {
+        return y + (0.5f - originY) * getScaledHeight();
+    }
 }
