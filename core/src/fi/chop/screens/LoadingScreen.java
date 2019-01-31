@@ -23,21 +23,40 @@ public class LoadingScreen extends ChopScreen {
 
     @Override
     public void show() {
+        FreeTypeFontLoaderParameter roboto60Params = new FreeTypeFontLoaderParameter();
+        roboto60Params.fontFileName = "fonts/Roboto-Regular.ttf";
+        roboto60Params.fontParameters.size = 60;
+        initFontParams(roboto60Params);
+
+        FreeTypeFontLoaderParameter roboto120Params = new FreeTypeFontLoaderParameter();
+        roboto120Params.fontFileName = "fonts/Roboto-Regular.ttf";
+        roboto120Params.fontParameters.size = 120;
+        initFontParams(roboto120Params);
+
+        FreeTypeFontLoaderParameter roboto180Params = new FreeTypeFontLoaderParameter();
+        roboto180Params.fontFileName = "fonts/Roboto-Regular.ttf";
+        roboto180Params.fontParameters.size = 180;
+        initFontParams(roboto180Params);
+
         FreeTypeFontLoaderParameter dance30Params = new FreeTypeFontLoaderParameter();
         dance30Params.fontFileName = "fonts/DancingScript-Bold.ttf";
         dance30Params.fontParameters.size = 30;
+        initFontParams(dance30Params);
 
         FreeTypeFontLoaderParameter zcool30Params = new FreeTypeFontLoaderParameter();
         zcool30Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
         zcool30Params.fontParameters.size = 30;
+        initFontParams(zcool30Params);
 
         FreeTypeFontLoaderParameter zcool40Params = new FreeTypeFontLoaderParameter();
         zcool40Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
         zcool40Params.fontParameters.size = 40;
+        initFontParams(zcool40Params);
 
         FreeTypeFontLoaderParameter zcool60Params = new FreeTypeFontLoaderParameter();
         zcool60Params.fontFileName = "fonts/ZCOOL-Regular.ttf";
         zcool60Params.fontParameters.size = 60;
+        initFontParams(zcool60Params);
 
         // Needed by LoadingScreen
         getAssets().load("ZCOOL-40.ttf", BitmapFont.class, zcool40Params);
@@ -50,6 +69,9 @@ public class LoadingScreen extends ChopScreen {
         textureParams.magFilter = Texture.TextureFilter.Nearest;
 
         // Queue other assets to be loaded asynchronously
+        getAssets().load("Roboto-60.ttf", BitmapFont.class, roboto60Params);
+        getAssets().load("Roboto-120.ttf", BitmapFont.class, roboto120Params);
+        getAssets().load("Roboto-180.ttf", BitmapFont.class, roboto180Params);
         getAssets().load("ZCOOL-30.ttf", BitmapFont.class, zcool30Params);
         getAssets().load("ZCOOL-60.ttf", BitmapFont.class, zcool60Params);
         getAssets().load("Dance-30.ttf", BitmapFont.class, dance30Params);
@@ -82,5 +104,15 @@ public class LoadingScreen extends ChopScreen {
                 .center(getCamera(), true, true)
                 .draw(batch);
         batch.setColor(Color.WHITE);
+    }
+
+    private void initFontParams(FreeTypeFontLoaderParameter param) {
+        param.fontParameters.genMipMaps = true;
+        param.fontParameters.minFilter = Texture.TextureFilter.MipMapLinearNearest;
+        param.fontParameters.gamma = 1;
+        param.fontParameters.padBottom = 1;
+        param.fontParameters.padRight = 1;
+        param.fontParameters.padLeft = 1;
+        param.fontParameters.padTop = 1;
     }
 }
