@@ -167,8 +167,9 @@ public class TextObject extends GUIObject {
     }
 
     public float getMaxWidth() {
+        float paddingTotal = AUTO_PAD_X + getPadLeft() + getPadRight();
         renderer.edit(longestText.get());
-        float width = renderer.width() + AUTO_PAD_X + getPadLeft() + getPadRight();
+        float width = renderer.width() + paddingTotal;
         renderer.edit(textConstructor.get());
         return width;
     }
