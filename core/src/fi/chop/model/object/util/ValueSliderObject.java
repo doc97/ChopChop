@@ -45,9 +45,8 @@ public class ValueSliderObject extends GUIObject {
 
         float totalWidth = background.getTransform().getScaledWidth() + valueText.getMaxWidth();
         float totalHeight = Math.max(background.getTransform().getScaledHeight(),
-                valueText.getTransform().getScaledHeight());
+                Math.max(knob.getTransform().getHeight(), valueText.getTransform().getScaledHeight()));
         getTransform().setSize(totalWidth, totalHeight);
-        resizeToFitChildren();
     }
 
     @Override

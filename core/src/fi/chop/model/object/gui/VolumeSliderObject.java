@@ -28,7 +28,13 @@ public class VolumeSliderObject extends GUIObject {
         text.pack();
         slider.pack();
 
-        float totalHeight = text.getTransform().getHeight() + slider.getTransform().getHeight();
+        // Y spacing between text and slider
+        float spacingY = 5;
+        text.getTransform().setPosition(0, spacingY);
+        // Slider origin y is 0.5f
+        slider.getTransform().setPosition(0, slider.getTransform().getHeight() / 2);
+
+        float totalHeight = text.getTransform().getHeight() + slider.getTransform().getHeight() + spacingY;
         float totalWidth = slider.getTransform().getWidth();
         getTransform().setSize(totalWidth, totalHeight);
     }
@@ -40,6 +46,7 @@ public class VolumeSliderObject extends GUIObject {
         text.load();
         text.getTransform().setParent(getTransform());
         text.getTransform().setAlign(Align.TOP_LEFT);
+        text.getTransform().setOrigin(0, 1);
 
         slider = new ValueSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
         slider.init(atlasName, sliderBackground, sliderKnob, fontName,
