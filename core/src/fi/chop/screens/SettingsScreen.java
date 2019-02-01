@@ -8,6 +8,8 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.BasicScreenInput;
+import fi.chop.model.object.gui.TextObject;
+import fi.chop.model.object.gui.VolumeSliderObject;
 import fi.chop.model.object.util.ValueSliderObject;
 
 public class SettingsScreen extends ChopScreen implements EventListener {
@@ -21,17 +23,17 @@ public class SettingsScreen extends ChopScreen implements EventListener {
         Gdx.input.setInputProcessor(new BasicScreenInput(this, getInputMap()));
         Chop.events.addListener(this, Events.ACTION_BACK);
 
-        ValueSliderObject slider = new ValueSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        slider.init("textures/packed/Chop.atlas", "meter-background", "knob",
-                "ZCOOL-40.ttf", () -> String.format("%.0f", slider.getValue() * 100) + "%",
-                () -> "100%");
-        slider.load();
-        slider.pack();
-        slider.getTransform().setOrigin(0.5f, 0.5f);
-        slider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 3);
+
+        VolumeSliderObject musicVolumeSlider = new VolumeSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        musicVolumeSlider.init("textures/packed/Chop.atlas", "meter-background", "knob",
+                "ZCOOL-40.ttf", "Music volume");
+        musicVolumeSlider.load();
+        musicVolumeSlider.pack();
+        musicVolumeSlider.getTransform().setOrigin(0.5f, 0.5f);
+        musicVolumeSlider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 3);
 
         getScene().addLayer("Controls", new Layer());
-        getScene().addObjects("Controls", slider);
+        getScene().addObjects("Controls", musicVolumeSlider);
     }
 
     @Override

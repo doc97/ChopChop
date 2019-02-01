@@ -154,9 +154,9 @@ public class ValueSliderObject extends GUIObject {
             Vector3 worldPos = getCamera().unproject(new Vector3(screenX, screenY, 0));
 
             // localX is between [knobHalfWidth, bgWidth - knobHalfWidth]
-            float minX = knob.getTransform().getScaledWidth() / 2;
-            float maxX = background.getTransform().getScaledWidth() - minX;
-            float localX = worldPos.x - getTransform().getLeft();
+            float minX = knob.getTransform().getGlobal().getScaledWidth() / 2;
+            float maxX = background.getTransform().getGlobal().getScaledWidth() - minX;
+            float localX = worldPos.x - getTransform().getGlobal().getLeft();
             localX = Math.min(Math.max(localX, minX), maxX);
             knob.getTransform().setX(localX);
 
