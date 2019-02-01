@@ -23,17 +23,20 @@ public class SettingsScreen extends ChopScreen implements EventListener {
         Gdx.input.setInputProcessor(new BasicScreenInput(this, getInputMap()));
         Chop.events.addListener(this, Events.ACTION_BACK);
 
+        VolumeSliderObject masterVolumeSlider = initVolumeSlider("Master volume");
+        masterVolumeSlider.getTransform().setPosition(
+                getCamera().viewportWidth / 2, getCamera().viewportHeight * 2 / 3);
 
-        VolumeSliderObject musicVolumeSlider = new VolumeSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        musicVolumeSlider.init("textures/packed/Chop.atlas", "meter-background", "knob",
-                "ZCOOL-40.ttf", "Music volume");
-        musicVolumeSlider.load();
-        musicVolumeSlider.pack();
-        musicVolumeSlider.getTransform().setOrigin(0.5f, 0.5f);
-        musicVolumeSlider.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight / 3);
+        VolumeSliderObject musicVolumeSlider = initVolumeSlider("Music volume");
+        musicVolumeSlider.getTransform().setPosition(
+                getCamera().viewportWidth / 2, masterVolumeSlider.getTransform().getBottom() - 30);
+
+        VolumeSliderObject soundVolumeSlider = initVolumeSlider("Sound volume");
+        soundVolumeSlider.getTransform().setPosition(
+                getCamera().viewportWidth / 2, musicVolumeSlider.getTransform().getBottom() - 30);
 
         getScene().addLayer("Controls", new Layer());
-        getScene().addObjects("Controls", musicVolumeSlider);
+        getScene().addObjects("Controls", masterVolumeSlider, musicVolumeSlider, soundVolumeSlider);
     }
 
     @Override
@@ -50,5 +53,15 @@ public class SettingsScreen extends ChopScreen implements EventListener {
     public void handle(Events event, EventData data) {
         if (event == Events.ACTION_BACK)
             setScreen(Screens.MAIN_MENU);
+    }
+
+    private VolumeSliderObject initVolumeSlider(String label) {
+        VolumeSliderObject slider = new VolumeSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        slider.init("textures/packed/Chop.atlas", "meter-background", "knob",
+                "ZCOOL-40.ttf", label);
+        slider.load();
+        slider.pack();
+        slider.getTransform().setOrigin(0.5f, 1);
+        return slider;
     }
 }
