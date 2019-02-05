@@ -4,12 +4,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import fi.chop.engine.DrawParameters;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
+import fi.chop.model.object.util.NinePatchObject;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
 
@@ -20,15 +18,12 @@ import java.util.function.Supplier;
 
 public class PopUpBoxObject extends GUIObject {
 
-    private Color tint;
     private TextObject text;
     private List<TextButtonObject> buttons;
-    private TextureRegion background;
-    private DrawParameters backgroundParams;
+    private NinePatchObject background;
 
     public PopUpBoxObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
         super(assets, camera, world, player);
-        tint = new Color(Color.WHITE);
         buttons = new ArrayList<>();
     }
 
@@ -48,14 +43,12 @@ public class PopUpBoxObject extends GUIObject {
         float paddingX = getPadLeft() + getPadRight();
         float paddingY = getPadTop() + getPadBottom();
         getTransform().setSize(width + paddingX,  height + paddingY);
-        backgroundParams.size(width + paddingX,  height + paddingY);
+        background.getTransform().setSize(width + paddingX,  height + paddingY);
     }
 
     @Override
     public void load() {
-        TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-        background = atlas.findRegion("pixel-white");
-        backgroundParams = new DrawParameters();
+        background.load();
 
         if (text != null) {
             text.load();
@@ -68,11 +61,7 @@ public class PopUpBoxObject extends GUIObject {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        batch.setColor(tint);
-        draw(batch, background, backgroundParams);
-        batch.setColor(Color.WHITE);
-    }
+    public void render(SpriteBatch batch) { }
 
     @Override
     public void dispose() { }
@@ -80,6 +69,7 @@ public class PopUpBoxObject extends GUIObject {
     @Override
     public void die() {
         super.die();
+        background.die();
         text.die();
         for (TextButtonObject btn : buttons)
             btn.die();
@@ -87,16 +77,31 @@ public class PopUpBoxObject extends GUIObject {
 
     @Override
     public GameObject[] getChildren() {
-        GameObject[] children = new GameObject[buttons.size() + 1];
-        children[0] = text;
+        GameObject[] children = new GameObject[buttons.size() + 2];
+        children[0] = background;
+        children[1] = text;
         for (int i = 0; i < buttons.size(); i++)
-            children[i + 1] = buttons.get(i);
+            children[i + 2] = buttons.get(i);
         return children;
     }
 
     public PopUpBoxObject size(float width, float height) {
         getTransform().setSize(width, height);
         return this;
+    }
+
+    public PopUpBoxObject background(String atlasName, String patchName, Color tint) {
+        background = new NinePatchObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        background.init(atlasName, patchName);
+        background.setTint(tint);
+        background.getTransform().setParent(getTransform());
+        background.getTransform().setAlign(Align.TOP_LEFT);
+        background.getTransform().setOrigin(0, 1);
+        return this;
+    }
+
+    public PopUpBoxObject background(String atlasName, String patchName) {
+        return background(atlasName, patchName, Color.WHITE);
     }
 
     public PopUpBoxObject text(String fontName, Supplier<String> supplier, Color tint,
@@ -131,11 +136,6 @@ public class PopUpBoxObject extends GUIObject {
 
     public PopUpBoxObject btn(String fontName, Supplier<String> supplier, Consumer<TextButtonObject> onClick) {
         return btn(fontName, supplier, onClick, 0, com.badlogic.gdx.utils.Align.left, false);
-    }
-
-    public PopUpBoxObject tint(Color tint) {
-        this.tint = tint;
-        return this;
     }
 
     public PopUpBoxObject pad(float padTop, float padLeft, float padRight, float padBottom) {

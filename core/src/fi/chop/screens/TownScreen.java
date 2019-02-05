@@ -140,16 +140,16 @@ public class TownScreen extends ChopScreen implements EventListener {
 
     private void showWelcomePopUp() {
         PopUpBoxObject popUp = new PopUpBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        popUp.text("ZCOOL-40.ttf",
-                () -> "Welcome to ChopChop!\n\n" +
+        popUp.background("textures/packed/Chop.atlas", "ui-box")
+                .text("ZCOOL-40.ttf",
+                    () -> "Welcome to ChopChop!\n\n" +
                         "Guillotine: Execute people and earn your pay\n" +
                         "Tavern: Drink and socialize to raise your popularity\n" +
                         "Castle: (Coming soon)",
-                Color.BLACK)
+                    Color.BLACK)
                 .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
-                .pad(25, 25, 25, 25)
-                .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3)
-                .tint(new Color(0xb5e8f2ff));
+                .pad(50, 50, 50, 50)
+                .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3);
         popUp.load();
         popUp.pack();
         popUp.getTransform().setOrigin(0.5f, 0.5f);

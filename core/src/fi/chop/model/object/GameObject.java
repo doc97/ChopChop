@@ -97,12 +97,12 @@ public abstract class GameObject implements EventListener, Disposable {
         restoreTint(batch);
     }
 
-    private void saveAndSetTint(SpriteBatch batch) {
+    protected void saveAndSetTint(SpriteBatch batch) {
         oldColor.set(batch.getColor());
         batch.setColor(oldColor.cpy().mul(tint));
     }
 
-    private void restoreTint(SpriteBatch batch) {
+    protected void restoreTint(SpriteBatch batch) {
         batch.setColor(oldColor);
     }
 
