@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -98,7 +99,7 @@ public class TextObject extends GUIObject {
         Gdx.gl20.glBlendFuncSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE);
 
         if (style.getBgTexture() != null)
-            batch.draw(style.getBgTexture(), 0, 0, totalWidth, totalHeight);
+            style.getBgTexture().draw(batch, 0, 0, totalWidth, totalHeight);
 
         textRenderer
                 .center(cam, true, true)
@@ -156,7 +157,7 @@ public class TextObject extends GUIObject {
         invalidate();
     }
 
-    public void bgTexture(TextureRegion bgTexture) {
+    public void bgTexture(NinePatch bgTexture) {
         style.bgTexture(bgTexture);
         invalidate();
     }

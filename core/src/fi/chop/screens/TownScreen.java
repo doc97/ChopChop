@@ -3,6 +3,7 @@ package fi.chop.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
@@ -67,6 +68,8 @@ public class TownScreen extends ChopScreen implements EventListener {
     }
 
     private void initializeScene() {
+        TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
+
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Buttons", new Layer());
         getScene().addLayer("Text", new Layer());
@@ -92,6 +95,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         tavernBtn.setHoverScale(1.1f, 1.1f);
         tavernBtn.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernBtn.load();
+        tavernBtn.setStyle(TextButtonObject.StyleType.NORMAL,
+                new TextButtonStyle().bgTexture(atlas.createPatch("ui-box")).tint(Color.BROWN));
         tavernBtn.setTouchHandler(new TextButtonHandler(tavernBtn, (btn) -> setScreen(Screens.TAVERN)));
 
         TextButtonObject guillotineBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());

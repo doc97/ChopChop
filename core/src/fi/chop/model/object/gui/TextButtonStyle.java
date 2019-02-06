@@ -1,11 +1,12 @@
 package fi.chop.model.object.gui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TextButtonStyle {
 
-    private TextureRegion bgTexture;
+    private NinePatch bgTexture;
     private Color bgColor;
     private Color tint;
 
@@ -32,7 +33,7 @@ public class TextButtonStyle {
         return this;
     }
 
-    public TextButtonStyle bgTexture(TextureRegion bgTexture) {
+    public TextButtonStyle bgTexture(NinePatch bgTexture) {
         this.bgTexture = bgTexture;
         return this;
     }
@@ -45,7 +46,7 @@ public class TextButtonStyle {
         return bgColor;
     }
 
-    public TextureRegion getBgTexture() {
+    public NinePatch getBgTexture() {
         return bgTexture;
     }
 }
