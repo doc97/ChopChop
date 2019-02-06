@@ -27,7 +27,7 @@ public class ValueSliderObject extends GUIObject {
     private Supplier<String> longestValueText;
     private boolean initialized;
 
-    private TextureRegionObject background;
+    private NinePatchObject background;
     private TextureRegionObject knob;
     private TextObject valueText;
     private ValueMeter meter;
@@ -43,10 +43,9 @@ public class ValueSliderObject extends GUIObject {
         valueText.pack();
         valueText.getTransform().setPosition(5, 0);
 
-        float totalWidth = background.getTransform().getScaledWidth() + valueText.getMaxWidth();
-        float totalHeight = Math.max(background.getTransform().getScaledHeight(),
-                Math.max(knob.getTransform().getHeight(), valueText.getTransform().getScaledHeight()));
-        getTransform().setSize(totalWidth, totalHeight);
+        float totalWidth = getTransform().getWidth();
+        float totalHeight = getTransform().getHeight();
+        background.getTransform().setSize(totalWidth, totalHeight);
     }
 
     @Override
@@ -59,14 +58,18 @@ public class ValueSliderObject extends GUIObject {
         valueText.load();
         valueText.getTransform().setParent(getTransform());
         valueText.getTransform().setAlign(Align.RIGHT_CENTER);
-        valueText.getTransform().setOrigin(1, 0.5f);
+        valueText.getTransform().setOrigin(0, 0.5f);
 
-        background = loadTextureRegionObject(atlasName, backgroundName);
+        background = new NinePatchObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        background.init(atlasName, backgroundName);
+        background.load();
+        background.getTransform().setParent(getTransform());
+        background.getTransform().setAlign(Align.LEFT_CENTER);
         background.getTransform().setOrigin(0, 0.5f);
         background.setTouchable(true);
-        background.setTouchHandler(new TouchHandler<TextureRegionObject>(background) {
+        background.setTouchHandler(new TouchHandler<NinePatchObject>(background) {
             @Override
-            public boolean touchDown(TextureRegionObject object, float worldX, float worldY, int pointer, int button) {
+            public boolean touchDown(NinePatchObject object, float worldX, float worldY, int pointer, int button) {
                 isDragging = true;
                 return true;
             }

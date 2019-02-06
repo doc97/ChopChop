@@ -23,15 +23,15 @@ public class SettingsScreen extends ChopScreen implements EventListener {
         Gdx.input.setInputProcessor(new BasicScreenInput(this, getInputMap()));
         Chop.events.addListener(this, Events.ACTION_BACK);
 
-        VolumeSliderObject masterVolumeSlider = initVolumeSlider("Master volume");
+        VolumeSliderObject masterVolumeSlider = initVolumeSlider("Master volume", 540, 16);
         masterVolumeSlider.getTransform().setPosition(
                 getCamera().viewportWidth / 2, getCamera().viewportHeight * 2 / 3);
 
-        VolumeSliderObject musicVolumeSlider = initVolumeSlider("Music volume");
+        VolumeSliderObject musicVolumeSlider = initVolumeSlider("Music volume", 540, 16);
         musicVolumeSlider.getTransform().setPosition(
                 getCamera().viewportWidth / 2, masterVolumeSlider.getTransform().getBottom() - 30);
 
-        VolumeSliderObject soundVolumeSlider = initVolumeSlider("Sound volume");
+        VolumeSliderObject soundVolumeSlider = initVolumeSlider("Sound volume", 540, 16);
         soundVolumeSlider.getTransform().setPosition(
                 getCamera().viewportWidth / 2, musicVolumeSlider.getTransform().getBottom() - 30);
 
@@ -55,13 +55,13 @@ public class SettingsScreen extends ChopScreen implements EventListener {
             setScreen(Screens.MAIN_MENU);
     }
 
-    private VolumeSliderObject initVolumeSlider(String label) {
+    private VolumeSliderObject initVolumeSlider(String label, float width, float height) {
         VolumeSliderObject slider = new VolumeSliderObject(getAssets(), getCamera(), getWorld(), getPlayer());
         slider.init("textures/packed/Chop.atlas", "meter-background", "knob",
-                "ZCOOL-40.ttf", label);
+                "ZCOOL-40.ttf", label, width, height);
         slider.load();
-        slider.pack();
         slider.getTransform().setOrigin(0.5f, 1);
+        slider.pack();
         return slider;
     }
 }

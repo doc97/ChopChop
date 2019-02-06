@@ -15,6 +15,9 @@ public class VolumeSliderObject extends GUIObject {
     private String sliderKnob;
     private String atlasName;
     private String fontName;
+    private float sliderWidth;
+    private float sliderHeight;
+
     private String label;
     private TextObject text;
     private ValueSliderObject slider;
@@ -52,6 +55,7 @@ public class VolumeSliderObject extends GUIObject {
         slider.init(atlasName, sliderBackground, sliderKnob, fontName,
                 () -> String.format("%.0f", slider.getValue() * 100) + "%", () -> "100%");
         slider.load();
+        slider.getTransform().setSize(sliderWidth, sliderHeight);
         slider.getTransform().setParent(getTransform());
         slider.getTransform().setAlign(Align.BOTTOM_LEFT);
         slider.getTransform().setOrigin(0, 1);
@@ -75,11 +79,14 @@ public class VolumeSliderObject extends GUIObject {
         return new GameObject[] { text, slider };
     }
 
-    public void init(String atlasName, String sliderBackground, String sliderKnob, String fontName, String label) {
+    public void init(String atlasName, String sliderBackground, String sliderKnob, String fontName, String label,
+                     float sliderWidth, float sliderHeight) {
         this.atlasName = atlasName;
         this.sliderBackground = sliderBackground;
         this.sliderKnob = sliderKnob;
         this.fontName = fontName;
         this.label = label;
+        this.sliderWidth = sliderWidth;
+        this.sliderHeight = sliderHeight;
     }
 }
