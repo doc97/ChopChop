@@ -45,16 +45,16 @@ public class TownScreen extends ChopScreen implements EventListener {
     }
 
     private void checkBribe() {
-        if (getWorld().getExecution().getBribe() > 0) {
+        if (getWorld().getExecution().getBribe() > 0 || true) {
             DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
-            dialog.avatar("textures/packed/Chop.atlas", "avatar-empty")
+            dialog.background("textures/packed/Chop.atlas", "ui-box")
+                    .avatar("textures/packed/Chop.atlas", "avatar-empty")
                     .text("ZCOOL-40.ttf",
                     () -> "Please! Don't kill my child... I beg of you. I will see that you are well compensated. " +
                             "I know you will make the right choice.",
                     Color.BLACK)
                     .speed(0.5f, 0.025f)
                     .textWidth(getCamera().viewportWidth * 3 / 4f)
-                    .tint(new Color(0xb5b5b5ff))
                     .onFinish(() -> Gdx.app.log("Dialog", "Dismissed."));
             dialog.load();
             dialog.pack();
@@ -149,7 +149,7 @@ public class TownScreen extends ChopScreen implements EventListener {
                     Color.BLACK)
                 .btn("ZCOOL-40.ttf", () -> "OK!", (btn) -> popUp.die())
                 .pad(50, 50, 50, 50)
-                .size(getCamera().viewportWidth / 3, getCamera().viewportHeight / 3);
+                .size(getCamera().viewportWidth / 4, getCamera().viewportHeight / 4);
         popUp.load();
         popUp.pack();
         popUp.getTransform().setOrigin(0.5f, 0.5f);

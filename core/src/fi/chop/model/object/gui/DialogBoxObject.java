@@ -10,6 +10,7 @@ import fi.chop.event.Events;
 import fi.chop.functional.Procedure;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;
+import fi.chop.model.object.util.NinePatchObject;
 import fi.chop.model.object.util.TextureRegionObject;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
@@ -27,10 +28,12 @@ public class DialogBoxObject extends GUIObject {
     private String avatarAssetName;
     private String atlasAssetName;
     private String fontName;
+    private String backgroundAtlasName;
+    private String backgroundPatchName;
     private Supplier<String> textSupplier;
     private TextObject text;
     private TextureRegionObject avatar;
-    private TextureRegionObject background;
+    private NinePatchObject background;
     private Procedure onFinish;
 
     public DialogBoxObject(AssetManager assets, OrthographicCamera camera, WorldState world, Player player) {
@@ -50,7 +53,6 @@ public class DialogBoxObject extends GUIObject {
         float avatarSize = avatar != null ? textHeight : 0;
         float totalHeight = textHeight + getPadTop() + getPadBottom();
         float totalWidth = textWidth + getPadLeft() + getPadRight() + avatarSize;
-        background.getParameters().size(textWidth + getPadRight(), textHeight + getPadTop() + getPadBottom());
         background.getTransform().setPosition(getPadLeft(), 0);
         background.getTransform().setSize(textWidth + getPadRight(), textHeight + getPadTop() + getPadBottom());
         text.getTransform().setPosition(-textWidth - getPadRight(), -getPadTop());
@@ -66,8 +68,8 @@ public class DialogBoxObject extends GUIObject {
         if (text == null)
             throw new IllegalStateException("text() must be called before load()");
 
-        background = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        background.setRegion("textures/packed/Chop.atlas", "pixel-white");
+        background = new NinePatchObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        background.init(backgroundAtlasName, backgroundPatchName);
         background.load();
         background.getTransform().setParent(getTransform());
         background.getTransform().setAlign(Align.TOP_RIGHT);
@@ -139,6 +141,12 @@ public class DialogBoxObject extends GUIObject {
 
     public DialogBoxObject textWidth(float widthPx) {
         this.widthPx = widthPx;
+        return this;
+    }
+
+    public DialogBoxObject background(String backgroundAtlasName, String backgroundPatchName) {
+        this.backgroundAtlasName = backgroundAtlasName;
+        this.backgroundPatchName = backgroundPatchName;
         return this;
     }
 
