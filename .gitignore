@@ -135,3 +135,8 @@ desktop/export/ChopChop/
 desktop/export/*.zip
 desktop/export/jre-linux/
 desktop/export/jre-win32/
+
+# Netbeans
+nbproject/
+build.xml
+manifest.mf
