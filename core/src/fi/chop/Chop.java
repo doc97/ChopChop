@@ -19,6 +19,9 @@ import fi.chop.engine.InputMap;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
 import fi.chop.screens.LoadingScreen;
+import fi.chop.sound.MusicType;
+import fi.chop.sound.SoundSystem;
+import fi.chop.sound.SoundType;
 import fi.chop.timer.GameTimer;
 
 public class Chop extends Game {
@@ -34,6 +37,7 @@ public class Chop extends Game {
     private GameStats stats;
     private WorldState world;
     private Player player;
+    private SoundSystem sounds;
 
     @Override
     public void create() {
@@ -54,6 +58,8 @@ public class Chop extends Game {
         stats = new GameStats();
         world = new WorldState();
         player = new Player();
+        
+        sounds = new SoundSystem(assets, SoundType.values(), MusicType.values());
 
         // Set TTF and bitmap font loader
         FileHandleResolver resolver = new InternalFileHandleResolver();
@@ -108,5 +114,9 @@ public class Chop extends Game {
 
     public Player getPlayer() {
         return player;
+    }
+    
+    public SoundSystem getSounds() {
+        return sounds;
     }
 }

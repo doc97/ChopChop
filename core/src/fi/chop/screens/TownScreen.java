@@ -12,6 +12,7 @@ import fi.chop.event.Events;
 import fi.chop.input.TextButtonHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.gui.*;
+import fi.chop.sound.MusicType;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -26,6 +27,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         initializeScene();
         checkTaxes();
         checkBribe();
+        
+        getSounds().setBackgroundMusic(MusicType.MUSIC);
     }
 
     private void registerEventListener() {

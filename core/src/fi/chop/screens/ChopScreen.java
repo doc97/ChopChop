@@ -12,6 +12,7 @@ import fi.chop.model.GameStats;
 import fi.chop.engine.InputMap;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
+import fi.chop.sound.SoundSystem;
 
 public abstract class ChopScreen extends ScreenAdapter {
 
@@ -24,6 +25,7 @@ public abstract class ChopScreen extends ScreenAdapter {
     private final GameStats stats;
     private final WorldState world;
     private final Player player;
+    private final SoundSystem sounds;
 
     public ChopScreen(Chop game) {
         this.game = game;
@@ -34,6 +36,7 @@ public abstract class ChopScreen extends ScreenAdapter {
         this.stats = game.getStats();
         this.world = game.getWorld();
         this.player = game.getPlayer();
+        this.sounds = game.getSounds();
 
         scene = new Scene();
     }
@@ -111,5 +114,9 @@ public abstract class ChopScreen extends ScreenAdapter {
 
     protected Player getPlayer() {
         return player;
+    }
+    
+    protected SoundSystem getSounds() {
+        return sounds;
     }
 }

@@ -79,6 +79,8 @@ public class LoadingScreen extends ChopScreen {
         getAssets().load("textures/execution_screen/Background.png", Texture.class, textureParams);
         getAssets().load("textures/execution_screen/Guillotine_Body.png", Texture.class, textureParams);
         getAssets().load("textures/execution_screen/Guillotine_Blade.png", Texture.class, textureParams);
+        getSounds().loadSounds();
+        
 
         BitmapFont font = getAssets().get("ZCOOL-40.ttf", BitmapFont.class);
         progressText = new FontRenderer(font);

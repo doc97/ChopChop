@@ -1,0 +1,27 @@
+---
+SFX
+---
+Gasp1, Gasp2 - Jayfrosting
+GuillotineDrop - Glaneur de sons
+Gasp3 - dvideoguy
+MenuMove - nightflame
+MenuSelect - plasterbrain
+Cancel - krzysiunet
+GuillotineSuccess1 - scrampunk
+GuillotineSuccess2 - djm62
+GuillotineRaise - f4ngy
+Notification - FoolBoyMedia
+Bell - wuola
+
+---
+BGM
+---
+ExecutionBGM, Haunted - edtijo
+Lute - iluppai
+YayliTanbur - xserra
+
+---
+BGS
+---
+Crowd - epicwizard
+Tavern - op-archive
