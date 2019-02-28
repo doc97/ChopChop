@@ -9,12 +9,15 @@ import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.TextButtonHandler;
+import fi.chop.input.SimpleTextButtonTouchHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.gui.*;
+import fi.chop.model.object.util.TextureObject;
 import fi.chop.sound.MusicType;
 
 public class TownScreen extends ChopScreen implements EventListener {
+
+    private TextureObject background;
 
     public TownScreen(Chop game) {
         super(game);
@@ -49,7 +52,7 @@ public class TownScreen extends ChopScreen implements EventListener {
     }
 
     private void checkBribe() {
-        if (getWorld().getExecution().getBribe() > 0 || true) {
+        if (getWorld().getExecution().getBribe() > 0) {
             DialogBoxObject dialog = new DialogBoxObject(getAssets(), getCamera(), getWorld(), getPlayer());
             dialog.background("textures/packed/Chop.atlas", "ui-box")
                     .avatar("textures/packed/Chop.atlas", "avatar-empty")
@@ -79,35 +82,52 @@ public class TownScreen extends ChopScreen implements EventListener {
         getScene().addLayer("GUI", new Layer());
         getScene().addLayer("PopUp", new Layer());
 
+        background = new TextureObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        background.getTransform().setSize(1920, 1080);
+        background.setTexture("textures/town_screen/Background_Neutral.png");
+        background.load();
+
         TextObject dayText = new TextObject(getAssets(), getCamera(), getWorld(), getPlayer());
         dayText.getTransform().setOrigin(0.5f, 1);
         dayText.getTransform().setPosition(getCamera().viewportWidth / 2, getCamera().viewportHeight - 30);
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
-        TextButtonObject castleBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        castleBtn.create("ZCOOL-40.ttf", () -> "Castle");
-        castleBtn.load();
-        castleBtn.pack();
-        castleBtn.getTransform().setPosition(getCamera().viewportWidth / 2 - 150, getCamera().viewportHeight - 250);
-        castleBtn.setTouchHandler(new TextButtonHandler(castleBtn, (btn) -> Gdx.app.log("Castle", "Go!")));
-        castleBtn.disable();
-
         TextButtonObject tavernBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        tavernBtn.getTransform().setPosition(300, 250);
+        tavernBtn.getTransform().setPosition(getCamera().viewportWidth - 350, 450);
         tavernBtn.setHoverScale(1.1f, 1.1f);
         tavernBtn.create("ZCOOL-40.ttf", () -> "Tavern");
         tavernBtn.load();
-        tavernBtn.setStyle(TextButtonObject.StyleType.NORMAL,
-                new TextButtonStyle().bgTexture(atlas.createPatch("ui-box")).tint(Color.BROWN));
-        tavernBtn.setTouchHandler(new TextButtonHandler(tavernBtn, (btn) -> setScreen(Screens.TAVERN)));
+        tavernBtn.setTouchable(true);
+        tavernBtn.setTouchHandler(new SimpleTextButtonTouchHandler(tavernBtn)
+                .onEnter((obj) -> {
+                    background.setTexture("textures/town_screen/Background_Tavern.png");
+                    background.load();
+                })
+                .onExit((obj) -> {
+                    background.setTexture("textures/town_screen/Background_Neutral.png");
+                    background.load();
+                })
+                .onUp((obj) -> setScreen(Screens.TAVERN))
+        );
 
         TextButtonObject guillotineBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        guillotineBtn.getTransform().setPosition(getCamera().viewportWidth - 350, 450);
+        guillotineBtn.getTransform().setPosition(300, 250);
         guillotineBtn.setHoverScale(1.1f, 1.1f);
         guillotineBtn.create("ZCOOL-40.ttf", () -> "Guillotine");
         guillotineBtn.load();
-        guillotineBtn.setTouchHandler(new TextButtonHandler(guillotineBtn, (btn) -> setScreen(Screens.EXECUTION)));
+        guillotineBtn.setTouchable(true);
+        guillotineBtn.setTouchHandler(new SimpleTextButtonTouchHandler(guillotineBtn)
+                .onEnter((obj) -> {
+                    background.setTexture("textures/town_screen/Background_Guillotine.png");
+                    background.load();
+                })
+                .onExit((obj) -> {
+                    background.setTexture("textures/town_screen/Background_Neutral.png");
+                    background.load();
+                })
+                .onUp((obj) -> setScreen(Screens.EXECUTION))
+        );
 
         GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getWorld(), getPlayer());
         gui.load();
@@ -119,7 +139,8 @@ public class TownScreen extends ChopScreen implements EventListener {
         tooltip.pack();
         Chop.events.addListener(tooltip, Events.MSG_ADD_TOOLTIP, Events.MSG_REMOVE_TOOLTIP);
 
-        getScene().addObjects("Buttons", castleBtn, tavernBtn, guillotineBtn);
+        getScene().addObjects("Background", background);
+        getScene().addObjects("Buttons", tavernBtn, guillotineBtn);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui);
         getScene().addObjects("PopUp", tooltip);
