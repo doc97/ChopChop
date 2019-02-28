@@ -9,7 +9,7 @@ import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.SimpleTextButtonTouchHandler;
+import fi.chop.input.touchhandler.SimpleTextButtonTouchHandler;
 import fi.chop.input.TownScreenInput;
 import fi.chop.model.object.gui.*;
 import fi.chop.model.object.util.TextureObject;

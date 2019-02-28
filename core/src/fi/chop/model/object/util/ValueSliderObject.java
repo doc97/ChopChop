@@ -5,7 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import fi.chop.input.TouchHandler;
+import fi.chop.input.touchhandler.TouchHandler;
 import fi.chop.model.ValueMeter;
 import fi.chop.model.auxillary.Align;
 import fi.chop.model.object.GameObject;

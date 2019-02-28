@@ -1,4 +1,4 @@
-package fi.chop.input;
+package fi.chop.input.touchhandler;
 
 import fi.chop.model.object.GameObject;
 
@@ -45,6 +45,10 @@ public class TouchHandler<T extends GameObject> {
 
         retVal = moved(object, worldX, worldY) || retVal;
         return retVal;
+    }
+
+    public boolean isOver() {
+        return over;
     }
 
     // Implement these yourself

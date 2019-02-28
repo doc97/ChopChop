@@ -8,7 +8,7 @@ import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
 import fi.chop.input.BasicScreenInput;
-import fi.chop.input.TextButtonHandler;
+import fi.chop.input.touchhandler.TextButtonHandler;
 import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.gui.TextButtonObject;

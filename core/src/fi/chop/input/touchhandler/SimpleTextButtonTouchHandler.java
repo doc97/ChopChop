@@ -1,4 +1,4 @@
-package fi.chop.input;
+package fi.chop.input.touchhandler;
 
 import fi.chop.model.object.gui.TextButtonObject;
 
