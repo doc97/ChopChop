@@ -3,17 +3,19 @@ package fi.chop.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import fi.chop.Chop;
 import fi.chop.engine.Layer;
 import fi.chop.event.EventData;
 import fi.chop.event.EventListener;
 import fi.chop.event.Events;
-import fi.chop.input.touchhandler.SimpleTextButtonTouchHandler;
 import fi.chop.input.TownScreenInput;
+import fi.chop.input.touchhandler.AreaHandler;
+import fi.chop.model.object.AreaObject;
 import fi.chop.model.object.gui.*;
 import fi.chop.model.object.util.TextureObject;
 import fi.chop.sound.MusicType;
+
+import java.util.function.Consumer;
 
 public class TownScreen extends ChopScreen implements EventListener {
 
@@ -74,13 +76,35 @@ public class TownScreen extends ChopScreen implements EventListener {
     }
 
     private void initializeScene() {
-        TextureAtlas atlas = getAssets().get("textures/packed/Chop.atlas", TextureAtlas.class);
-
         getScene().addLayer("Background", new Layer());
         getScene().addLayer("Buttons", new Layer());
         getScene().addLayer("Text", new Layer());
         getScene().addLayer("GUI", new Layer());
         getScene().addLayer("PopUp", new Layer());
+
+        Consumer<AreaHandler> tavernOnUp = (handler) -> setScreen(Screens.TAVERN);
+        Consumer<AreaHandler> guillotineOnUp = (handler) -> setScreen(Screens.EXECUTION);
+        Consumer<AreaHandler> tavernOnMove = (handler) -> {
+            String texture = "textures/town_screen/Background_Tavern.png";
+            if (handler.isOver() && !background.getTexture().equals(texture)) {
+                background.setTexture(texture);
+                background.load();
+            }
+        };
+        Consumer<AreaHandler> guillotineOnMove = (handler) -> {
+            String texture = "textures/town_screen/Background_Guillotine.png";
+            if (handler.isOver() && !background.getTexture().equals(texture)) {
+                background.setTexture(texture);
+                background.load();
+            }
+        };
+        Consumer<AreaHandler> areaOnExit = (handler) -> {
+            String texture = "textures/town_screen/Background_Neutral.png";
+            if (!background.getTexture().equals(texture)) {
+                background.setTexture(texture);
+                background.load();
+            }
+        };
 
         background = new TextureObject(getAssets(), getCamera(), getWorld(), getPlayer());
         background.getTransform().setSize(1920, 1080);
@@ -93,41 +117,19 @@ public class TownScreen extends ChopScreen implements EventListener {
         dayText.create("ZCOOL-60.ttf", () -> "DAY " + getWorld().getDay());
         dayText.load();
 
-        TextButtonObject tavernBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        tavernBtn.getTransform().setPosition(getCamera().viewportWidth - 350, 450);
-        tavernBtn.setHoverScale(1.1f, 1.1f);
-        tavernBtn.create("ZCOOL-40.ttf", () -> "Tavern");
-        tavernBtn.load();
-        tavernBtn.setTouchable(true);
-        tavernBtn.setTouchHandler(new SimpleTextButtonTouchHandler(tavernBtn)
-                .onEnter((obj) -> {
-                    background.setTexture("textures/town_screen/Background_Tavern.png");
-                    background.load();
-                })
-                .onExit((obj) -> {
-                    background.setTexture("textures/town_screen/Background_Neutral.png");
-                    background.load();
-                })
-                .onUp((obj) -> setScreen(Screens.TAVERN))
-        );
+        AreaObject tavernArea = new AreaObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        tavernArea.getTransform().setPosition(getCamera().viewportWidth - 600, 0);
+        tavernArea.getTransform().setSize(600, getCamera().viewportHeight);
+        bindProceduresToArea(tavernArea, tavernOnUp, tavernOnMove, areaOnExit);
 
-        TextButtonObject guillotineBtn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        guillotineBtn.getTransform().setPosition(300, 250);
-        guillotineBtn.setHoverScale(1.1f, 1.1f);
-        guillotineBtn.create("ZCOOL-40.ttf", () -> "Guillotine");
-        guillotineBtn.load();
-        guillotineBtn.setTouchable(true);
-        guillotineBtn.setTouchHandler(new SimpleTextButtonTouchHandler(guillotineBtn)
-                .onEnter((obj) -> {
-                    background.setTexture("textures/town_screen/Background_Guillotine.png");
-                    background.load();
-                })
-                .onExit((obj) -> {
-                    background.setTexture("textures/town_screen/Background_Neutral.png");
-                    background.load();
-                })
-                .onUp((obj) -> setScreen(Screens.EXECUTION))
-        );
+        AreaObject guillotineArea1 = new AreaObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        guillotineArea1.getTransform().setSize(850, 300);
+        bindProceduresToArea(guillotineArea1, guillotineOnUp, guillotineOnMove, areaOnExit);
+
+        AreaObject guillotineArea2 = new AreaObject(getAssets(), getCamera(), getWorld(), getPlayer());
+        guillotineArea2.getTransform().setPosition(50, 290);
+        guillotineArea2.getTransform().setSize(425, getCamera().viewportHeight - 290);
+        bindProceduresToArea(guillotineArea2, guillotineOnUp, guillotineOnMove, areaOnExit);
 
         GUIObject gui = new GameGUIObject(getAssets(), getCamera(), getWorld(), getPlayer());
         gui.load();
@@ -140,11 +142,21 @@ public class TownScreen extends ChopScreen implements EventListener {
         Chop.events.addListener(tooltip, Events.MSG_ADD_TOOLTIP, Events.MSG_REMOVE_TOOLTIP);
 
         getScene().addObjects("Background", background);
-        getScene().addObjects("Buttons", tavernBtn, guillotineBtn);
+        getScene().addObjects("Buttons", tavernArea, guillotineArea1, guillotineArea2);
         getScene().addObjects("Text", dayText);
         getScene().addObjects("GUI", gui);
         getScene().addObjects("PopUp", tooltip);
         getScene().addQueued();
+    }
+
+    private void bindProceduresToArea(AreaObject obj, Consumer<AreaHandler> onUp, Consumer<AreaHandler> onMove,
+                                      Consumer<AreaHandler> onExit) {
+        obj.setTouchable(true);
+        obj.setTouchHandler(new AreaHandler(obj)
+                .onUp(onUp)
+                .onMove(onMove)
+                .onExit(onExit)
+        );
     }
 
     @Override

@@ -23,6 +23,10 @@ public class TextureObject extends GameObject {
         this.assetName = assetName;
     }
 
+    public String getTexture() {
+        return assetName;
+    }
+
     @Override
     public void load() {
         texture = getAssets().get(assetName, Texture.class);
