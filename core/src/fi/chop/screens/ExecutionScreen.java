@@ -18,6 +18,7 @@ import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.util.TextureObject;
 import fi.chop.model.world.PopularityPerk;
+import fi.chop.sound.MusicType;
 import fi.chop.timer.GameTimer;
 import fi.chop.util.FontRenderer;
 import fi.chop.util.MathUtil;
@@ -58,6 +59,8 @@ public class ExecutionScreen extends ChopScreen implements EventListener {
         isNotExiting = true;
         isGuillotineIdle = true;
         isPowerMeterIdle = true;
+
+        getSounds().setBackgroundMusic(MusicType.MAIN_MUSIC);
     }
 
     private void loadAssets() {

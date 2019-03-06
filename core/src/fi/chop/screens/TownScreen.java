@@ -32,8 +32,6 @@ public class TownScreen extends ChopScreen implements EventListener {
         initializeScene();
         checkTaxes();
         checkBribe();
-        
-        getSounds().setBackgroundMusic(MusicType.MUSIC);
     }
 
     private void registerEventListener() {
@@ -42,6 +40,7 @@ public class TownScreen extends ChopScreen implements EventListener {
 
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new TownScreenInput(this, getInputMap()));
+        getSounds().setBackgroundMusic(MusicType.MAIN_MUSIC);
     }
 
     private void checkTaxes() {

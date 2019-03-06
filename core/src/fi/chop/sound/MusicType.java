@@ -11,15 +11,22 @@ package fi.chop.sound;
  */
 public enum MusicType {
     
-    MUSIC("audio/BGM/ExecutionBGM.ogg");
-    
+    MAIN_MUSIC("audio/BGM/Lute.ogg", 1),
+    CROWD_SOUNDS("audio/BGS/Crowd.ogg", 0.2f);
+
     private final String url;
+    private final float relativeVolume;
     
-    private MusicType(String URL) {
+    MusicType(String URL, float relativeVolume) {
         this.url = URL;
+        this.relativeVolume = relativeVolume;
     }
     
     public String getURL() {
         return url;
+    }
+
+    public float getRelativeVolume() {
+        return relativeVolume;
     }
 }

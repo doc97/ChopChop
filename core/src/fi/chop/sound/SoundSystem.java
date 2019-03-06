@@ -5,7 +5,6 @@
  */
 package fi.chop.sound;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music;
@@ -18,10 +17,10 @@ public class SoundSystem {
     private AssetManager assets;
     private SoundType[] sounds;
     private MusicType[] musics;
-    
+
+    private MusicType currentMusic;
     private Music bgMusic;
-    private boolean bgMusicInitialized = false;
-    
+
     private float masterVolume = 1;
     private float bgMusicVolume = 1;
     private float effectVolume = 1;
@@ -47,22 +46,22 @@ public class SoundSystem {
     }
     
     public void setBackgroundMusic(MusicType m) {
-        if(bgMusicInitialized) {
+        if (currentMusic == m)
+            return;
+        if(currentMusic != null)
             bgMusic.stop();
-            bgMusic.dispose();
-        }
-        bgMusicInitialized = true;
-        
+
+        currentMusic = m;
         bgMusic = assets.get(m.getURL(), Music.class);
         bgMusic.play();
-        bgMusic.setVolume(bgMusicVolume * masterVolume);
+        bgMusic.setVolume(m.getRelativeVolume() * bgMusicVolume * masterVolume);
         bgMusic.setLooping(true);
     }
     
     public void setBackgroundMusicVoume(float bgMusicVolume) {
         this.bgMusicVolume = bgMusicVolume;
-        if(bgMusicInitialized) {
-            bgMusic.setVolume(bgMusicVolume * masterVolume);
+        if(currentMusic != null) {
+            bgMusic.setVolume(currentMusic.getRelativeVolume() * bgMusicVolume * masterVolume);
         }
     }
     
@@ -80,7 +79,7 @@ public class SoundSystem {
     
     public void setMasterVolume(float masterVolume) {
         this.masterVolume = masterVolume;
-        if(bgMusicInitialized) {
+        if(currentMusic != null) {
             bgMusic.setVolume(bgMusicVolume * masterVolume);
         }
     }

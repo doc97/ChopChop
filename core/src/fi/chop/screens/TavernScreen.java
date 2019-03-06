@@ -13,6 +13,7 @@ import fi.chop.model.object.gui.GUIObject;
 import fi.chop.model.object.gui.GameGUIObject;
 import fi.chop.model.object.gui.TextButtonObject;
 import fi.chop.model.object.gui.TextObject;
+import fi.chop.sound.MusicType;
 
 import java.util.Random;
 
@@ -41,6 +42,7 @@ public class TavernScreen extends ChopScreen implements EventListener {
     private void initializeScreen() {
         Gdx.input.setInputProcessor(new BasicScreenInput(this, getInputMap()));
         random = new Random();
+        getSounds().setBackgroundMusic(MusicType.CROWD_SOUNDS);
     }
 
     private void initializeScene() {
