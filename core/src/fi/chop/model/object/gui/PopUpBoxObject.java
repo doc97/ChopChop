@@ -127,7 +127,7 @@ public class PopUpBoxObject extends GUIObject {
         supplier = supplier == null ? () -> "" : supplier;
         TextButtonObject btn = new TextButtonObject(getAssets(), getCamera(), getWorld(), getPlayer());
         btn.create(fontName, supplier, supplier, widthPx, hAlign, wrap);
-        btn.setTouchHandler(new TextButtonHandler(btn, onClick));
+        btn.setTouchHandler(new TextButtonHandler(btn).onClick(onClick));
         btn.getTransform().setParent(getTransform());
         btn.getTransform().setAlign(Align.BOTTOM_LEFT);
         buttons.add(btn);

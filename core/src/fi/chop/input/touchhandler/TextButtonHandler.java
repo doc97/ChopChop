@@ -7,10 +7,21 @@ import java.util.function.Consumer;
 public class TextButtonHandler extends TouchHandler<TextButtonObject> {
 
     private Consumer<TextButtonObject> onClick;
+    private Consumer<TextButtonObject> onEnter;
 
-    public TextButtonHandler(TextButtonObject object, Consumer<TextButtonObject> onClick) {
+    public TextButtonHandler(TextButtonObject object) {
         super(object);
         this.onClick = onClick;
+    }
+
+    public TextButtonHandler onClick(Consumer<TextButtonObject> onClick) {
+        this.onClick = onClick;
+        return this;
+    }
+
+    public TextButtonHandler onEnter(Consumer<TextButtonObject> onEnter) {
+        this.onEnter = onEnter;
+        return this;
     }
 
     @Override
@@ -29,6 +40,7 @@ public class TextButtonHandler extends TouchHandler<TextButtonObject> {
     @Override
     public boolean enter(TextButtonObject obj, float worldX, float worldY) {
         obj.hover();
+        onEnter.accept(obj);
         return true;
     }
 
