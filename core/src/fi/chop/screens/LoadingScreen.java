@@ -79,6 +79,8 @@ public class LoadingScreen extends ChopScreen {
         getAssets().load("textures/town_screen/Background_Neutral.png", Texture.class,textureParams);
         getAssets().load("textures/town_screen/Background_Tavern.png", Texture.class,textureParams);
         getAssets().load("textures/town_screen/Background_Guillotine.png", Texture.class,textureParams);
+        getAssets().load("textures/tavern_screen/Background_Neutral.png", Texture.class, textureParams);
+        getAssets().load("textures/tavern_screen/Background_Drink.png", Texture.class, textureParams);
         getAssets().load("textures/execution_screen/Background.png", Texture.class, textureParams);
         getAssets().load("textures/execution_screen/Guillotine_Body.png", Texture.class, textureParams);
         getAssets().load("textures/execution_screen/Guillotine_Blade.png", Texture.class, textureParams);

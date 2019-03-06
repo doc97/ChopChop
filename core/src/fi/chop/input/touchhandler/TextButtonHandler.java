@@ -11,7 +11,8 @@ public class TextButtonHandler extends TouchHandler<TextButtonObject> {
 
     public TextButtonHandler(TextButtonObject object) {
         super(object);
-        this.onClick = onClick;
+        onClick = (obj) -> {};
+        onEnter = (obj) -> {};
     }
 
     public TextButtonHandler onClick(Consumer<TextButtonObject> onClick) {
