@@ -11,6 +11,7 @@ import fi.chop.model.fsm.states.person.PersonStates;
 import fi.chop.model.object.util.TextureRegionObject;
 import fi.chop.model.world.Player;
 import fi.chop.model.world.WorldState;
+import java.util.Random;
 
 public class PersonObject extends GameObject {
 
@@ -23,8 +24,9 @@ public class PersonObject extends GameObject {
 
     @Override
     public void load() {
+		Random rand = new Random();
         head = new TextureRegionObject(getAssets(), getCamera(), getWorld(), getPlayer());
-        head.setRegion("textures/packed/Chop.atlas", "head-alive");
+        head.setRegion("textures/packed/Chop.atlas", "Head" + rand.nextInt(11));
         head.load();
         head.getTransform().setParent(getTransform());
         head.getTransform().setOrigin(0.5f, 0.5f);
